@@ -17,6 +17,7 @@
     - [Suggested Additional VS Code Extensions](#suggested-additional-vs-code-extensions)
   - [Installation](#installation)
   - [Q \& A](#q--a)
+  - [Commands](#commands)
 - [Configuration](#configuration)
 - [Changes](#changes)
 - [Contributing](#contributing)
@@ -51,6 +52,12 @@ Either
 - or build the extension yourself by cloning the [GitHub Repository](https://github.com/Release-Candidate/vscode-scheme-repl) and running `yarn install` and `yarn package` in the root directory of the cloned repo.
 
 ### Q & A
+
+### Commands
+
+- `Chez Scheme REPL: Start REPL` (`chezScheme.startREPL`) - start a Chez Scheme REPL in a terminal pane to the side of the current active window.
+- `Chez Scheme REPL: Send selected expression to the REPL.` (`chezScheme.sendSelectionToREPL`) - send the current selected expression to the REPL. Opens a new REPL window if no REPL is running.
+- `Chez Scheme REPL: Send the whole current file to the REPL` (`chezScheme.sendFileToREPL`) - send the contents of the currently active source file to the REPL. Opens a new REPL window if no REPL is running.
 
 ## Configuration
 

@@ -24,9 +24,34 @@ export const vscodeVersion = "1.65.0";
 export const outputChannelName = "Chez Scheme REPL";
 
 /**
+ * The name of the terminal the REPL runs in.
+ */
+export const replTerminalName = "Chez Scheme REPL";
+
+/**
  * The command to start the Chez Scheme REPL.
  */
 export const replCommand = "scheme";
+
+/**
+ *******************************************************************************
+ * Command names
+ */
+
+/**
+ * Start a REPL in a pane beside the current editor.
+ */
+export const startREPLCommand = "startREPL";
+
+/**
+ * Send the current selection to the REPL.
+ */
+export const sendSelectionToREPL = "sendSelectionToREPL";
+
+/**
+ * Send the current source file to the REPL.
+ */
+export const sendFileToREPL = "sendFileToREPL";
 
 /**
  ******************************************************************************
@@ -53,6 +78,6 @@ export const cfgREPLDefaultPath = replCommand;
  * @param config The configuration object to use.
  * @returns The configuration value for `schemePath`.
  */
-export function getCfgDunePath(config: vscode.WorkspaceConfiguration) {
+export function getCfgREPLPath(config: vscode.WorkspaceConfiguration) {
     return config.get<string>(cfgREPLPath) || cfgREPLDefaultPath;
 }

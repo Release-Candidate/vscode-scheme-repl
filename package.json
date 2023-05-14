@@ -41,6 +41,20 @@
         "vscode": "^1.65.0"
     },
     "contributes": {
+        "commands": [
+            {
+                "command": "chezScheme.startREPL",
+                "title": "Chez Scheme REPL: Start REPL"
+            },
+            {
+                "command": "chezScheme.sendFileToREPL",
+                "title": "Chez Scheme REPL: Send the whole current file to the REPL"
+            },
+            {
+                "command": "chezScheme.sendSelectionToREPL",
+                "title": "Chez Scheme REPL: Send selected expression to the REPL."
+            }
+        ],
         "configuration": {
             "title": "Chez Scheme REPL",
             "properties": {
