@@ -11,9 +11,9 @@
 ## Setup
 
 - install [yarn](https://yarnpkg.com/getting-started/install).
-- Clone the GitHub repository [vscode-ocaml-expect-inline](https://github.com/Release-Candidate/vscode-ocaml-expect-inline)
+- Clone the GitHub repository [vscode-scheme-repl](https://github.com/Release-Candidate/vscode-scheme-repl)
 - run `yarn install` to install all dependencies and development dependencies. You need the development dependencies to build and package the extension.
-- run `yarn --ignore-engines package` - this generates the extension package `vscode-ocaml-expect-inline-VERSION.vsix` which you can install to VS Code
+- run `yarn --ignore-engines package` - this generates the extension package `vscode-scheme-repl-VERSION.vsix` which you can install to VS Code
 
 ## Sources
 
@@ -25,7 +25,7 @@
 The `scripts` field of [package.json](package.json).
 
 All yarn commands add `--ignore-engines` to not get a spurious warning:
-`warning vscode-ocaml-expect-inline@VERSION:The engine "vscode" appears to be invalid.`
+`warning vscode-scheme-repl@VERSION:The engine "vscode" appears to be invalid.`
 
 - `yarn --ignore-engines clean` - deletes the directory `./out`
 - `yarn --ignore-engines lint` - runs eslint on all source files

@@ -1,10 +1,10 @@
 /*
+ * SPDX-FileCopyrightText:  Copyright 2023 Roland Csaszar
  * SPDX-License-Identifier: MIT
- * Copyright (C) 2023 Roland Csaszar
  *
- * Project:  vscode-ocaml-expect-inline
+ * Project:  vscode-scheme-repl
  * File:     runner.ts
- * Date:     28.Feb.2023
+ * Date:     14.May.2023
  *
  * ==============================================================================
  * The VS Code test runner, to run tests needing the `vscode` module.

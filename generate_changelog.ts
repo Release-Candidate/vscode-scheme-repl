@@ -1,10 +1,10 @@
 /*
+ * SPDX-FileCopyrightText:  Copyright 2023 Roland Csaszar
  * SPDX-License-Identifier: MIT
- * Copyright (C) 2023 Roland Csaszar
  *
- * Project:  vscode-ocaml-expect-inline
+ * Project:  vscode-scheme-repl
  * File:     generate_changelog.ts
- * Date:     28.Feb.2023
+ * Date:     14.May.2023
  *
  * ==============================================================================
  * Parse the latest changelog from the changelog file and save that.

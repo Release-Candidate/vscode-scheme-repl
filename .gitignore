@@ -1,9 +1,8 @@
 node_modules/
 out/
 .DS_Store
-inline_*.txt
 yarn-error.log
-vscode-ocaml-expect-inline-*.vsix
+vscode-*.vsix
 .vscode-test
 eslint_report.json
 latest_changelog.md

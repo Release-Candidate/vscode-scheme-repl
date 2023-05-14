@@ -1,17 +1,17 @@
 /*
+ * SPDX-FileCopyrightText:  Copyright 2023 Roland Csaszar
  * SPDX-License-Identifier: MIT
- * Copyright (C) 2023 Roland Csaszar
  *
- * Project:  vscode-ocaml-expect-inline
+ * Project:  vscode-scheme-repl
  * File:     main.ts
- * Date:     28.Feb.2023
+ * Date:     14.May.2023
  *
  * ==============================================================================
  * The mocha test runner.
  */
+import glob = require("glob");
 import Mocha = require("mocha");
 import * as path from "path";
-import glob from "glob";
 
 /**
  * The actual Mocha test runner.
@@ -25,7 +25,7 @@ export async function run(): Promise<void> {
 
     return new Promise((c, e) => {
         // eslint-disable-next-line consistent-return
-        glob("**/**-test.js", { cwd: testsRoot })
+        glob.glob("**/**-test.js", { cwd: testsRoot })
             .then((files) => {
                 files.forEach((f) => mocha.addFile(path.resolve(testsRoot, f)));
 

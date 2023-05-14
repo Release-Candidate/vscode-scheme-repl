@@ -10,11 +10,11 @@
 
 ![Extension logo](./images/banner.png)
 
-
 - [Features and drawbacks](#features-and-drawbacks)
   - [Drawbacks](#drawbacks)
 - [Getting started](#getting-started)
   - [Dependencies](#dependencies)
+    - [Suggested Additional VS Code Extensions](#suggested-additional-vs-code-extensions)
   - [Installation](#installation)
   - [Q \& A](#q--a)
 - [Configuration](#configuration)
@@ -24,9 +24,7 @@
 
 ## Features and drawbacks
 
-
 ### Drawbacks
-
 
 ## Getting started
 
@@ -36,6 +34,12 @@
 - [Chez Scheme](https://github.com/cisco/chezscheme). For Mac OS use the [Racket version of Chez Scheme](https://github.com/racket/ChezScheme)
 
 **Attention:** you must be in a trusted workspace. Tests (test runners) can execute arbitrary code, so you do **not** want to run them in untrusted directories!
+
+#### Suggested Additional VS Code Extensions
+
+- Syntax highlighting: [chez-scheme](https://marketplace.visualstudio.com/items?itemName=abhi18av-vscode.chez-scheme-vscode)
+- Structural editing (Paredit): [Strict Paredit](https://marketplace.visualstudio.com/items?itemName=ailisp.strict-paredit)
+- To display errors inline in the source: [Error Lens](https://marketplace.visualstudio.com/items?itemName=usernamehw.errorlens)
 
 ### Installation
 
