@@ -1,0 +1,81 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "yarn",
+			"task": "package",
+			"problemMatcher": [],
+			"label": "yarn: package",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"type": "yarn",
+			"task": "bundle",
+			"problemMatcher": [],
+			"label": "yarn: bundle"
+		},
+		{
+			"type": "yarn",
+			"task": "clean",
+			"problemMatcher": [],
+			"label": "yarn: clean"
+		},
+		{
+			"type": "yarn",
+			"task": "esbuild",
+			"problemMatcher": [],
+			"label": "yarn: esbuild"
+		},
+		{
+			"type": "yarn",
+			"task": "esbuild-watch",
+			"problemMatcher": [],
+			"label": "yarn: esbuild-watch"
+		},
+		{
+			"type": "yarn",
+			"task": "install",
+			"problemMatcher": [],
+			"label": "yarn: install"
+		},
+		{
+			"type": "yarn",
+			"task": "lint",
+			"problemMatcher": [],
+			"label": "yarn: lint"
+		},
+		{
+			"type": "yarn",
+			"task": "lint-github",
+			"problemMatcher": [],
+			"label": "yarn: lint-github"
+		},
+		{
+			"type": "yarn",
+			"task": "publish-vsix",
+			"problemMatcher": [],
+			"label": "yarn: publish-vsix"
+		},
+		{
+			"type": "yarn",
+			"task": "test",
+			"problemMatcher": [],
+			"label": "yarn: test"
+		},
+		{
+			"type": "yarn",
+			"task": "compile",
+			"problemMatcher": [],
+			"label": "yarn: compile"
+		},
+		{
+			"type": "yarn",
+			"task": "publish-ovsx",
+			"problemMatcher": [],
+			"label": "yarn: publish-ovsx"
+		}
+	]
+}
