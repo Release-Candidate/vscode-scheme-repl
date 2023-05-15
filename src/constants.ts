@@ -54,6 +54,11 @@ export const sendSelectionToREPL = "sendSelectionToREPL";
 export const sendFileToREPL = "sendFileToREPL";
 
 /**
+ * The the sexp left of the cursor to the REPL.
+ */
+export const sendLastToREPL = "sendLastSexp";
+
+/**
  ******************************************************************************
  *  Configuration constants.
  */

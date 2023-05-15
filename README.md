@@ -56,7 +56,8 @@ Either
 ### Commands
 
 - `Chez Scheme REPL: Start REPL` (`chezScheme.startREPL`) - start a Chez Scheme REPL in a terminal pane to the side of the current active window.
-- `Chez Scheme REPL: Send selected expression to the REPL.` (`chezScheme.sendSelectionToREPL`) - send the current selected expression to the REPL. Opens a new REPL window if no REPL is running.
+- `Chez Scheme REPL: Send selected s-expression to the REPL.` (`chezScheme.sendSelectionToREPL`) - send the current selected s-expression to the REPL. Opens a new REPL window if no REPL is running.
+- `Chez Scheme REPL: Send s-expression left of the cursor to the REPL.` (`chezScheme.sendLastSexp`) - send the s-expression to the left of the cursor to the REPL. Opens a new REPL window if no REPL is running.
 - `Chez Scheme REPL: Send the whole current file to the REPL` (`chezScheme.sendFileToREPL`) - send the contents of the currently active source file to the REPL. Opens a new REPL window if no REPL is running.
 
 ## Configuration

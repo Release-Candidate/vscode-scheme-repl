@@ -1,18 +1,19 @@
-; SPDX-FileCopyrightText:  Copyright 2023 Roland Csaszar
-; SPDX-License-Identifier: MIT
-;
-; Project:  vscode-scheme-repl
-; File:     test.ss
-; Date:     14.May.2023
-;
-; ==============================================================================
+;; SPDX-FileCopyrightText:  Copyright 2023 Roland Csaszar
+;; SPDX-License-Identifier: MIT
+;;
+;; Project:  vscode-scheme-repl
+;; File:     test.ss
+;; Date:     15.May.2023
+;;
+;; ==============================================================================
+
 
 (machine-type)
 
 (+ 5 6)
 
 (define (f x)
-    (* 8 x))
+  (* 8 x))
 
 (f 5)
 

@@ -11,6 +11,7 @@
  */
 
 import * as c from "./constants";
+import * as pR from "./paneREPL";
 import * as vscode from "vscode";
 
 /**
@@ -40,64 +41,46 @@ async function setupExtension(
 ) {
     const config = vscode.workspace.getConfiguration(c.cfgSection);
 
-    const replCommand = vscode.commands.registerCommand(
-        `${c.cfgSection}.${c.startREPLCommand}`,
-        () => {
-            createREPL(config);
-        }
-    );
-
-    const sendREPLCommand = vscode.commands.registerTextEditorCommand(
-        `${c.cfgSection}.${c.sendSelectionToREPL}`,
-        (editor) => {
-            const selectedRange = new vscode.Range(
-                editor.selection.start,
-                editor.selection.end
-            );
-            const selectedText = editor.document.getText(selectedRange);
-            if (selectedText.length) {
-                const repl = createREPL(config);
-                repl.sendText(selectedText);
-            }
-        }
-    );
-
-    const sendFileREPLCommand = vscode.commands.registerTextEditorCommand(
-        `${c.cfgSection}.${c.sendFileToREPL}`,
-        (editor) => {
-            const fileText = editor.document.getText();
-            if (fileText.length) {
-                const repl = createREPL(config);
-                repl.sendText(fileText);
-            }
-        }
-    );
-
-    context.subscriptions.push(replCommand);
-    context.subscriptions.push(sendREPLCommand);
-    context.subscriptions.push(sendFileREPLCommand);
-
-    outChannel.appendLine("OK");
+    registerCommands({ config, outChannel, context });
 }
 
 /**
- * Start the REPL in a terminal.
- * @param config The configuration holding the command to call the REPL with.
- * @returns The `Terminal` object.
+ * Register all commands that the extension provides with VS Code.
+ * @param env The needed environment of the extension.
  */
-function createREPL(config: vscode.WorkspaceConfiguration) {
-    const replTerminals = vscode.window.terminals.filter(
-        (term) => term.name === c.replTerminalName
+function registerCommands(env: {
+    config: vscode.WorkspaceConfiguration;
+    outChannel: vscode.OutputChannel;
+    context: vscode.ExtensionContext;
+}) {
+    const replCommand = vscode.commands.registerCommand(
+        `${c.cfgSection}.${c.startREPLCommand}`,
+        () => {
+            pR.createREPL(env.config);
+            env.outChannel.appendLine(
+                `REPL started by command ${c.cfgSection}.${c.startREPLCommand}`
+            );
+        }
     );
-    if (replTerminals.length) {
-        replTerminals[0].show();
-        return replTerminals[0];
-    }
-    const terminal = vscode.window.createTerminal({
-        name: c.replTerminalName,
-        isTransient: false,
-        location: { viewColumn: vscode.ViewColumn.Beside },
-    });
-    terminal.sendText(`${c.getCfgREPLPath(config)}`);
-    return terminal;
+    env.context.subscriptions.push(replCommand);
+
+    const sendREPLCommand = vscode.commands.registerTextEditorCommand(
+        `${c.cfgSection}.${c.sendSelectionToREPL}`,
+        (editor) => pR.sendSelectionToRepl(env.config, env.outChannel, editor)
+    );
+    env.context.subscriptions.push(sendREPLCommand);
+
+    const sendREPLLastCommand = vscode.commands.registerTextEditorCommand(
+        `${c.cfgSection}.${c.sendLastToREPL}`,
+        (editor) => pR.sendLastToRepl(env.config, env.outChannel, editor)
+    );
+    env.context.subscriptions.push(sendREPLLastCommand);
+
+    const sendFileREPLCommand = vscode.commands.registerTextEditorCommand(
+        `${c.cfgSection}.${c.sendFileToREPL}`,
+        (editor) => pR.sendFileToRepl(env.config, env.outChannel, editor)
+    );
+    env.context.subscriptions.push(sendFileREPLCommand);
+
+    env.outChannel.appendLine(`Registered all commands`);
 }
