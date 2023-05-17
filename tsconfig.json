@@ -1,21 +1,26 @@
 {
 	"compilerOptions": {
 		"module": "commonjs",
-		"target": "es2020",
-		"lib": ["es2020"],
+		"target": "ES2022",
+		"lib": [
+			"ES2022.RegExp"
+		],
 		"outDir": "out",
 		"sourceMap": true,
 		"strict": true,
 		"rootDir": ".",
-        "moduleResolution": "node",
-        "noImplicitReturns": true,
-        "noFallthroughCasesInSwitch": true,
+		"moduleResolution": "node",
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true,
 		"esModuleInterop": true,
-        "noUnusedParameters": true
+		"noUnusedParameters": true
 	},
 	"include": [
-        "src/**/*.ts",
-        "test/**/*.ts"
-    ],
-	"exclude": ["node_modules", ".vscode-test"]
+		"src/**/*.ts",
+		"test/**/*.ts"
+	],
+	"exclude": [
+		"node_modules",
+		".vscode-test"
+	]
 }

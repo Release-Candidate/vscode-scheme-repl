@@ -13,6 +13,7 @@
 
 import * as c from "./constants";
 import * as vscode from "vscode";
+import * as sexp from "./sexps";
 
 /**
  * Send the contents of `editor` to the interactive REPL.
@@ -72,17 +73,23 @@ export function sendLastToRepl(
     editor: vscode.TextEditor
 ) {
     const selectedRange = new vscode.Range(
-        editor.selection.start,
+        new vscode.Position(0, 0),
         editor.selection.end
     );
     const selectedText = editor.document.getText(selectedRange);
     if (selectedText.length) {
         const repl = createREPL(config);
-        repl.sendText(selectedText);
+        repl.sendText(sexp.getSexpToLeft(selectedText));
+        outChannel.appendLine(
+            `Sent ${sexp.getSexpToLeft(selectedText)} to REPL using command ${
+                c.cfgSection
+            }.${c.sendLastToREPL}`
+        );
+    } else {
+        outChannel.appendLine(
+            `Not sent ${editor.selection.end.line}:${editor.selection.end.character} to REPL using command ${c.cfgSection}.${c.sendLastToREPL}`
+        );
     }
-    outChannel.appendLine(
-        `Sent ${editor.selection.start.character} - ${editor.selection.end.character} to REPL using command ${c.cfgSection}.${c.sendLastToREPL}`
-    );
 }
 
 /**
