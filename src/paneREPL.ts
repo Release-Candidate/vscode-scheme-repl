@@ -12,8 +12,8 @@
  */
 
 import * as c from "./constants";
-import * as vscode from "vscode";
 import * as sexp from "./sexps";
+import * as vscode from "vscode";
 
 /**
  * Send the contents of `editor` to the interactive REPL.

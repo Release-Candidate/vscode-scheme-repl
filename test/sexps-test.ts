@@ -94,42 +94,63 @@ mocha.describe("Sexp parsing functions", () => {
                 "String 'dsghjkl{sdfgh' -> 'sdfgh' "
             );
         });
-        mocha.it("Just some text 'dsghjkl (sdfgh)'", () => {
+        mocha.it("S-exp 'dsghjkl (sdfgh)'", () => {
             chai.assert.strictEqual(
                 s.getSexpToLeft("dsghjkl (sdfgh)"),
                 "(sdfgh)",
                 "String 'dsghjkl (sdfgh)' -> '(sdfgh)' "
             );
         });
-        mocha.it("Just some text 'dsghjkl [sdfgh]'", () => {
+        mocha.it("S-exp  'dsghjkl [sdfgh]'", () => {
             chai.assert.strictEqual(
                 s.getSexpToLeft("dsghjkl [sdfgh]"),
                 "[sdfgh]",
                 "String 'dsghjkl [sdfgh]' -> '[sdfgh]' "
             );
         });
-        mocha.it("Just some text 'dsghjkl {sdfgh}'", () => {
+        mocha.it("Quoted S-exp  'dsfsadf \"dsghjkl [sdfgh]\"'", () => {
+            chai.assert.strictEqual(
+                s.getSexpToLeft('dsfsadf "dsghjkl [sdfgh]"'),
+                '"dsghjkl [sdfgh]"',
+                "String 'dsfsadf \"dsghjkl [sdfgh]\"' -> '\"dsghjkl [sdfgh]\"' "
+            );
+        });
+        mocha.it("Quoted S-exp  'dsfsadf\"dsghjkl [sdfgh]\"'", () => {
+            chai.assert.strictEqual(
+                s.getSexpToLeft('dsfsadf"dsghjkl [sdfgh]"'),
+                '"dsghjkl [sdfgh]"',
+                "String 'dsfsadf\"dsghjkl [sdfgh]\"' -> '\"dsghjkl [sdfgh]\"' "
+            );
+        });
+        mocha.it("S-exp  'dsghjkl {sdfgh}'", () => {
             chai.assert.strictEqual(
                 s.getSexpToLeft("dsghjkl {sdfgh}"),
                 "{sdfgh}",
                 "String 'dsghjkl {sdfgh}' -> '{sdfgh}' "
             );
         });
-        mocha.it("Just some text 'dsghjkl \"s(dfg)h\"'", () => {
+        mocha.it("S-exp 'dsghjkl \"s(dfg)h\"'", () => {
             chai.assert.strictEqual(
                 s.getSexpToLeft('dsghjkl "s(dfg)h"'),
                 '"s(dfg)h"',
                 "String 'dsghjkl \"s(dfg)h\"' -> '\"s(dfg)h\"' "
             );
         });
-        mocha.it("Just some text 'fsdg (dsghjkl (sdfgh))'", () => {
+        mocha.it("S-exp  'fsdg[dsghjkl (sdfgh)]'", () => {
+            chai.assert.strictEqual(
+                s.getSexpToLeft("fsdg[dsghjkl (sdfgh)]"),
+                "[dsghjkl (sdfgh)]",
+                "String 'fsdg[dsghjkl (sdfgh)]' -> '[dsghjkl (sdfgh)]' "
+            );
+        });
+        mocha.it("S-exp  'fsdg (dsghjkl (sdfgh))'", () => {
             chai.assert.strictEqual(
                 s.getSexpToLeft("fsdg (dsghjkl (sdfgh))"),
                 "(dsghjkl (sdfgh))",
                 "String 'fsdg (dsghjkl (sdfgh))' -> '(dsghjkl (sdfgh))' "
             );
         });
-        mocha.it("Just some text 'sdfgdgf(define (f x)\\n(* 8 x))'", () => {
+        mocha.it("S-exp  'sdfgdgf(define (f x)\\n(* 8 x))'", () => {
             chai.assert.strictEqual(
                 s.getSexpToLeft("sdfgdgf(define (f x)\n(* 8 x))"),
                 "(define (f x)\n(* 8 x))",

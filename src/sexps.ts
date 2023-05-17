@@ -45,22 +45,22 @@ export function getSexpToLeft(text: string) {
  * @param s The string to parse from the end to the next sexp delimiter.
  * @returns The string until the next sexp delimiter to the left.
  */
-// eslint-disable-next-line max-statements, max-lines-per-function, complexity
+// eslint-disable-next-line max-statements, max-lines-per-function, complexity, consistent-return
 function parseSexpToLeft(delim: Delimiter, s: string, level: number): string {
-    if (s.endsWith(")")) {
+    if (s.endsWith(")") && delim !== "Quote") {
         return parseSexpToLeft("Paren", s.slice(0, -1), level + 1) + ")";
-    } else if (s.endsWith("]")) {
+    } else if (s.endsWith("]") && delim !== "Quote") {
         return parseSexpToLeft("Bracket", s.slice(0, -1), level + 1) + "]";
-    } else if (s.endsWith("}")) {
+    } else if (s.endsWith("}") && delim !== "Quote") {
         return parseSexpToLeft("Brace", s.slice(0, -1), level + 1) + "}";
     } else if (s.endsWith('"') && delim === "Quote") {
         const newLevel = level - 1;
         if (newLevel === 0) {
             return '"';
         } else {
-            return parseSexpToLeft("Any", s.slice(0, -1), level - 1) + '"';
+            return parseSexpToLeft("Any", s.slice(0, -1), newLevel) + '"';
         }
-    } else if (s.endsWith('"')) {
+    } else if (s.endsWith('"') && delim !== "Quote") {
         return parseSexpToLeft("Quote", s.slice(0, -1), level + 1) + '"';
     } else if (s.endsWith(" ")) {
         return parseSexpToLeft("Any", s.slice(0, -1), level) + " ";
@@ -143,10 +143,9 @@ function parseSexpToLeft(delim: Delimiter, s: string, level: number): string {
             const found = leftUntilQuote.exec(s);
             if (found) {
                 const foundVal = found.groups ? found.groups.sexp : "";
-
                 return (
                     parseSexpToLeft(
-                        delim,
+                        "Quote",
                         s.slice(0, found.indices ? found.indices[1][0] : 1),
                         level
                     ) + foundVal
@@ -174,5 +173,4 @@ function parseSexpToLeft(delim: Delimiter, s: string, level: number): string {
             }
         }
     }
-    return "";
 }
