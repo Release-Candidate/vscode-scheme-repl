@@ -34,6 +34,11 @@ export const replTerminalName = "Chez Scheme REPL";
 export const replCommand = "scheme";
 
 /**
+ * The time in milliseconds to wait for a new REPL before sending strings to it.
+ */
+export const replSleepTime = 1000;
+
+/**
  *******************************************************************************
  * Command names
  */

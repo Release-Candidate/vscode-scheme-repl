@@ -136,6 +136,20 @@ mocha.describe("Sexp parsing functions", () => {
                 "String 'dsghjkl \"s(dfg)h\"' -> '\"s(dfg)h\"' "
             );
         });
+        mocha.it("S-exp 'dsghjkl '(1, 2, 3, 4, 5, 6)'", () => {
+            chai.assert.strictEqual(
+                s.getSexpToLeft("dsghjkl '(1, 2, 3, 4, 5, 6)"),
+                "'(1, 2, 3, 4, 5, 6)",
+                "String 'dsghjkl '(1, 2, 3, 4, 5, 6)' -> ''(1, 2, 3, 4, 5, 6)' "
+            );
+        });
+        mocha.it("S-exp 'dsghjkl '(1 2 3 4 5 6)'", () => {
+            chai.assert.strictEqual(
+                s.getSexpToLeft("dsghjkl '(1 2 3 4 5 6)"),
+                "'(1 2 3 4 5 6)",
+                "String 'dsghjkl '(1 2 3 4 5 6)' -> ''(1 2 3 4 5 6)' "
+            );
+        });
         mocha.it("S-exp  'fsdg[dsghjkl (sdfgh)]'", () => {
             chai.assert.strictEqual(
                 s.getSexpToLeft("fsdg[dsghjkl (sdfgh)]"),
@@ -150,11 +164,25 @@ mocha.describe("Sexp parsing functions", () => {
                 "String 'fsdg (dsghjkl (sdfgh))' -> '(dsghjkl (sdfgh))' "
             );
         });
+        mocha.it("S-exp  'fsdg (dsghjkl {sdfgh})'", () => {
+            chai.assert.strictEqual(
+                s.getSexpToLeft("fsdg (dsghjkl {sdfgh})"),
+                "(dsghjkl {sdfgh})",
+                "String 'fsdg (dsghjkl {sdfgh})' -> '(dsghjkl {sdfgh})' "
+            );
+        });
         mocha.it("S-exp  'sdfgdgf(define (f x)\\n(* 8 x))'", () => {
             chai.assert.strictEqual(
                 s.getSexpToLeft("sdfgdgf(define (f x)\n(* 8 x))"),
                 "(define (f x)\n(* 8 x))",
                 "String 'sdfgdgf(define (f x)\\n(* 8 x))' -> '(define (f x)\\n(* 8 x))' "
+            );
+        });
+        mocha.it("Invalid s-exp 'fsdg (dsghjkl] {sdfgh})'", () => {
+            chai.assert.strictEqual(
+                s.getSexpToLeft("fsdg (dsghjkl] {sdfgh})"),
+                "dsghjkl] {sdfgh})",
+                "String 'fsdg (dsghjkl] {sdfgh})' -> 'fsdg (dsghjkl] {sdfgh})' "
             );
         });
     });

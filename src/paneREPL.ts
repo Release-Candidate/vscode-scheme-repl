@@ -12,6 +12,7 @@
  */
 
 import * as c from "./constants";
+import * as help from "./helpers";
 import * as sexp from "./sexps";
 import * as vscode from "vscode";
 
@@ -21,14 +22,14 @@ import * as vscode from "vscode";
  * @param outChannel Logs go here.
  * @param editor The `TextEditor` containing the sources to send to the REPL.
  */
-export function sendFileToRepl(
+export async function sendFileToRepl(
     config: vscode.WorkspaceConfiguration,
     outChannel: vscode.OutputChannel,
     editor: vscode.TextEditor
 ) {
     const fileText = editor.document.getText();
     if (fileText.length) {
-        const repl = createREPL(config);
+        const repl = await createREPL(config);
         repl.sendText(fileText);
     }
     outChannel.appendLine(
@@ -42,7 +43,7 @@ export function sendFileToRepl(
  * @param outChannel Logs go here.
  * @param editor The `TextEditor` containing the sources to send to the REPL.
  */
-export function sendSelectionToRepl(
+export async function sendSelectionToRepl(
     config: vscode.WorkspaceConfiguration,
     outChannel: vscode.OutputChannel,
     editor: vscode.TextEditor
@@ -53,7 +54,7 @@ export function sendSelectionToRepl(
     );
     const selectedText = editor.document.getText(selectedRange);
     if (selectedText.length) {
-        const repl = createREPL(config);
+        const repl = await createREPL(config);
         repl.sendText(selectedText);
     }
     outChannel.appendLine(
@@ -67,7 +68,7 @@ export function sendSelectionToRepl(
  * @param outChannel Logs go here.
  * @param editor The `TextEditor` containing the sources to send to the REPL.
  */
-export function sendLastToRepl(
+export async function sendLastToRepl(
     config: vscode.WorkspaceConfiguration,
     outChannel: vscode.OutputChannel,
     editor: vscode.TextEditor
@@ -78,7 +79,7 @@ export function sendLastToRepl(
     );
     const selectedText = editor.document.getText(selectedRange);
     if (selectedText.length) {
-        const repl = createREPL(config);
+        const repl = await createREPL(config);
         repl.sendText(sexp.getSexpToLeft(selectedText));
         outChannel.appendLine(
             `Sent ${sexp.getSexpToLeft(selectedText)} to REPL using command ${
@@ -97,7 +98,7 @@ export function sendLastToRepl(
  * @param config The configuration holding the command to call the REPL with.
  * @returns The `Terminal` object of the running REPL.
  */
-export function createREPL(config: vscode.WorkspaceConfiguration) {
+export async function createREPL(config: vscode.WorkspaceConfiguration) {
     const replTerminals = vscode.window.terminals.filter(
         (term) => term.name === c.replTerminalName
     );
@@ -111,5 +112,6 @@ export function createREPL(config: vscode.WorkspaceConfiguration) {
         location: { viewColumn: vscode.ViewColumn.Beside, preserveFocus: true },
     });
     terminal.sendText(`${c.getCfgREPLPath(config)}`);
+    await help.sleep(c.replSleepTime);
     return terminal;
 }

@@ -17,6 +17,8 @@
 
 (f 5)
 
+'(1 2 3 4)
+
 (f 9)
 
 (environment-symbols (interaction-environment))
