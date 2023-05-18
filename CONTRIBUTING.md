@@ -21,6 +21,7 @@
 - [./src/paneREPL.ts](./src/paneREPL.ts) - function to deal with the visible REPL in an extra pane. E.g. to start the REPL, send a file, s-expression, ...
 - [./src/sexps.ts](./src/sexps.ts) - functions related to parsing s-expressions.
 - [./src/constants.ts](./src/constants.ts) - all constants used by the extension. Like config paths, command names, ...
+- [./src/helpers.ts](./src/helpers.ts) - small helper functions to make the life easier.
 - [./test](./test) - tests
 
 ## Build commands
