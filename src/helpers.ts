@@ -15,8 +15,7 @@
  * @param ms The sleep time in milliseconds.
  */
 export async function sleep(ms: number) {
-    const timer = new Promise<void>((resolve) => {
+    return new Promise<void>((resolve) => {
         setTimeout(resolve, ms);
     });
-    await timer;
 }
