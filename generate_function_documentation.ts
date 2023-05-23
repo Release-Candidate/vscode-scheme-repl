@@ -99,7 +99,7 @@ async function main(): Promise<void> {
         const tsText = await processHTML(htmlText);
         await writeFunctionDocumentation(tsText);
         const deleteSet = new Set(filesToDelete);
-        //deleteSet.forEach((file) => unlinkSync(file));
+        deleteSet.forEach((file) => unlinkSync(file));
     } catch (error) {
         console.error(
             `Caught "${error}" trying to process the HTML and saving it.`
@@ -256,21 +256,87 @@ function parseTR(tr: HTMLTableRowElement): FunctionDoc {
  *
  * @param id
  */
+// eslint-disable-next-line max-lines-per-function, max-statements
 async function addDescription(id: FunctionDoc) {
     const htmlString = await downloadAndRead(id.url.toString());
     const htmlDoc = new JSDOM(htmlString).window.document;
     const anchor = id.url.hash.slice(1);
     let currP = htmlDoc.querySelector(`a[name="${anchor}"]`)?.closest("p");
-    let text = stringOrEmpty(currP?.textContent);
+    const first = currP;
+    let text = [""];
     while (
         currP &&
-        // eslint-disable-next-line no-eq-null, eqeqeq
-        currP.nextElementSibling?.querySelector("a[name]") == null
+        (currP === first ||
+            // eslint-disable-next-line no-eq-null, eqeqeq
+            currP.querySelector(`a[name]:not(a[name="${anchor}"])`) == null)
     ) {
-        currP = currP?.nextElementSibling as HTMLParagraphElement;
-        text = text.concat(stringOrEmpty(currP?.textContent));
+        currP.childNodes.forEach((c) => parseChildNode(c, text));
+        text.push("\n\n");
+        currP = currP.nextElementSibling as HTMLParagraphElement;
     }
-    id.description = text.replace(/\\/gu, "\\\\").replace(/`/gu, "\\`");
+    id.description = text
+        .join("")
+        .replace(/[ ]+/gu, " ")
+        .replace(/^ /gmu, "")
+        .replace(/\n[\n]+$/u, "\n")
+        .replace(/\n\n[\n]+/gu, "\n\n")
+        // Non-breaking-space.
+        .replace(/\u00A0/gu, " ")
+        .replace(/\\/gu, "\\\\")
+        .replace(/`/gu, "\\`");
+}
+
+/**
+ *
+ * @param c
+ * @param text
+ */
+function parseChildNode(c: ChildNode, text: string[]) {
+    switch (c.nodeName) {
+        case "BR":
+            text.push(`\n`);
+            break;
+        case "B":
+            text.push(`**${c.textContent?.replace(/\n/gu, " ")}**`);
+            break;
+        case "TT":
+            c.childNodes.forEach((cN) => {
+                switch (cN.nodeName) {
+                    case "BR":
+                        text.push(`\n`);
+                        break;
+                    case "B":
+                        text.push(
+                            `**${cN.textContent?.replace(/\n/gu, " ")}**`
+                        );
+                        break;
+                    case "I":
+                        text.push(`*${cN.textContent?.replace(/\n/gu, " ")}*`);
+                        break;
+                    case "IMG":
+                        if ((cN as HTMLImageElement).src.endsWith("0.gif")) {
+                            text.push("=>");
+                        }
+                        break;
+                    case "#text":
+                        text.push(
+                            // eslint-disable-next-line no-useless-concat
+                            "`" +
+                                `${cN.textContent?.replace(/\n/gu, " ")}` +
+                                "`"
+                        );
+
+                        break;
+                }
+            });
+            break;
+        case "#text":
+            text.push(`${c.textContent?.replace(/\n/gu, " ")}`);
+            break;
+        case "SPAN":
+            c.childNodes.forEach((cN) => parseChildNode(cN, text));
+            break;
+    }
 }
 
 /**
