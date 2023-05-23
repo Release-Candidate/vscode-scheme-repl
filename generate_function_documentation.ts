@@ -158,7 +158,7 @@ async function processHTML(text: string): Promise<string> {
 /**
  * The type of a identifier.
  */
-type IdentifierType =
+export type IdentifierType =
     | "syntax"
     | "module"
     | "procedure"
@@ -169,7 +169,7 @@ type IdentifierType =
 /**
  * The object to save the data of a function documentation to.
  */
-type FunctionDoc = {
+export type FunctionDoc = {
     name: string;
     endParen: boolean;
     params: string[];
@@ -201,7 +201,7 @@ ${ids
  * @param tr The `tr` element to parse.
  * @returns The filled `FunctionDoc` object.
  */
-// eslint-disable-next-line max-statements, max-lines-per-function
+// eslint-disable-next-line max-statements
 function parseTR(tr: HTMLTableRowElement): FunctionDoc {
     const tds = Array.from(tr.childNodes) as HTMLTableCellElement[];
     const idType = stringToIType(tds[1].innerHTML);
@@ -256,14 +256,13 @@ function parseTR(tr: HTMLTableRowElement): FunctionDoc {
  *
  * @param id
  */
-// eslint-disable-next-line max-lines-per-function, max-statements
 async function addDescription(id: FunctionDoc) {
     const htmlString = await downloadAndRead(id.url.toString());
     const htmlDoc = new JSDOM(htmlString).window.document;
     const anchor = id.url.hash.slice(1);
     let currP = htmlDoc.querySelector(`a[name="${anchor}"]`)?.closest("p");
     const first = currP;
-    let text = [""];
+    const text = [""];
     while (
         currP &&
         (currP === first ||
@@ -274,16 +273,7 @@ async function addDescription(id: FunctionDoc) {
         text.push("\n\n");
         currP = currP.nextElementSibling as HTMLParagraphElement;
     }
-    id.description = text
-        .join("")
-        .replace(/[ ]+/gu, " ")
-        .replace(/^ /gmu, "")
-        .replace(/\n[\n]+$/u, "\n")
-        .replace(/\n\n[\n]+/gu, "\n\n")
-        // Non-breaking-space.
-        .replace(/\u00A0/gu, " ")
-        .replace(/\\/gu, "\\\\")
-        .replace(/`/gu, "\\`");
+    id.description = sanitizeDescription(text.join(""));
 }
 
 /**
@@ -340,14 +330,36 @@ function parseChildNode(c: ChildNode, text: string[]) {
 }
 
 /**
+ * Return a sanitized version of the given text.
+ * That is, without excessive whitespace and with escaped backticks and
+ * backslashes.
+ * @param text The description text to sanitize.
+ * @returns The sanitized description.
+ */
+function sanitizeDescription(text: string): string {
+    return (
+        text
+            .replace(/[ ]+/gu, " ")
+            .replace(/^ /gmu, "")
+            .replace(/[ ]+\n/gu, "\n")
+            .replace(/\n[\n]+$/u, "\n")
+            .replace(/\n\n[\n]+/gu, "\n\n")
+            // Non-breaking-space.
+            .replace(/\u00A0/gu, " ")
+            .replace(/\\/gu, "\\\\")
+            .replace(/`/gu, "\\`")
+    );
+}
+
+/**
  * Return the string `s` if it isn't `undefined` or `null`, the empty string
- * `""` else.
+ * `""` else. Changes all non breaking spaces (`\u00A0`) to "normal" spaces.
  * @param s The `string` or `undefined` value to "convert".
  * @returns The string `s` if it isn't `undefined` or `null`, the empty string
  * `""` else.
  */
 function stringOrEmpty(s: string | undefined | null): string {
-    return s ? s : "";
+    return s ? s.replace(/\u00A0/gu, " ") : "";
 }
 
 /**

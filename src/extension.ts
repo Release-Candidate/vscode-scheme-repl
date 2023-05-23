@@ -11,8 +11,10 @@
  */
 
 import * as c from "./constants";
+import * as h from "./helpers";
 import * as pR from "./paneREPL";
 import * as vscode from "vscode";
+import { functionDocs } from "./functionDocumentation";
 
 /**
  * Called when the extension is being activated.
@@ -35,11 +37,62 @@ export async function activate(context: vscode.ExtensionContext) {
  * @param context The extension's context.
  * @param outChannel The channel to log to.
  */
+// eslint-disable-next-line max-lines-per-function
 async function setupExtension(
     context: vscode.ExtensionContext,
     outChannel: vscode.OutputChannel
 ) {
     const config = vscode.workspace.getConfiguration(c.cfgSection);
+
+    const hoverSubscription = vscode.languages.registerHoverProvider("scheme", {
+        provideHover(document, position, _token) {
+            const range = document.getWordRangeAtPosition(position);
+            const word = document.getText(range);
+            const wordRegex = new RegExp(
+                `^[(]?${h.escapeRegexp(word)}(:?\\s+.*)?[)]?$`,
+                "u"
+            );
+            const funcID = functionDocs.find((id) => id.name.match(wordRegex));
+            return new vscode.Hover(
+                new vscode.MarkdownString(
+                    `\`\`\`scheme\n${funcID?.name}${funcID?.params.join(" ")}${
+                        funcID?.endParen ? ")" : ""
+                    }\n\`\`\`\n${
+                        funcID?.description
+                    }\n[${funcID?.url.toString()}](${funcID?.url.toString()})`
+                )
+            );
+        },
+    });
+
+    context.subscriptions.push(hoverSubscription);
+
+    const completionSubscription =
+        vscode.languages.registerCompletionItemProvider("scheme", {
+            provideCompletionItems(
+                document: vscode.TextDocument,
+                position: vscode.Position
+            ) {
+                const range = document.getWordRangeAtPosition(position);
+                const word = document.getText(range);
+                const wordRegex = new RegExp(
+                    `^[(]?${h.escapeRegexp(word)}(:?.*)?[)]?$`,
+                    "u"
+                );
+                const funcIDs = functionDocs.filter((id) =>
+                    id.name.match(wordRegex)
+                );
+                const completions = funcIDs.map(
+                    (id) =>
+                        new vscode.CompletionItem(
+                            `${id.name}${id.params.join(" ")}`,
+                            h.identifierToCompletionKind(id.type)
+                        )
+                );
+                return completions;
+            },
+        });
+    context.subscriptions.push(completionSubscription);
 
     registerCommands({ config, outChannel, context });
 }
