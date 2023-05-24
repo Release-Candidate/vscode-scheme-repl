@@ -20,8 +20,7 @@
     "icon": "images/logo.png",
     "capabilities": {
         "untrustedWorkspaces": {
-            "supported": false,
-            "description": "Do not run extensions in untrusted workspaces because they can execute arbitrary code!"
+            "supported": true
         }
     },
     "activationEvents": [

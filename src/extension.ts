@@ -45,6 +45,20 @@ async function setupExtension(
 ) {
     const config = vscode.workspace.getConfiguration(c.cfgSection);
 
+    const symbolSubscription = vscode.languages.registerDocumentSymbolProvider(
+        c.languageName,
+        {
+            provideDocumentSymbols(document, token) {
+                document.getText();
+                if (token.isCancellationRequested) {
+                    return [];
+                }
+                return [];
+            },
+        }
+    );
+    context.subscriptions.push(symbolSubscription);
+
     const hoverSubscription = vscode.languages.registerHoverProvider(
         c.languageName,
         {

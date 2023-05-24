@@ -18,6 +18,7 @@
   - [Installation](#installation)
   - [Q \& A](#q--a)
   - [Commands](#commands)
+  - [Supported Source File Extensions](#supported-source-file-extensions)
 - [Configuration](#configuration)
 - [Changes](#changes)
 - [Contributing](#contributing)
@@ -25,7 +26,13 @@
 
 ## Features and drawbacks
 
+- Hover with documentation of all Chez Scheme identifiers.
+- Autocompletion with documentation of all Chez Scheme identifiers.
+- Interactive REPL pane to the side of the editor, with commands to send code to the REPL (see [Commands](#commands)).
+
 ### Drawbacks
+
+- The REPL pane is left empty on restart of VS Code and has to be manually closed. I do not know of a way to automatically close that on exit.
 
 ## Getting started
 
@@ -33,8 +40,6 @@
 
 - Visual Studio Code version 1.65 (February 2022) or higher
 - [Chez Scheme](https://github.com/cisco/chezscheme). For Mac OS use the [Racket version of Chez Scheme](https://github.com/racket/ChezScheme)
-
-**Attention:** you must be in a trusted workspace. Tests (test runners) can execute arbitrary code, so you do **not** want to run them in untrusted directories!
 
 #### Suggested Additional VS Code Extensions
 
@@ -60,6 +65,16 @@ Either
 - `Chez Scheme REPL: Send s-expression left of the cursor to the REPL.` (`chezScheme.sendLastSexp`) - send the s-expression to the left of the cursor to the REPL. Opens a new REPL window if no REPL is running.
 - `Chez Scheme REPL: Send the whole current file to the REPL` (`chezScheme.sendFileToREPL`) - send the contents of the currently active source file to the REPL. Opens a new REPL window if no REPL is running.
 
+### Supported Source File Extensions
+
+The following list of extensions is recognized as a Chez Scheme source file:
+
+- `.ss`
+- `.sps`
+- `.scm`
+- `.sch`
+- `.sls`
+
 ## Configuration
 
 - `chezScheme.schemePath` - Path to the Chez Scheme executable `scheme`. Can be either an absolute path or relative to the workspace root. Default: `scheme`, which works if `scheme` is in your `PATH`.
@@ -74,4 +89,6 @@ See file [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## License
 
-Chez Scheme REPL for Visual Studio Code is licensed under MIT license. See file [LICENSE](LICENSE)
+Chez Scheme REPL for Visual Studio Code is licensed under MIT license. See file [LICENSE](LICENSE).
+
+The documentation of the Chez Scheme identifiers is automatically generated from *Chez Scheme Version 9 User's Guide*. *Chez Scheme Version 9 User's Guide* is licensed under the Apache License Version 2, see [https://cisco.github.io/ChezScheme/csug9.5/canned/copyright.html](https://cisco.github.io/ChezScheme/csug9.5/canned/copyright.html)
