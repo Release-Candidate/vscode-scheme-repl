@@ -82,7 +82,7 @@
     "wordPattern": "[^;\"'`(\\[{\\s)\\]}]+",
     "onEnterRules": [
         {
-            "beforeText": "^\\s*\\(\\s*(define|if\\s|lambda\\s|import\\s|do\\s|unless\\s|for-each\\s).*$",
+            "beforeText": "^\\s*\\(\\s*(define|if\\s|lambda\\s|import\\s|do\\s|unless\\s|library\\s|for-each\\s).*$",
             "action": {
                 "indent": "indent"
             }

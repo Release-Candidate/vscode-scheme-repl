@@ -18,6 +18,11 @@ import * as vscode from "vscode";
 export const vscodeVersion = "1.65.0";
 
 /**
+ * The name of the language this extension supports.
+ */
+export const languageName = "scheme";
+
+/**
  * The name of the VS Code output channel - that's the `OUTPUT` tab of the
  * panel.
  */

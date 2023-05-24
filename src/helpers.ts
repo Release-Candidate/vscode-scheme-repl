@@ -11,7 +11,11 @@
  */
 
 import * as vscode from "vscode";
-import { IdentifierType } from "./functionDocumentation";
+
+/**
+ * The `Maybe` type. Either `undefined`/`null` or a value.
+ */
+export type Maybe<T> = T | undefined | null;
 
 /**
  * Do nothing for the given time `ms`.
@@ -41,26 +45,27 @@ export function escapeRegexp(text: string) {
 }
 
 /**
- * Convert the given `IdentifierType` to a `CompletionItemKind`.
- * @param identifierType The `IdentifierType` to convert.
- * @returns The given `IdentifierType` converted to a `CompletionItemKind`.
+ * Return `def` if `s` if `undefined` or `null`, `def` else.
+ * @param s The object that can be either `undefined`/`null` or not.
+ * @param def The value to return if `s` is `undefined` or `null`.
+ * @returns `def` if `s` if `undefined` or `null`, `def` else.
  */
-export function identifierToCompletionKind(
-    identifierType: IdentifierType
-): vscode.CompletionItemKind {
-    switch (identifierType) {
-        case "global parameter":
-            return vscode.CompletionItemKind.Value;
-        case "module":
-            return vscode.CompletionItemKind.Module;
-        case "procedure":
-            return vscode.CompletionItemKind.Function;
-        case "syntax":
-            return vscode.CompletionItemKind.Keyword;
-        case "thread parameter":
-            return vscode.CompletionItemKind.Value;
-        case "Error: unknown":
-        default:
-            return vscode.CompletionItemKind.User;
-    }
+export function fromMaybe<T>(s: Maybe<T>, def: T): T {
+    return s ? s : def;
+}
+
+/**
+ * Return the word (determined by the language's word borders) at `position` or
+ * `undefined`.
+ * @param document The text.
+ * @param position The position in the word to return.
+ * @returns The word (determined by the language's word borders) at `position` or
+ * `undefined`.
+ */
+export function getWordAtPosition(
+    document: vscode.TextDocument,
+    position: vscode.Position
+): string | undefined {
+    const range = document.getWordRangeAtPosition(position);
+    return range ? document.getText(range) : undefined;
 }

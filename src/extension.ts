@@ -12,6 +12,7 @@
 
 import * as c from "./constants";
 import * as h from "./helpers";
+import * as iD from "./identifierDocumentation";
 import * as pR from "./paneREPL";
 import * as vscode from "vscode";
 import { functionDocs } from "./functionDocumentation";
@@ -44,50 +45,50 @@ async function setupExtension(
 ) {
     const config = vscode.workspace.getConfiguration(c.cfgSection);
 
-    const hoverSubscription = vscode.languages.registerHoverProvider("scheme", {
-        provideHover(document, position, _token) {
-            const range = document.getWordRangeAtPosition(position);
-            const word = document.getText(range);
-            const wordRegex = new RegExp(
-                `^[(]?${h.escapeRegexp(word)}(:?\\s+.*)?[)]?$`,
-                "u"
-            );
-            const funcID = functionDocs.find((id) => id.name.match(wordRegex));
-            return new vscode.Hover(
-                new vscode.MarkdownString(
-                    `\`\`\`scheme\n${funcID?.name}${funcID?.params.join(" ")}${
-                        funcID?.endParen ? ")" : ""
-                    }\n\`\`\`\n${
-                        funcID?.description
-                    }\n[${funcID?.url.toString()}](${funcID?.url.toString()})`
-                )
-            );
-        },
-    });
+    const hoverSubscription = vscode.languages.registerHoverProvider(
+        c.languageName,
+        {
+            provideHover(document, position, token) {
+                const word = h.getWordAtPosition(document, position);
+                // eslint-disable-next-line no-eq-null, eqeqeq
+                if (word == null) {
+                    return undefined;
+                }
+                const wordRegex = new RegExp(
+                    `^[(]?${h.escapeRegexp(word)}(:?\\s+.*)?[)]?$`,
+                    "u"
+                );
+                const funcID = functionDocs.find((id) =>
+                    id.name.match(wordRegex)
+                );
+                if (token.isCancellationRequested) {
+                    return undefined;
+                }
+                return funcID
+                    ? new vscode.Hover(iD.functionDocToMarkdown(funcID))
+                    : undefined;
+            },
+        }
+    );
 
     context.subscriptions.push(hoverSubscription);
 
     const completionSubscription =
-        vscode.languages.registerCompletionItemProvider("scheme", {
+        vscode.languages.registerCompletionItemProvider(c.languageName, {
             provideCompletionItems(
                 document: vscode.TextDocument,
                 position: vscode.Position
             ) {
-                const range = document.getWordRangeAtPosition(position);
-                const word = document.getText(range);
+                const word = h.getWordAtPosition(document, position);
                 const wordRegex = new RegExp(
-                    `^[(]?${h.escapeRegexp(word)}(:?.*)?[)]?$`,
+                    `^[(]?${h.escapeRegexp(h.fromMaybe(word, ""))}(:?.*)?[)]?$`,
                     "u"
                 );
-                const funcIDs = functionDocs.filter((id) =>
-                    id.name.match(wordRegex)
-                );
-                const completions = funcIDs.map(
-                    (id) =>
-                        new vscode.CompletionItem(
-                            `${id.name}${id.params.join(" ")}`,
-                            h.identifierToCompletionKind(id.type)
-                        )
+                const funcIDs = word
+                    ? functionDocs.filter((id) => id.name.match(wordRegex))
+                    : functionDocs;
+                const completions = funcIDs.map((id) =>
+                    iD.functionDocToCompletionItem(id)
                 );
                 return completions;
             },

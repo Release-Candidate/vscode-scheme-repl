@@ -7,8 +7,9 @@
  * Date:     19.May.2023
  *
  * ==============================================================================
- * Parse the HTML documentation from the Chez Scheme page and generate objects
- * holding the parsed data.
+ * Parse the HTML documentation from the Chez Scheme page
+ * https://cisco.github.io/ChezScheme/csug9.5/summary.html
+ * and generate a list of objects holding the parsed data in `outFilename`.
  * Run with `yarn --ignore-engines ts-node generate_function_documentation.ts`.
  */
 
@@ -28,6 +29,8 @@ import { basename } from "path";
 
 /**
  * The type of a identifier.
+ * Warning: copied from `./src/identifierDocumentation.ts` because of problems
+ * with module imports.
  */
 type IdentifierType =
     | "syntax"
@@ -44,7 +47,7 @@ type IdentifierType =
  * @returns The string `s` converted to an `IdentifierType`.
  * Return `"Error: unknown"` if the string isn't recognized.
  */
-function stringToIType(s: string): IdentifierType {
+function stringToIdentifierType(s: string): IdentifierType {
     switch (s) {
         case "syntax":
             return "syntax";
@@ -63,16 +66,23 @@ function stringToIType(s: string): IdentifierType {
 
 /**
  * The object to save the data of a function documentation to.
+ * Warning: copied from `./src/identifierDocumentation.ts` because of problems
+ * with module imports.
  */
 type FunctionDoc = {
     name: string;
-    params: string[];
+    startParen: boolean;
     endParen: boolean;
+    params: string[];
     type: IdentifierType;
+    moduleNames: string[];
     url: URL;
     description: string;
 };
 
+/**
+ * The base part of the Chez Scheme documentation URL.
+ */
 const baseURL = "https://cisco.github.io/ChezScheme/csug9.5/";
 
 /**
@@ -99,7 +109,7 @@ async function main(): Promise<void> {
         const tsText = await processHTML(htmlText);
         await writeFunctionDocumentation(tsText);
         const deleteSet = new Set(filesToDelete);
-        deleteSet.forEach((file) => unlinkSync(file));
+        //deleteSet.forEach((file) => unlinkSync(file));
     } catch (error) {
         console.error(
             `Caught "${error}" trying to process the HTML and saving it.`
@@ -115,7 +125,6 @@ async function main(): Promise<void> {
  * @returns The data of the Chez function documentation as Typescript objects in a
  * text file.
  */
-// eslint-disable-next-line max-lines-per-function, max-statements
 async function processHTML(text: string): Promise<string> {
     const htmlDoc = new JSDOM(text).window.document;
     const trs = Array.from(htmlDoc.querySelectorAll("tr")).filter(
@@ -134,6 +143,16 @@ async function processHTML(text: string): Promise<string> {
         )
     );
     await Promise.all(ids.map((id) => addDescription(id)));
+
+    return idsDocToTSFile(ids);
+}
+
+/**
+ * Return a TS file content with the list of `FunctionDoc`s.
+ * @param ids The list of `FunctionDoc`s to convert.
+ * @returns A TS file content with the list of `FunctionDoc`s.
+ */
+function idsDocToTSFile(ids: FunctionDoc[]): string {
     const today = new Date();
     const date = today.getDate();
     const month = today.getMonth() + 1;
@@ -155,28 +174,7 @@ async function processHTML(text: string): Promise<string> {
 
 /* eslint-disable max-lines */
 
-/**
- * The type of a identifier.
- */
-export type IdentifierType =
-    | "syntax"
-    | "module"
-    | "procedure"
-    | "thread parameter"
-    | "global parameter"
-    | "Error: unknown";
-
-/**
- * The object to save the data of a function documentation to.
- */
-export type FunctionDoc = {
-    name: string;
-    endParen: boolean;
-    params: string[];
-    type: IdentifierType;
-    url: URL;
-    description: string;
-};
+import { FunctionDoc } from "./identifierDocumentation";
 
 export const functionDocs: FunctionDoc[] = [
 ${ids
@@ -184,9 +182,11 @@ ${ids
         (id) =>
             `    {
         name: "${id.name}",
+        startParen: ${id.startParen},
         endParen: ${id.endParen},
         params: ["${id.params.join('", "')}"],
         type: "${id.type}",
+        moduleNames: ["${id.moduleNames.join('", "')}"],
         url: new URL("${id.url}"),
         description: \`${id.description}\`
     },`
@@ -201,19 +201,24 @@ ${ids
  * @param tr The `tr` element to parse.
  * @returns The filled `FunctionDoc` object.
  */
-// eslint-disable-next-line max-statements
+// eslint-disable-next-line max-statements, max-lines-per-function
 function parseTR(tr: HTMLTableRowElement): FunctionDoc {
     const tds = Array.from(tr.childNodes) as HTMLTableCellElement[];
-    const idType = stringToIType(tds[1].innerHTML);
+    const idType = stringToIdentifierType(tds[1].innerHTML);
     let name = "";
     let params: string[] = [];
+    let startParen = false;
     let endParen = false;
     let description = "";
     const nameElems = tds[0].childNodes[0].childNodes;
     if (idType === "global parameter" || idType === "thread parameter") {
-        name = stringOrEmpty(nameElems[0].textContent);
+        const tmpName = stringOrEmpty(nameElems[0].textContent);
+        startParen = tmpName.startsWith("(");
+        name = startParen ? tmpName.slice(1) : tmpName;
     } else if (nameElems.length > 1) {
-        name = stringOrEmpty(nameElems[0].textContent);
+        const tmpName = stringOrEmpty(nameElems[0].textContent);
+        startParen = tmpName.startsWith("(");
+        name = startParen ? tmpName.slice(1) : tmpName;
 
         // eslint-disable-next-line no-plusplus
         for (let nameIdx = 1; nameIdx < nameElems.length - 1; nameIdx++) {
@@ -244,8 +249,10 @@ function parseTR(tr: HTMLTableRowElement): FunctionDoc {
     url.protocol = "https";
     return {
         name,
+        startParen,
         endParen,
         type: idType,
+        moduleNames: [],
         params,
         url,
         description,
@@ -256,6 +263,7 @@ function parseTR(tr: HTMLTableRowElement): FunctionDoc {
  *
  * @param id
  */
+// eslint-disable-next-line max-statements
 async function addDescription(id: FunctionDoc) {
     const htmlString = await downloadAndRead(id.url.toString());
     const htmlDoc = new JSDOM(htmlString).window.document;
@@ -270,7 +278,7 @@ async function addDescription(id: FunctionDoc) {
             currP.querySelector(`a[name]:not(a[name="${anchor}"])`) == null)
     ) {
         currP.childNodes.forEach((c) => parseChildNode(c, text));
-        text.push("\n\n");
+        text.push("<br>\n");
         currP = currP.nextElementSibling as HTMLParagraphElement;
     }
     id.description = sanitizeDescription(text.join(""));
@@ -281,27 +289,36 @@ async function addDescription(id: FunctionDoc) {
  * @param c
  * @param text
  */
+// eslint-disable-next-line max-lines-per-function
 function parseChildNode(c: ChildNode, text: string[]) {
     switch (c.nodeName) {
         case "BR":
-            text.push(`\n`);
+            text.push(`<br>\n`);
             break;
         case "B":
-            text.push(`**${c.textContent?.replace(/\n/gu, " ")}**`);
+            text.push(`**${c.textContent?.replace(/\n/gu, " ").trim()}** `);
             break;
         case "TT":
             c.childNodes.forEach((cN) => {
                 switch (cN.nodeName) {
                     case "BR":
-                        text.push(`\n`);
+                        text.push(`<br>\n`);
                         break;
                     case "B":
                         text.push(
-                            `**${cN.textContent?.replace(/\n/gu, " ")}**`
+                            `**${cN.textContent
+                                ?.replace(/\n/gu, " ")
+                                .trim()}** `
                         );
                         break;
                     case "I":
-                        text.push(`*${cN.textContent?.replace(/\n/gu, " ")}*`);
+                        text.push(
+                            "*`" +
+                                `${cN.textContent
+                                    ?.replace(/\n/gu, " ")
+                                    .trim()}` +
+                                "`*"
+                        );
                         break;
                     case "IMG":
                         if ((cN as HTMLImageElement).src.endsWith("0.gif")) {

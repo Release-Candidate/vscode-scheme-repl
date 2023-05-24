@@ -7,7 +7,6 @@
 ;;
 ;; ==============================================================================
 
-
 (machine-type)
 
 (+ 5 6)
@@ -17,11 +16,14 @@
 
 (f 5)
 
+(define (hugo x)
+    (+ x x))
+
 '(1 2 3 4)
 
 (f 9)
 
 (environment-symbols (interaction-environment))
-(apropos-list "real?")
+(apropos-list 'real?)
 
 (define url-list-of-forms "https://cisco.github.io/ChezScheme/csug9.5/summary.html")
