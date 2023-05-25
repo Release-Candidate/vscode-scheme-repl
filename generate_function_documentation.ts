@@ -132,7 +132,7 @@ async function main(): Promise<void> {
         const tsText = await processHTML(htmlText);
         await writeFunctionDocumentation(tsText);
         const deleteSet = new Set(filesToDelete);
-        //deleteSet.forEach((file) => unlinkSync(file));
+        deleteSet.forEach((file) => unlinkSync(file));
     } catch (error) {
         console.error(
             `Caught "${error}" trying to process the HTML and saving it.`
@@ -242,25 +242,13 @@ function parseTR(tr: HTMLTableRowElement): FunctionDoc {
         startParen = tmpName.startsWith("(");
         name = startParen ? tmpName.slice(1) : tmpName;
     } else if (nameElems.length > 1) {
-        const tmpName = stringOrEmpty(nameElems[0].textContent);
-        startParen = tmpName.startsWith("(");
-        name = startParen ? tmpName.slice(1) : tmpName;
-
-        // eslint-disable-next-line no-plusplus
-        for (let nameIdx = 1; nameIdx < nameElems.length - 1; nameIdx++) {
-            if (nameElems[nameIdx].nodeName === "I") {
-                params.push(stringOrEmpty(nameElems[nameIdx].textContent));
-            }
-        }
-        const end = stringOrEmpty(
-            nameElems[nameElems.length - 1].textContent
-        ).trim();
-        if (end.endsWith(")")) {
-            if (end !== ")") {
-                params.push(end.slice(0, -1).trim());
-            }
-            endParen = true;
-        }
+        ({ startParen, name, endParen } = parseParamsAndName({
+            nameElems,
+            startParen,
+            name,
+            params,
+            endParen,
+        }));
     } else {
         name = stringOrEmpty(nameElems[0].textContent);
     }
@@ -286,8 +274,52 @@ function parseTR(tr: HTMLTableRowElement): FunctionDoc {
 }
 
 /**
- *
- * @param id
+ * Return the parsed data in the object
+ * `{ startParen: boolean; name: string; endParen: boolean }`.
+ * @param data The data needed for this function.
+ * @returns The parsed data in the object
+ * `{ startParen: boolean; name: string; endParen: boolean }`.
+ */
+// eslint-disable-next-line max-statements
+function parseParamsAndName(data: {
+    nameElems: NodeListOf<ChildNode>;
+    startParen: boolean;
+    name: string;
+    params: string[];
+    endParen: boolean;
+}): { startParen: boolean; name: string; endParen: boolean } {
+    const tmpName = stringOrEmpty(data.nameElems[0].textContent);
+    data.startParen = tmpName.startsWith("(");
+    data.name = data.startParen ? tmpName.slice(1) : tmpName;
+
+    // eslint-disable-next-line no-plusplus
+    for (let nameIdx = 1; nameIdx < data.nameElems.length - 1; nameIdx++) {
+        if (data.nameElems[nameIdx].nodeName === "I") {
+            data.params.push(
+                stringOrEmpty(data.nameElems[nameIdx].textContent)
+            );
+        }
+    }
+    const end = stringOrEmpty(
+        data.nameElems[data.nameElems.length - 1].textContent
+    ).trim();
+    if (end.endsWith(")")) {
+        if (end !== ")") {
+            data.params.push(end.slice(0, -1).trim());
+        }
+        data.endParen = true;
+    }
+    return {
+        startParen: data.startParen,
+        name: data.name,
+        endParen: data.endParen,
+    };
+}
+
+/**
+ * Download the identifier's description from the URL in the `FunctionDoc`,
+ * parse it and save it into the field `id.description`.
+ * @param id The `FunctionDoc` to process.
  */
 // eslint-disable-next-line max-statements
 async function addDescription(id: FunctionDoc) {
@@ -310,6 +342,11 @@ async function addDescription(id: FunctionDoc) {
     id.description = sanitizeDescription(text.join(""));
 }
 
+/**
+ * Parse the `FunctionDoc` description and add the needed libraries as
+ * `moduleNames` to the object.
+ * @param id The `FunctionDoc` object to process.
+ */
 function addLibraries(id: FunctionDoc) {
     const match = id.description.match(librariesRegex);
     if (match) {
@@ -323,9 +360,9 @@ function addLibraries(id: FunctionDoc) {
 }
 
 /**
- *
- * @param c
- * @param text
+ * Parse a single HTML node of the description.
+ * @param c The HTML node to parse.
+ * @param text The description's text to append to.
  */
 // eslint-disable-next-line max-lines-per-function
 function parseChildNode(c: ChildNode, text: string[]) {
