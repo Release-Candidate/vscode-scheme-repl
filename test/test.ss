@@ -9,7 +9,14 @@
 
 (machine-type)
 
+;; Code formatting of documentation
+;; (with-output-to-string thunk)
+
 (+ 5 6)
+
+;; Problem: documentation parts missing. Because the second part of the
+;; documentation has it's own link name.
+;; (define-ftype (ftype-name ftype ) ...)
 
 (define (f x)
   (* 8 x))
@@ -17,7 +24,7 @@
 (f 5)
 
 (define (hugo x)
-    (+ x x))
+  (+ x x))
 
 '(1 2 3 4)
 

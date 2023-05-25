@@ -106,9 +106,13 @@ export async function createREPL(config: vscode.WorkspaceConfiguration) {
         replTerminals[0].show();
         return replTerminals[0];
     }
+    const root = await help.askForWorkspace(
+        "Select the Workspace to run the REPL in:"
+    );
     const terminal = vscode.window.createTerminal({
         name: c.replTerminalName,
         isTransient: true,
+        cwd: root ? root.uri.fsPath : "./",
         location: { viewColumn: vscode.ViewColumn.Beside, preserveFocus: true },
     });
     terminal.sendText(`${c.getCfgREPLPath(config)}`);

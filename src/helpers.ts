@@ -69,3 +69,28 @@ export function getWordAtPosition(
     const range = document.getWordRangeAtPosition(position);
     return range ? document.getText(range) : undefined;
 }
+
+/**
+ * Return the root of the only workspace, the root of the workspace that the
+ * user selected or `undefined` if there is no currently open workspace
+ * (only a single file has been opened).
+ * @param askText The text to display if asking the user for a workspace.
+ * @returns The root of the only workspace, the root of the workspace that the
+ * user selected or `undefined` if there is no currently open workspace
+ * (only a single file has been opened).
+ */
+export async function askForWorkspace(askText: string): Promise<
+    vscode.WorkspaceFolder | undefined
+    // eslint-disable-next-line indent
+> {
+    // eslint-disable-next-line no-eq-null, eqeqeq
+    if (vscode.workspace.workspaceFolders == null) {
+        return undefined;
+    } else if (vscode.workspace.workspaceFolders?.length === 1) {
+        return vscode.workspace.workspaceFolders[0];
+    } else {
+        return vscode.window.showWorkspaceFolderPick({
+            placeHolder: askText,
+        });
+    }
+}

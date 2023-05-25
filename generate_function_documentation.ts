@@ -84,6 +84,26 @@ type FunctionDoc = {
 };
 
 /**
+ * The `RegExp` to match an example in a description.
+ * The first group matches the whole example code.
+ */
+const exampleRegex = /\n((?:\\`.*?`\s*(?:=>|\*)?\s*<br>\n)+)(?:<br>)?\n*$/u;
+
+/**
+ * The `RegExp` to match a single line of a multi-line code example with many
+ * individual backticks.
+ * The first group contains the actual data.
+ */
+const lineFormatRegex = /^\\`(.*)\\`\s*<br>\s*$/gmu;
+
+/**
+ * The `RegExp` to match a `libraries` stanza in a description.
+ * The first group contains the libraries names.
+ */
+const librariesRegex =
+    /^\s*\*\*libraries:\*\*\s*(\\`\(.*?\)\\`(?:,\s*\\`\(.*?\)\\`)*)\s*<br>\s*$/mu;
+
+/**
  * The base part of the Chez Scheme documentation URL.
  */
 const baseURL = "https://cisco.github.io/ChezScheme/csug9.5/";
@@ -146,6 +166,8 @@ async function processHTML(text: string): Promise<string> {
         )
     );
     await Promise.all(ids.map((id) => addDescription(id)));
+
+    ids.forEach((id) => addLibraries(id));
 
     return idsDocToTSFile(ids);
 }
@@ -214,7 +236,6 @@ function parseTR(tr: HTMLTableRowElement): FunctionDoc {
     let params: string[] = [];
     let startParen = false;
     let endParen = false;
-    let description = "";
     const nameElems = tds[0].childNodes[0].childNodes;
     if (idType === "global parameter" || idType === "thread parameter") {
         const tmpName = stringOrEmpty(nameElems[0].textContent);
@@ -260,7 +281,7 @@ function parseTR(tr: HTMLTableRowElement): FunctionDoc {
         moduleNames: [],
         params,
         url,
-        description,
+        description: "",
     };
 }
 
@@ -287,6 +308,18 @@ async function addDescription(id: FunctionDoc) {
         currP = currP.nextElementSibling as HTMLParagraphElement;
     }
     id.description = sanitizeDescription(text.join(""));
+}
+
+function addLibraries(id: FunctionDoc) {
+    const match = id.description.match(librariesRegex);
+    if (match) {
+        // eslint-disable-next-line prefer-destructuring
+        const librariesRaw = match[1];
+        const libraries = librariesRaw.replace(/\\`/gu, "").split(/,\s*/gu);
+        id.moduleNames = libraries;
+    } else {
+        id.moduleNames = [];
+    }
 }
 
 /**
@@ -354,23 +387,38 @@ function parseChildNode(c: ChildNode, text: string[]) {
 /**
  * Return a sanitized version of the given text.
  * That is, without excessive whitespace and with escaped backticks and
- * backslashes.
+ * backslashes. Also puts examples at the end into one big code block instead of
+ * many individual backticks.
  * @param text The description text to sanitize.
  * @returns The sanitized description.
  */
 function sanitizeDescription(text: string): string {
-    return (
-        text
-            .replace(/[ ]+/gu, " ")
-            .replace(/^ /gmu, "")
-            .replace(/[ ]+\n/gu, "\n")
-            .replace(/\n[\n]+$/u, "\n")
-            .replace(/\n\n[\n]+/gu, "\n\n")
-            // Non-breaking-space.
-            .replace(/\u00A0/gu, " ")
-            .replace(/\\/gu, "\\\\")
-            .replace(/`/gu, "\\`")
-    );
+    let sanitized = text
+        .replace(/[ ]+/gu, " ")
+        .replace(/^ /gmu, "")
+        .replace(/[ ]+\n/gu, "\n")
+        .replace(/\n[\n]+$/u, "\n")
+        .replace(/\n\n[\n]+/gu, "\n\n")
+        // Non-breaking-space.
+        .replace(/\u00A0/gu, " ")
+        .replace(/\\/gu, "\\\\")
+        .replace(/`/gu, "\\`");
+    const match = sanitized.match(exampleRegex);
+    if (match) {
+        // eslint-disable-next-line prefer-destructuring
+        const example = match[1];
+        const exampleNoBackticks = example
+            .replace(lineFormatRegex, "$1")
+            .replace(/\\`/gu, "")
+            .replace(/^ /gmu, "");
+        sanitized = sanitized.replace(
+            example,
+            "**Examples:**\n\n\\`\\`\\`scheme\n" +
+                exampleNoBackticks +
+                "\n\\`\\`\\`\n"
+        );
+    }
+    return sanitized;
 }
 
 /**
