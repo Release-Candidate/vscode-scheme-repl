@@ -59,14 +59,46 @@ export const startREPLCommand = "startREPL";
 export const sendSelectionToREPL = "sendSelectionToREPL";
 
 /**
+ * Eval the current selection.
+ */
+export const evalSelection = "evalSelection";
+
+/**
  * Send the current source file to the REPL.
  */
 export const sendFileToREPL = "sendFileToREPL";
 
 /**
- * The the sexp left of the cursor to the REPL.
+ * Send the sexp left of the cursor to the REPL.
  */
 export const sendLastToREPL = "sendLastSexp";
+
+/**
+ * Eval the sexp left of the cursor.
+ */
+export const evalLast = "evalLastSexp";
+
+/**
+ ******************************************************************************
+ *  Color constants.
+ */
+
+/**
+ * The 'root' part of the color identifier.
+ */
+export const colorBaseName = "chezScheme";
+
+/**
+ * The actual color identifier of the background or border color of an
+ * evaluation.
+ */
+export const colorEvalBackgroundName = "evalBackgroundColor";
+
+/**
+ * The actual color identifier of the background or border color of an
+ * evaluation.
+ */
+export const colorEvalErrorBackgroundName = "evalErrorBackgroundColor";
 
 /**
  ******************************************************************************

@@ -11,6 +11,8 @@
  * S-expression parsing and related functions.
  */
 
+import * as h from "./helpers";
+
 /**
  * The kind of delimiter of the "current" sexp.
  * One of:
@@ -35,12 +37,20 @@ const leftUntilQuote = /.*?(?<sexp>[^"]+)\s*$/du;
 
 /**
  * Return the s-expression that ends at the end of `text`.
+ * Also returns the start position of the sexp, in `startLine` and `startCol`.
  * @param text The text to parse.
- * @returns The the s-expression that ends at the end of `text`.
+ * @returns The the s-expression that ends at the end of `text` and the position
+ * of the start of the s-expression in `text`.
  */
-export function getSexpToLeft(text: string): string {
-    const trimmed = text.trim();
-    return parseSexpToLeft(["Any"], trimmed, 0);
+export function getSexpToLeft(text: string): {
+    sexp: string;
+    startLine: number;
+    startCol: number;
+} {
+    const trimmed = text.trimEnd();
+    const sexp = parseSexpToLeft(["Any"], trimmed, 0);
+    const startPos = h.getStartPosition(text, sexp);
+    return { sexp, startCol: startPos.startCol, startLine: startPos.startLine };
 }
 
 /**

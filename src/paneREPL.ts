@@ -80,11 +80,11 @@ export async function sendLastToRepl(
     const selectedText = editor.document.getText(selectedRange);
     if (selectedText.length) {
         const repl = await createREPL(config);
-        repl.sendText(sexp.getSexpToLeft(selectedText));
+        repl.sendText(sexp.getSexpToLeft(selectedText).sexp);
         outChannel.appendLine(
-            `Sent ${sexp.getSexpToLeft(selectedText)} to REPL using command ${
-                c.cfgSection
-            }.${c.sendLastToREPL}`
+            `Sent ${
+                sexp.getSexpToLeft(selectedText).sexp
+            } to REPL using command ${c.cfgSection}.${c.sendLastToREPL}`
         );
     } else {
         outChannel.appendLine(

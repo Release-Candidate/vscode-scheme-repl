@@ -14,6 +14,7 @@ import * as c from "./constants";
 import * as h from "./helpers";
 import * as iD from "./identifierDocumentation";
 import * as pR from "./paneREPL";
+import * as sexp from "./sexps";
 import * as vscode from "vscode";
 import { functionDocs } from "./functionDocumentation";
 
@@ -28,7 +29,7 @@ export async function activate(context: vscode.ExtensionContext) {
     const outChannel = vscode.window.createOutputChannel(c.outputChannelName);
     outChannel.appendLine("Chez Scheme REPL starting.");
 
-    await setupExtension(context, outChannel);
+    await setupExtension(context, outChannel, h.getEvalDecorationStyle());
 
     outChannel.appendLine("Extension startup finished.");
 }
@@ -37,13 +38,32 @@ export async function activate(context: vscode.ExtensionContext) {
  * Setup the extension.
  * @param context The extension's context.
  * @param outChannel The channel to log to.
+ * @param evalDecoration The decoration ID for eval decorators.
  */
-// eslint-disable-next-line max-lines-per-function
+// eslint-disable-next-line max-lines-per-function, max-statements
 async function setupExtension(
     context: vscode.ExtensionContext,
-    outChannel: vscode.OutputChannel
+    outChannel: vscode.OutputChannel,
+    evalDecoration: vscode.TextEditorDecorationType
 ) {
     const config = vscode.workspace.getConfiguration(c.cfgSection);
+
+    const evalDecorations = new WeakMap<
+        vscode.TextDocument,
+        vscode.DecorationOptions[]
+    >();
+
+    const editorChangedSubscription = vscode.window.onDidChangeActiveTextEditor(
+        (editor) => {
+            if (editor) {
+                const decorations = evalDecorations.get(editor.document);
+                if (decorations) {
+                    editor.setDecorations(evalDecoration, decorations);
+                }
+            }
+        }
+    );
+    context.subscriptions.push(editorChangedSubscription);
 
     const symbolSubscription = vscode.languages.registerDocumentSymbolProvider(
         c.languageName,
@@ -109,17 +129,26 @@ async function setupExtension(
         });
     context.subscriptions.push(completionSubscription);
 
-    registerCommands({ config, outChannel, context });
+    registerCommands({
+        config,
+        outChannel,
+        context,
+        evalDecoration,
+        evalDecorations,
+    });
 }
 
 /**
  * Register all commands that the extension provides with VS Code.
  * @param env The needed environment of the extension.
  */
+// eslint-disable-next-line max-statements, max-lines-per-function
 function registerCommands(env: {
     config: vscode.WorkspaceConfiguration;
     outChannel: vscode.OutputChannel;
     context: vscode.ExtensionContext;
+    evalDecoration: vscode.TextEditorDecorationType;
+    evalDecorations: WeakMap<vscode.TextDocument, vscode.DecorationOptions[]>;
 }) {
     const replCommand = vscode.commands.registerCommand(
         `${c.cfgSection}.${c.startREPLCommand}`,
@@ -143,6 +172,129 @@ function registerCommands(env: {
         (editor) => pR.sendLastToRepl(env.config, env.outChannel, editor)
     );
     env.context.subscriptions.push(sendREPLLastCommand);
+
+    const evalLastCommand = vscode.commands.registerTextEditorCommand(
+        `${c.cfgSection}.${c.evalLast}`,
+        // eslint-disable-next-line max-statements, max-lines-per-function
+        async (editor) => {
+            const selectedRange = h.rangeFromPositions(
+                [0, 0],
+                editor.selection.end
+            );
+            const selectedText = editor.document.getText(selectedRange);
+            if (selectedText.length) {
+                const exp = sexp.getSexpToLeft(selectedText);
+                const root = await h.askForWorkspace("Scheme");
+                const out = await h.runCommand({
+                    root: root ? root.uri.fsPath : "./",
+                    args: ["-q"],
+                    cmd: "scheme",
+                    input: `(load "${editor.document.fileName}" (lambda (x) (pretty-print x) (eval x))) ${exp.sexp}`,
+                });
+                const match = out.stdout ? out.stdout.match(/>([^>]+)$/u) : "";
+                const response = match ? match[1].trim() : "";
+                env.outChannel.appendLine(
+                    `Sent ${exp.sexp} to REPL using command ${c.cfgSection}.${c.evalLast}`
+                );
+                env.outChannel.appendLine(
+                    `Response was: ${response}\nfull: ${
+                        out.error
+                            ? "ERROR: " + out.error
+                            : out.stdout + " " + out.stderr
+                    }`
+                );
+                editor.setDecorations(env.evalDecoration, []);
+                const options: vscode.DecorationOptions = {
+                    range: h.rangeFromPositions(
+                        [exp.startLine, exp.startCol],
+                        editor.selection.end
+                    ),
+                    hoverMessage: response,
+                    renderOptions: {
+                        after: {
+                            contentText:
+                                // eslint-disable-next-line no-useless-concat
+                                " => " + response,
+                        },
+                    },
+                };
+                const decoration = env.evalDecorations.get(editor.document);
+                if (decoration) {
+                    decoration.push(options);
+                    env.evalDecorations.set(editor.document, decoration);
+                    editor.setDecorations(env.evalDecoration, decoration);
+                } else {
+                    editor.setDecorations(env.evalDecoration, [options]);
+                    env.evalDecorations.set(editor.document, [options]);
+                }
+            } else {
+                env.outChannel.appendLine(
+                    `Not sent ${editor.selection.end.line}:${editor.selection.end.character} to REPL using command ${c.cfgSection}.${c.sendLastToREPL}`
+                );
+            }
+        }
+    );
+    env.context.subscriptions.push(evalLastCommand);
+
+    const evalSelection = vscode.commands.registerTextEditorCommand(
+        `${c.cfgSection}.${c.evalSelection}`,
+        // eslint-disable-next-line max-statements, max-lines-per-function
+        async (editor) => {
+            const selectedRange = new vscode.Range(
+                editor.selection.start,
+                editor.selection.end
+            );
+            const selectedText = editor.document.getText(selectedRange);
+            if (selectedText.length) {
+                const exp = sexp.getSexpToLeft(selectedText);
+                const root = await h.askForWorkspace("Scheme");
+                const out = await h.runCommand({
+                    root: root ? root.uri.fsPath : "./",
+                    args: ["-q"],
+                    cmd: "scheme",
+                    input: `(load "${editor.document.fileName}" (lambda (x) (pretty-print x) (eval x))) ${exp.sexp}`,
+                });
+                const match = out.stdout ? out.stdout.match(/>([^>]+)$/u) : "";
+                const response = match ? match[1].trim() : "";
+                env.outChannel.appendLine(
+                    `Sent ${exp} to REPL using command ${c.cfgSection}.${c.evalSelection}`
+                );
+                env.outChannel.appendLine(
+                    `Response was: ${response}\nfull: ${
+                        out.error
+                            ? "ERROR: " + out.error
+                            : out.stdout + " " + out.stderr
+                    }`
+                );
+                editor.setDecorations(env.evalDecoration, []);
+                const options: vscode.DecorationOptions = {
+                    range: selectedRange,
+                    hoverMessage: response,
+                    renderOptions: {
+                        after: {
+                            contentText:
+                                // eslint-disable-next-line no-useless-concat
+                                " => " + response,
+                        },
+                    },
+                };
+                const decoration = env.evalDecorations.get(editor.document);
+                if (decoration) {
+                    decoration.push(options);
+                    env.evalDecorations.set(editor.document, decoration);
+                    editor.setDecorations(env.evalDecoration, decoration);
+                } else {
+                    editor.setDecorations(env.evalDecoration, [options]);
+                    env.evalDecorations.set(editor.document, [options]);
+                }
+            } else {
+                env.outChannel.appendLine(
+                    `Not sent ${editor.selection.end.line}:${editor.selection.end.character} to REPL using command ${c.cfgSection}.${c.evalSelection}`
+                );
+            }
+        }
+    );
+    env.context.subscriptions.push(evalSelection);
 
     const sendFileREPLCommand = vscode.commands.registerTextEditorCommand(
         `${c.cfgSection}.${c.sendFileToREPL}`,

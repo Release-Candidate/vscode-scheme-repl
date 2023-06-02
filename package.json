@@ -89,8 +89,16 @@
                 "title": "Chez Scheme REPL: Send selected s-expression to the REPL."
             },
             {
+                "command": "chezScheme.evalSelection",
+                "title": "Chez Scheme REPL: Eval the selected s-expression."
+            },
+            {
                 "command": "chezScheme.sendLastSexp",
                 "title": "Chez Scheme REPL: Send s-expression left of the cursor to the REPL."
+            },
+            {
+                "command": "chezScheme.evalLastSexp",
+                "title": "Chez Scheme REPL: Eval s-expression left of the cursor."
             }
         ],
         "configuration": {
@@ -102,7 +110,29 @@
                     "markdownDescription": "Path to the Chez Scheme executable `scheme`. Can be either an absolute path or relative to the workspace root. Default: `scheme`, which works if `scheme` is in your `PATH`."
                 }
             }
-        }
+        },
+        "colors": [
+            {
+                "id": "chezScheme.evalBackgroundColor",
+                "description": "The background (light/dark) or border (high contrast) color of an evaluation result.",
+                "defaults": {
+                    "dark": "#00BCFB44",
+                    "light": "#D0E7EDAA",
+                    "highContrast": "#7ED6F7",
+                    "highContrastLight": "#0000ffDD"
+                }
+            },
+            {
+                "id": "chezScheme.evalErrorBackgroundColor",
+                "description": "The background (light/dark) or border (high contrast) color of an evaluation result with an error.",
+                "defaults": {
+                    "light": "#FFAFAF",
+                    "dark": "#FF7F7F",
+                    "highContrast": "#FFAFAF",
+                    "highContrastLight": "#FF7F7F"
+                }
+            }
+        ]
     },
     "devDependencies": {
         "@types/chai": "^4.3.5",
