@@ -48,7 +48,7 @@ export async function sendSelectionToRepl(
     outChannel: vscode.OutputChannel,
     editor: vscode.TextEditor
 ) {
-    const selectedRange = new vscode.Range(
+    const selectedRange = help.rangeFromPositions(
         editor.selection.start,
         editor.selection.end
     );
@@ -73,10 +73,7 @@ export async function sendLastToRepl(
     outChannel: vscode.OutputChannel,
     editor: vscode.TextEditor
 ) {
-    const selectedRange = new vscode.Range(
-        new vscode.Position(0, 0),
-        editor.selection.end
-    );
+    const selectedRange = help.rangeFromPositions([0, 0], editor.selection.end);
     const selectedText = editor.document.getText(selectedRange);
     if (selectedText.length) {
         const repl = await createREPL(config);

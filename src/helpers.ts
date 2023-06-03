@@ -7,12 +7,11 @@
  * Date:     18.May.2023
  *
  * ==============================================================================
- * General helper functions
+ * General helper functions.
  */
 
 /* eslint-disable camelcase */
 
-import * as c from "./constants";
 import * as child_process from "child_process";
 import * as vscode from "vscode";
 import internal = require("stream");
@@ -208,104 +207,15 @@ export function getColorThemeKind(): ColorThemeKind {
 }
 
 /**
- * Construct the color of the background or the border of an eval decoration.
- */
-export const evalBackground = new vscode.ThemeColor(
-    `${c.colorBaseName}.${c.colorEvalBackgroundName}`
-);
-
-/**
- * Construct the color of the background or the border of an eval decoration if
- * an error occurred.
- */
-export const evalBackgroundError = new vscode.ThemeColor(
-    `${c.colorBaseName}.${c.colorEvalErrorBackgroundName}`
-);
-
-/**
- * The CSS style of an eval decorator, for use with a light color theme.
- */
-export const evalDecorationStyleLight =
-    vscode.window.createTextEditorDecorationType({
-        backgroundColor: evalBackground,
-        after: {
-            margin: "5px",
-            backgroundColor: evalBackground,
-        },
-    });
-
-/**
- * The CSS style of an eval decorator, for use with a dark color theme.
- */
-export const evalDecorationStyleDark =
-    vscode.window.createTextEditorDecorationType({
-        backgroundColor: evalBackground,
-        after: {
-            margin: "5px",
-            backgroundColor: evalBackground,
-        },
-    });
-
-/**
- * The CSS style of an eval decorator, for use with a dark high contrast color
- * theme.
- */
-export const evalDecorationStyleHCDark =
-    vscode.window.createTextEditorDecorationType({
-        borderColor: evalBackground,
-        border: "1px solid",
-        after: {
-            margin: "5px",
-            border: "1px solid",
-            borderColor: evalBackground,
-        },
-    });
-
-/**
- * The CSS style of an eval decorator, for use with a light high contrast color
- * theme.
- */
-export const evalDecorationStyleHCLight =
-    vscode.window.createTextEditorDecorationType({
-        borderColor: evalBackground,
-        border: "1px solid",
-        after: {
-            margin: "5px",
-            border: "1px solid",
-            borderColor: evalBackground,
-        },
-    });
-
-/**
- * Return the `TextEditorDecorationType` colors and styles for the current
- * theme.
- * @returns The `TextEditorDecorationType` colors and styles for the current
- * theme.
- */
-export function getEvalDecorationStyle(): vscode.TextEditorDecorationType {
-    switch (getColorThemeKind()) {
-        case "light":
-            return evalDecorationStyleLight;
-        case "dark":
-            return evalDecorationStyleDark;
-        case "hc-light":
-            return evalDecorationStyleHCLight;
-        case "hc-dark":
-        default:
-            return evalDecorationStyleHCDark;
-    }
-}
-
-/**
  * Return a `Range` from `start` to `end`.
- * @param start Either a `Position` or the tuple `[ line, character]`.
- * @param end Either a `Position` or the tuple `[ line, character]`.
+ * @param start Either a `Position` or the tuple `[line, character]`.
+ * @param end Either a `Position` or the tuple `[line, character]`.
  * @returns The `Range` from `start` to `end`.
  */
 export function rangeFromPositions(
     start: vscode.Position | [number, number],
     end: vscode.Position | [number, number]
-) {
+): vscode.Range {
     const startPos =
         start instanceof vscode.Position
             ? start
@@ -317,7 +227,18 @@ export function rangeFromPositions(
     return new vscode.Range(startPos, endPos);
 }
 
-export function getStartPosition(text: string, end: string) {
+/**
+ * Return the start position (line and column/character) of `end` in `text`.
+ * The prerequisite is that `end` does not end in whitespace, as whitespace is
+ * trimmed from `text`.
+ * @param text The whole string.
+ * @param end The substring at the end of `text`.
+ * @returns The start position (line and column/character) of `end` in `text`.
+ */
+export function getStartPosition(
+    text: string,
+    end: string
+): { startLine: number; startCol: number } {
     const trimmed = text.trimEnd();
     const whitespaceDiff = text.length - trimmed.length;
     const idx = text.length - end.length - whitespaceDiff;

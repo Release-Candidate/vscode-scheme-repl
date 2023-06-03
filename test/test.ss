@@ -23,7 +23,16 @@
 
 (f 5)
 
+(define-syntax incr!
+  (syntax-rules ()
+    ((incr! x)
+     (set! x (+ x 1)))))
 
+(define y 5)
+
+(incr! y)
+
+y
 
 (define (hugo x)
   (+ x x))

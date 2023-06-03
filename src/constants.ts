@@ -61,7 +61,13 @@ export const sendSelectionToREPL = "sendSelectionToREPL";
 /**
  * Eval the current selection.
  */
+
 export const evalSelection = "evalSelection";
+
+/**
+ * Expand all macros in the current selection.
+ */
+export const expandSelection = "expandSelection";
 
 /**
  * Send the current source file to the REPL.
@@ -77,6 +83,11 @@ export const sendLastToREPL = "sendLastSexp";
  * Eval the sexp left of the cursor.
  */
 export const evalLast = "evalLastSexp";
+
+/**
+ * Expand all macros in the sexp left of the cursor.
+ */
+export const expandLast = "expandLastSexp";
 
 /**
  ******************************************************************************

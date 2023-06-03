@@ -11,6 +11,7 @@
  */
 
 import * as c from "./constants";
+import * as decor from "./textDecorations";
 import * as h from "./helpers";
 import * as iD from "./identifierDocumentation";
 import * as pR from "./paneREPL";
@@ -29,26 +30,35 @@ export async function activate(context: vscode.ExtensionContext) {
     const outChannel = vscode.window.createOutputChannel(c.outputChannelName);
     outChannel.appendLine("Chez Scheme REPL starting.");
 
-    await setupExtension(context, outChannel, h.getEvalDecorationStyle());
+    await setupExtension({
+        context,
+        outChannel,
+        evalDecoration: decor.getEvalDecorationStyle(),
+        evalErrorDecoration: decor.getEvalErrorDecorationStyle(),
+    });
 
     outChannel.appendLine("Extension startup finished.");
 }
 
 /**
  * Setup the extension.
- * @param context The extension's context.
- * @param outChannel The channel to log to.
- * @param evalDecoration The decoration ID for eval decorators.
+ * @param env The extension's needed environment.
  */
 // eslint-disable-next-line max-lines-per-function, max-statements
-async function setupExtension(
-    context: vscode.ExtensionContext,
-    outChannel: vscode.OutputChannel,
-    evalDecoration: vscode.TextEditorDecorationType
-) {
+async function setupExtension(env: {
+    context: vscode.ExtensionContext;
+    outChannel: vscode.OutputChannel;
+    evalDecoration: vscode.TextEditorDecorationType;
+    evalErrorDecoration: vscode.TextEditorDecorationType;
+}) {
     const config = vscode.workspace.getConfiguration(c.cfgSection);
 
     const evalDecorations = new WeakMap<
+        vscode.TextDocument,
+        vscode.DecorationOptions[]
+    >();
+
+    const evalErrorDecorations = new WeakMap<
         vscode.TextDocument,
         vscode.DecorationOptions[]
     >();
@@ -58,12 +68,21 @@ async function setupExtension(
             if (editor) {
                 const decorations = evalDecorations.get(editor.document);
                 if (decorations) {
-                    editor.setDecorations(evalDecoration, decorations);
+                    editor.setDecorations(env.evalDecoration, decorations);
+                }
+                const errorDecorations = evalErrorDecorations.get(
+                    editor.document
+                );
+                if (errorDecorations) {
+                    editor.setDecorations(
+                        env.evalErrorDecoration,
+                        errorDecorations
+                    );
                 }
             }
         }
     );
-    context.subscriptions.push(editorChangedSubscription);
+    env.context.subscriptions.push(editorChangedSubscription);
 
     const symbolSubscription = vscode.languages.registerDocumentSymbolProvider(
         c.languageName,
@@ -77,7 +96,7 @@ async function setupExtension(
             },
         }
     );
-    context.subscriptions.push(symbolSubscription);
+    env.context.subscriptions.push(symbolSubscription);
 
     const hoverSubscription = vscode.languages.registerHoverProvider(
         c.languageName,
@@ -105,7 +124,7 @@ async function setupExtension(
         }
     );
 
-    context.subscriptions.push(hoverSubscription);
+    env.context.subscriptions.push(hoverSubscription);
 
     const completionSubscription =
         vscode.languages.registerCompletionItemProvider(c.languageName, {
@@ -127,14 +146,16 @@ async function setupExtension(
                 return completions;
             },
         });
-    context.subscriptions.push(completionSubscription);
+    env.context.subscriptions.push(completionSubscription);
 
     registerCommands({
         config,
-        outChannel,
-        context,
-        evalDecoration,
+        outChannel: env.outChannel,
+        context: env.context,
+        evalDecoration: env.evalDecoration,
         evalDecorations,
+        evalErrorDecoration: env.evalErrorDecoration,
+        evalErrorDecorations,
     });
 }
 
@@ -149,6 +170,11 @@ function registerCommands(env: {
     context: vscode.ExtensionContext;
     evalDecoration: vscode.TextEditorDecorationType;
     evalDecorations: WeakMap<vscode.TextDocument, vscode.DecorationOptions[]>;
+    evalErrorDecoration: vscode.TextEditorDecorationType;
+    evalErrorDecorations: WeakMap<
+        vscode.TextDocument,
+        vscode.DecorationOptions[]
+    >;
 }) {
     const replCommand = vscode.commands.registerCommand(
         `${c.cfgSection}.${c.startREPLCommand}`,
@@ -196,13 +222,6 @@ function registerCommands(env: {
                 env.outChannel.appendLine(
                     `Sent ${exp.sexp} to REPL using command ${c.cfgSection}.${c.evalLast}`
                 );
-                env.outChannel.appendLine(
-                    `Response was: ${response}\nfull: ${
-                        out.error
-                            ? "ERROR: " + out.error
-                            : out.stdout + " " + out.stderr
-                    }`
-                );
                 editor.setDecorations(env.evalDecoration, []);
                 const options: vscode.DecorationOptions = {
                     range: h.rangeFromPositions(
@@ -240,7 +259,7 @@ function registerCommands(env: {
         `${c.cfgSection}.${c.evalSelection}`,
         // eslint-disable-next-line max-statements, max-lines-per-function
         async (editor) => {
-            const selectedRange = new vscode.Range(
+            const selectedRange = h.rangeFromPositions(
                 editor.selection.start,
                 editor.selection.end
             );
@@ -254,38 +273,56 @@ function registerCommands(env: {
                     cmd: "scheme",
                     input: `(load "${editor.document.fileName}" (lambda (x) (pretty-print x) (eval x))) ${exp.sexp}`,
                 });
-                const match = out.stdout ? out.stdout.match(/>([^>]+)$/u) : "";
-                const response = match ? match[1].trim() : "";
                 env.outChannel.appendLine(
                     `Sent ${exp} to REPL using command ${c.cfgSection}.${c.evalSelection}`
                 );
-                env.outChannel.appendLine(
-                    `Response was: ${response}\nfull: ${
-                        out.error
-                            ? "ERROR: " + out.error
-                            : out.stdout + " " + out.stderr
-                    }`
-                );
-                editor.setDecorations(env.evalDecoration, []);
-                const options: vscode.DecorationOptions = {
-                    range: selectedRange,
-                    hoverMessage: response,
-                    renderOptions: {
-                        after: {
-                            contentText:
-                                // eslint-disable-next-line no-useless-concat
-                                " => " + response,
-                        },
-                    },
-                };
-                const decoration = env.evalDecorations.get(editor.document);
-                if (decoration) {
-                    decoration.push(options);
-                    env.evalDecorations.set(editor.document, decoration);
-                    editor.setDecorations(env.evalDecoration, decoration);
+                if (out.stderr) {
+                    const errMsg = out.stderr.trim();
+                    editor.setDecorations(env.evalErrorDecoration, []);
+                    const options = decor.textEvalErrorDecoration(
+                        errMsg,
+                        selectedRange
+                    );
+                    const decoration = env.evalErrorDecorations.get(
+                        editor.document
+                    );
+                    if (decoration) {
+                        decoration.push(options);
+                        env.evalErrorDecorations.set(
+                            editor.document,
+                            decoration
+                        );
+                        editor.setDecorations(
+                            env.evalErrorDecoration,
+                            decoration
+                        );
+                    } else {
+                        editor.setDecorations(env.evalErrorDecoration, [
+                            options,
+                        ]);
+                        env.evalErrorDecorations.set(editor.document, [
+                            options,
+                        ]);
+                    }
                 } else {
-                    editor.setDecorations(env.evalDecoration, [options]);
-                    env.evalDecorations.set(editor.document, [options]);
+                    const match = out.stdout
+                        ? out.stdout.match(/>([^>]+)$/u)
+                        : "";
+                    const response = match ? match[1].trim() : "";
+                    editor.setDecorations(env.evalDecoration, []);
+                    const options = decor.textEvalDecoration(
+                        response,
+                        selectedRange
+                    );
+                    const decoration = env.evalDecorations.get(editor.document);
+                    if (decoration) {
+                        decoration.push(options);
+                        env.evalDecorations.set(editor.document, decoration);
+                        editor.setDecorations(env.evalDecoration, decoration);
+                    } else {
+                        editor.setDecorations(env.evalDecoration, [options]);
+                        env.evalDecorations.set(editor.document, [options]);
+                    }
                 }
             } else {
                 env.outChannel.appendLine(
