@@ -193,11 +193,23 @@ function registerCommands(env: {
     );
     env.context.subscriptions.push(sendREPLCommand);
 
+    const expandREPLCommand = vscode.commands.registerTextEditorCommand(
+        `${c.cfgSection}.${c.expandSelection}`,
+        (editor) => pR.expandSelectionInRepl(env.config, env.outChannel, editor)
+    );
+    env.context.subscriptions.push(expandREPLCommand);
+
     const sendREPLLastCommand = vscode.commands.registerTextEditorCommand(
         `${c.cfgSection}.${c.sendLastToREPL}`,
         (editor) => pR.sendLastToRepl(env.config, env.outChannel, editor)
     );
     env.context.subscriptions.push(sendREPLLastCommand);
+
+    const expandREPLLastCommand = vscode.commands.registerTextEditorCommand(
+        `${c.cfgSection}.${c.expandLast}`,
+        (editor) => pR.expandLastInRepl(env.config, env.outChannel, editor)
+    );
+    env.context.subscriptions.push(expandREPLLastCommand);
 
     const evalLastCommand = vscode.commands.registerTextEditorCommand(
         `${c.cfgSection}.${c.evalLast}`,

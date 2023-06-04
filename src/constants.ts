@@ -70,6 +70,15 @@ export const evalSelection = "evalSelection";
 export const expandSelection = "expandSelection";
 
 /**
+ * Return the command to macro-expand `sexp` in the REPL.
+ * @param sexp The sexp to macro-expand.
+ * @returns The command to macro-expand `sexp` in the REPL.
+ */
+export function expandSexp(sexp: string): string {
+    return `(expand '${sexp})`;
+}
+
+/**
  * Send the current source file to the REPL.
  */
 export const sendFileToREPL = "sendFileToREPL";

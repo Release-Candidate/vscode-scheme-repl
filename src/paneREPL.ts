@@ -26,7 +26,7 @@ export async function sendFileToRepl(
     config: vscode.WorkspaceConfiguration,
     outChannel: vscode.OutputChannel,
     editor: vscode.TextEditor
-) {
+): Promise<void> {
     const fileText = editor.document.getText();
     if (fileText.length) {
         const repl = await createREPL(config);
@@ -47,19 +47,34 @@ export async function sendSelectionToRepl(
     config: vscode.WorkspaceConfiguration,
     outChannel: vscode.OutputChannel,
     editor: vscode.TextEditor
-) {
-    const selectedRange = help.rangeFromPositions(
-        editor.selection.start,
-        editor.selection.end
-    );
-    const selectedText = editor.document.getText(selectedRange);
-    if (selectedText.length) {
-        const repl = await createREPL(config);
-        repl.sendText(selectedText);
-    }
-    outChannel.appendLine(
-        `Sent ${editor.selection.start.character} - ${editor.selection.end.character} to REPL using command ${c.cfgSection}.${c.sendSelectionToREPL}`
-    );
+): Promise<void> {
+    doSelectionInRepl({
+        config,
+        outChannel,
+        editor,
+        vscodeCommand: c.sendSelectionToREPL,
+        f: help.id,
+    });
+}
+
+/**
+ * Send a single selected sexp to be macro expanded to the interactive REPL.
+ * @param config The extension's configuration object.
+ * @param outChannel Logs go here.
+ * @param editor The `TextEditor` containing the sources to send to the REPL.
+ */
+export async function expandSelectionInRepl(
+    config: vscode.WorkspaceConfiguration,
+    outChannel: vscode.OutputChannel,
+    editor: vscode.TextEditor
+): Promise<void> {
+    doSelectionInRepl({
+        config,
+        outChannel,
+        editor,
+        vscodeCommand: c.expandSelection,
+        f: c.expandSexp,
+    });
 }
 
 /**
@@ -72,20 +87,96 @@ export async function sendLastToRepl(
     config: vscode.WorkspaceConfiguration,
     outChannel: vscode.OutputChannel,
     editor: vscode.TextEditor
-) {
-    const selectedRange = help.rangeFromPositions([0, 0], editor.selection.end);
-    const selectedText = editor.document.getText(selectedRange);
+): Promise<void> {
+    doLastInRepl({
+        config,
+        outChannel,
+        editor,
+        f: help.id,
+        vscodeCommand: c.sendLastToREPL,
+    });
+}
+
+/**
+ * Send the sexp to the left of the cursor to be macro expanded to the
+ * interactive REPL.
+ * @param config The extension's configuration object.
+ * @param outChannel Logs go here.
+ * @param editor The `TextEditor` containing the sources to send to the REPL.
+ */
+export async function expandLastInRepl(
+    config: vscode.WorkspaceConfiguration,
+    outChannel: vscode.OutputChannel,
+    editor: vscode.TextEditor
+): Promise<void> {
+    doLastInRepl({
+        config,
+        outChannel,
+        editor,
+        f: c.expandSexp,
+        vscodeCommand: c.expandLast,
+    });
+}
+
+/**
+ * Send the result of applying `f` to the current selection to the pane REPL.
+ * @param data The needed data.
+ */
+async function doSelectionInRepl(data: {
+    config: vscode.WorkspaceConfiguration;
+    outChannel: vscode.OutputChannel;
+    editor: vscode.TextEditor;
+    vscodeCommand: string;
+    // eslint-disable-next-line no-unused-vars
+    f: (selection: string) => string;
+}): Promise<void> {
+    const selectedRange = help.rangeFromPositions(
+        data.editor.selection.start,
+        data.editor.selection.end
+    );
+    const selectedText = data.editor.document.getText(selectedRange);
     if (selectedText.length) {
-        const repl = await createREPL(config);
-        repl.sendText(sexp.getSexpToLeft(selectedText).sexp);
-        outChannel.appendLine(
-            `Sent ${
-                sexp.getSexpToLeft(selectedText).sexp
-            } to REPL using command ${c.cfgSection}.${c.sendLastToREPL}`
+        const repl = await createREPL(data.config);
+        const replCommand = data.f(selectedText.trim());
+        repl.sendText(replCommand);
+        data.outChannel.appendLine(
+            `Sent ${replCommand} to REPL using command ${c.cfgSection}.${data.vscodeCommand}`
         );
     } else {
-        outChannel.appendLine(
-            `Not sent ${editor.selection.end.line}:${editor.selection.end.character} to REPL using command ${c.cfgSection}.${c.sendLastToREPL}`
+        data.outChannel.appendLine(
+            `Not sent ${data.editor.selection.start.character} - ${data.editor.selection.end.character} to REPL using command ${c.cfgSection}.${data.vscodeCommand}`
+        );
+    }
+}
+
+/**
+ * Send the result of applying `f` to the sexp to the left of the cursor to the
+ * pane REPL.
+ * @param data The needed data.
+ */
+async function doLastInRepl(data: {
+    config: vscode.WorkspaceConfiguration;
+    outChannel: vscode.OutputChannel;
+    editor: vscode.TextEditor;
+    vscodeCommand: string;
+    // eslint-disable-next-line no-unused-vars
+    f: (selection: string) => string;
+}): Promise<void> {
+    const selectedRange = help.rangeFromPositions(
+        [0, 0],
+        data.editor.selection.end
+    );
+    const selectedText = data.editor.document.getText(selectedRange);
+    if (selectedText.length) {
+        const repl = await createREPL(data.config);
+        const replCommand = data.f(sexp.getSexpToLeft(selectedText).sexp);
+        repl.sendText(replCommand);
+        data.outChannel.appendLine(
+            `Sent ${replCommand} to REPL using command ${c.cfgSection}.${data.vscodeCommand}`
+        );
+    } else {
+        data.outChannel.appendLine(
+            `Not sent ${data.editor.selection.end.line}:${data.editor.selection.end.character} to REPL using command ${c.cfgSection}.${data.vscodeCommand}`
         );
     }
 }
@@ -95,7 +186,9 @@ export async function sendLastToRepl(
  * @param config The configuration holding the command to call the REPL with.
  * @returns The `Terminal` object of the running REPL.
  */
-export async function createREPL(config: vscode.WorkspaceConfiguration) {
+export async function createREPL(
+    config: vscode.WorkspaceConfiguration
+): Promise<vscode.Terminal> {
     const replTerminals = vscode.window.terminals.filter(
         (term) => term.name === c.replTerminalName
     );

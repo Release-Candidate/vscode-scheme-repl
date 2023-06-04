@@ -22,6 +22,16 @@ import internal = require("stream");
 export type Maybe<T> = T | undefined | null;
 
 /**
+ * The id function.
+ * Return the given argument `x`.
+ * @param x The argument to return.
+ * @returns The given argument `x`.
+ */
+export function id<T>(x: T): T {
+    return x;
+}
+
+/**
  * Object holding the output of a process.
  *
  * Only two possible `Output`s exist: either
