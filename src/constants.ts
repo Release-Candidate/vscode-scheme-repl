@@ -39,6 +39,25 @@ export const replTerminalName = "Chez Scheme REPL";
 export const replCommand = "scheme";
 
 /**
+ * Argument to pass to the Chez REPL to suppress greetings and prompts.
+ */
+export const replQuietArg = "-q";
+
+/**
+ * Return the command to send to a running Chez REPL to load the file
+ * `fileName` and evaluate `sexp`.
+ * The lambda to `load` helps in getting a bit of context about an error, if an
+ * error occurs when loading `fileName`.
+ * @param fileName The Scheme file to load.
+ * @param sexp The sexp to evaluate in the REPL.
+ * @returns The command to send to a running Chez REPL to load the file
+ * `fileName` and evaluate `sexp`.
+ */
+export function replLoadFileAndSexp(fileName: string, sexp: string): string {
+    return `(load "${fileName}" (lambda (x) (pretty-print x) (eval x))) ${sexp}`;
+}
+
+/**
  * The time in milliseconds to wait for a new REPL before sending strings to it.
  */
 export const replSleepTime = 1000;

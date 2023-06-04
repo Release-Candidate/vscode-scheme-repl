@@ -8,7 +8,7 @@
  *
  * ==============================================================================
  * Functions to handle the visible interactive REPL running in an extra pane.
- * Send files, sexps, ... to it.
+ * Send files, sexps, commands, ... to it.
  */
 
 import * as c from "./constants";
@@ -18,39 +18,41 @@ import * as vscode from "vscode";
 
 /**
  * Send the contents of `editor` to the interactive REPL.
- * @param config The extension's configuration object.
- * @param outChannel Logs go here.
+ * @param env The needed environment.
  * @param editor The `TextEditor` containing the sources to send to the REPL.
  */
 export async function sendFileToRepl(
-    config: vscode.WorkspaceConfiguration,
-    outChannel: vscode.OutputChannel,
+    env: {
+        config: vscode.WorkspaceConfiguration;
+        outChannel: vscode.OutputChannel;
+    },
     editor: vscode.TextEditor
 ): Promise<void> {
     const fileText = editor.document.getText();
     if (fileText.length) {
-        const repl = await createREPL(config);
+        const repl = await createREPL(env.config);
         repl.sendText(fileText);
     }
-    outChannel.appendLine(
+    env.outChannel.appendLine(
         `Sent to REPL using command ${c.cfgSection}.${c.sendSelectionToREPL}`
     );
 }
 
 /**
  * Send a single selected sexp to the interactive REPL.
- * @param config The extension's configuration object.
- * @param outChannel Logs go here.
+ * @param env The needed environment.
  * @param editor The `TextEditor` containing the sources to send to the REPL.
  */
 export async function sendSelectionToRepl(
-    config: vscode.WorkspaceConfiguration,
-    outChannel: vscode.OutputChannel,
+    env: {
+        config: vscode.WorkspaceConfiguration;
+        outChannel: vscode.OutputChannel;
+    },
     editor: vscode.TextEditor
 ): Promise<void> {
     doSelectionInRepl({
-        config,
-        outChannel,
+        config: env.config,
+        outChannel: env.outChannel,
         editor,
         vscodeCommand: c.sendSelectionToREPL,
         f: help.id,
@@ -59,18 +61,19 @@ export async function sendSelectionToRepl(
 
 /**
  * Send a single selected sexp to be macro expanded to the interactive REPL.
- * @param config The extension's configuration object.
- * @param outChannel Logs go here.
+ * @param env The needed environment.
  * @param editor The `TextEditor` containing the sources to send to the REPL.
  */
 export async function expandSelectionInRepl(
-    config: vscode.WorkspaceConfiguration,
-    outChannel: vscode.OutputChannel,
+    env: {
+        config: vscode.WorkspaceConfiguration;
+        outChannel: vscode.OutputChannel;
+    },
     editor: vscode.TextEditor
 ): Promise<void> {
     doSelectionInRepl({
-        config,
-        outChannel,
+        config: env.config,
+        outChannel: env.outChannel,
         editor,
         vscodeCommand: c.expandSelection,
         f: c.expandSexp,
@@ -79,18 +82,19 @@ export async function expandSelectionInRepl(
 
 /**
  * Send the sexp to the left of the cursor to the interactive REPL.
- * @param config The extension's configuration object.
- * @param outChannel Logs go here.
+ * @param env The needed environment.
  * @param editor The `TextEditor` containing the sources to send to the REPL.
  */
 export async function sendLastToRepl(
-    config: vscode.WorkspaceConfiguration,
-    outChannel: vscode.OutputChannel,
+    env: {
+        config: vscode.WorkspaceConfiguration;
+        outChannel: vscode.OutputChannel;
+    },
     editor: vscode.TextEditor
 ): Promise<void> {
     doLastInRepl({
-        config,
-        outChannel,
+        config: env.config,
+        outChannel: env.outChannel,
         editor,
         f: help.id,
         vscodeCommand: c.sendLastToREPL,
@@ -100,18 +104,19 @@ export async function sendLastToRepl(
 /**
  * Send the sexp to the left of the cursor to be macro expanded to the
  * interactive REPL.
- * @param config The extension's configuration object.
- * @param outChannel Logs go here.
+ * @param env The needed environment.
  * @param editor The `TextEditor` containing the sources to send to the REPL.
  */
 export async function expandLastInRepl(
-    config: vscode.WorkspaceConfiguration,
-    outChannel: vscode.OutputChannel,
+    env: {
+        config: vscode.WorkspaceConfiguration;
+        outChannel: vscode.OutputChannel;
+    },
     editor: vscode.TextEditor
 ): Promise<void> {
     doLastInRepl({
-        config,
-        outChannel,
+        config: env.config,
+        outChannel: env.outChannel,
         editor,
         f: c.expandSexp,
         vscodeCommand: c.expandLast,

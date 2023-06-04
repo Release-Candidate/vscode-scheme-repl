@@ -229,3 +229,23 @@ export function textEvalErrorDecoration(
         },
     };
 }
+
+export function addEditorDecoration(data: {
+    evalDecoration: vscode.TextEditorDecorationType;
+    evalDecorations: WeakMap<vscode.TextDocument, vscode.DecorationOptions[]>;
+    editor: vscode.TextEditor;
+    range: vscode.Range;
+    text: string;
+}) {
+    data.editor.setDecorations(data.evalDecoration, []);
+    const options = textEvalDecoration(data.text, data.range);
+    const decoration = data.evalDecorations.get(data.editor.document);
+    if (decoration) {
+        decoration.push(options);
+        data.evalDecorations.set(data.editor.document, decoration);
+        data.editor.setDecorations(data.evalDecoration, decoration);
+    } else {
+        data.editor.setDecorations(data.evalDecoration, [options]);
+        data.evalDecorations.set(data.editor.document, [options]);
+    }
+}
