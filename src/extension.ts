@@ -30,27 +30,6 @@ export async function activate(context: vscode.ExtensionContext) {
     const outChannel = vscode.window.createOutputChannel(c.outputChannelName);
     outChannel.appendLine("Chez Scheme REPL starting.");
 
-    await setupExtension({
-        context,
-        outChannel,
-        evalDecoration: decor.getEvalDecorationStyle(),
-        evalErrorDecoration: decor.getEvalErrorDecorationStyle(),
-    });
-
-    outChannel.appendLine("Extension startup finished.");
-}
-
-/**
- * Setup the extension.
- * @param env The extension's needed environment.
- */
-// eslint-disable-next-line max-lines-per-function, max-statements
-async function setupExtension(env: {
-    context: vscode.ExtensionContext;
-    outChannel: vscode.OutputChannel;
-    evalDecoration: vscode.TextEditorDecorationType;
-    evalErrorDecoration: vscode.TextEditorDecorationType;
-}) {
     const config = vscode.workspace.getConfiguration(c.cfgSection);
 
     const evalDecorations = new WeakMap<
@@ -63,118 +42,155 @@ async function setupExtension(env: {
         vscode.DecorationOptions[]
     >();
 
+    await setupExtension({
+        config,
+        context,
+        outChannel,
+        evalDecoration: decor.getEvalDecorationStyle(),
+        evalDecorations,
+        evalErrorDecoration: decor.getEvalErrorDecorationStyle(),
+        evalErrorDecorations,
+    });
+
+    outChannel.appendLine("Extension startup finished.");
+}
+
+/**
+ * Setup the extension.
+ * @param env The extension's environment.
+ */
+async function setupExtension(env: h.Env) {
     const editorChangedSubscription = vscode.window.onDidChangeActiveTextEditor(
         (editor) => {
-            if (editor) {
-                const decorations = evalDecorations.get(editor.document);
-                if (decorations) {
-                    editor.setDecorations(env.evalDecoration, decorations);
-                }
-                const errorDecorations = evalErrorDecorations.get(
-                    editor.document
-                );
-                if (errorDecorations) {
-                    editor.setDecorations(
-                        env.evalErrorDecoration,
-                        errorDecorations
-                    );
-                }
-            }
+            textEditorChanged(editor, env);
         }
     );
     env.context.subscriptions.push(editorChangedSubscription);
 
     const symbolSubscription = vscode.languages.registerDocumentSymbolProvider(
         c.languageName,
-        {
-            provideDocumentSymbols(document, token) {
-                document.getText();
-                if (token.isCancellationRequested) {
-                    return [];
-                }
-                return [];
-            },
-        }
+        { provideDocumentSymbols }
     );
     env.context.subscriptions.push(symbolSubscription);
 
     const hoverSubscription = vscode.languages.registerHoverProvider(
         c.languageName,
-        {
-            provideHover(document, position, token) {
-                const word = h.getWordAtPosition(document, position);
-                // eslint-disable-next-line no-eq-null, eqeqeq
-                if (word == null) {
-                    return undefined;
-                }
-                const wordRegex = new RegExp(
-                    `^[(]?${h.escapeRegexp(word)}(:?\\s+.*)?[)]?$`,
-                    "u"
-                );
-                const funcID = functionDocs.find((id) =>
-                    id.name.match(wordRegex)
-                );
-                if (token.isCancellationRequested) {
-                    return undefined;
-                }
-                return funcID
-                    ? new vscode.Hover(iD.functionDocToMarkdown(funcID))
-                    : undefined;
-            },
-        }
+        { provideHover }
     );
-
     env.context.subscriptions.push(hoverSubscription);
 
     const completionSubscription =
         vscode.languages.registerCompletionItemProvider(c.languageName, {
-            provideCompletionItems(
-                document: vscode.TextDocument,
-                position: vscode.Position
-            ) {
-                const word = h.getWordAtPosition(document, position);
-                const wordRegex = new RegExp(
-                    `^[(]?${h.escapeRegexp(h.fromMaybe(word, ""))}(:?.*)?[)]?$`,
-                    "u"
-                );
-                const funcIDs = word
-                    ? functionDocs.filter((id) => id.name.match(wordRegex))
-                    : functionDocs;
-                const completions = funcIDs.map((id) =>
-                    iD.functionDocToCompletionItem(id)
-                );
-                return completions;
-            },
+            provideCompletionItems,
         });
     env.context.subscriptions.push(completionSubscription);
 
-    registerCommands({
-        config,
-        outChannel: env.outChannel,
-        context: env.context,
-        evalDecoration: env.evalDecoration,
-        evalDecorations,
-        evalErrorDecoration: env.evalErrorDecoration,
-        evalErrorDecorations,
-    });
+    registerCommands(env);
+}
+
+/**
+ * Called if the current active editor has changed.
+ * @param editor The current active editor.
+ * @param env The extension's environment.
+ */
+function textEditorChanged(editor: vscode.TextEditor | undefined, env: h.Env) {
+    if (editor) {
+        redrawDecorations(editor, env);
+    }
+}
+
+/**
+ * Return a hover text containing the identifier's documentation or `undefined`.
+ * @param document The source code to provide hover information for.
+ * @param position The position of the identifier.
+ * @param token Whether to cancel the hover action or not.
+ * @returns a hover text containing the identifier's documentation or
+ * `undefined`.
+ */
+function provideHover(
+    document: vscode.TextDocument,
+    position: vscode.Position,
+    token: vscode.CancellationToken
+): vscode.Hover | undefined {
+    const word = h.getWordAtPosition(document, position);
+    // eslint-disable-next-line no-eq-null, eqeqeq
+    if (word == null) {
+        return undefined;
+    }
+    const wordRegex = new RegExp(
+        `^[(]?${h.escapeRegexp(word)}(:?\\s+.*)?[)]?$`,
+        "u"
+    );
+    const funcID = functionDocs.find((id) => id.name.match(wordRegex));
+    if (token.isCancellationRequested) {
+        return undefined;
+    }
+    return funcID
+        ? new vscode.Hover(iD.functionDocToMarkdown(funcID))
+        : undefined;
+}
+
+/**
+ * Return a list of completions of the partial identifier at `position`.
+ * @param document The current document containing the source code.
+ * @param position The position of the partial identifier to complete.
+ * @returns a list of completions of the partial identifier at `position`.
+ */
+function provideCompletionItems(
+    document: vscode.TextDocument,
+    position: vscode.Position
+): vscode.CompletionItem[] {
+    const word = h.getWordAtPosition(document, position);
+    const wordRegex = new RegExp(
+        `^[(]?${h.escapeRegexp(h.fromMaybe(word, ""))}(:?.*)?[)]?$`,
+        "u"
+    );
+    const funcIDs = word
+        ? functionDocs.filter((id) => id.name.match(wordRegex))
+        : functionDocs;
+    const completions = funcIDs.map((id) => iD.functionDocToCompletionItem(id));
+    return completions;
+}
+
+/**
+ * Return the list of identifiers of the source `document`.
+ * TODO.
+ * @param document The source code to provide identifier information of.
+ * @param token Whether to cancel the action or not.
+ * @returns The list of identifiers of the source `document`.
+ */
+function provideDocumentSymbols(
+    document: vscode.TextDocument,
+    token: vscode.CancellationToken
+) {
+    document.getText();
+    if (token.isCancellationRequested) {
+        return [];
+    }
+    return [];
+}
+
+/**
+ * Redraw all saved decorations (evaluation results).
+ * @param editor The current active editor.
+ * @param env The needed environment.
+ */
+function redrawDecorations(editor: vscode.TextEditor, env: h.Env): void {
+    const decorations = env.evalDecorations.get(editor.document);
+    if (decorations) {
+        editor.setDecorations(env.evalDecoration, decorations);
+    }
+    const errorDecorations = env.evalErrorDecorations.get(editor.document);
+    if (errorDecorations) {
+        editor.setDecorations(env.evalErrorDecoration, errorDecorations);
+    }
 }
 
 /**
  * Register all commands that the extension provides with VS Code.
  * @param env The needed environment of the extension.
  */
-function registerCommands(env: {
-    config: vscode.WorkspaceConfiguration;
-    outChannel: vscode.OutputChannel;
-    context: vscode.ExtensionContext;
-    evalDecoration: vscode.TextEditorDecorationType;
-    evalDecorations: WeakMap<vscode.TextDocument, vscode.DecorationOptions[]>;
-    evalErrorDecoration: vscode.TextEditorDecorationType;
-    evalErrorDecorations: WeakMap<
-        vscode.TextDocument,
-        vscode.DecorationOptions[]
-    >;
-}) {
+function registerCommands(env: h.Env): void {
     const replCommand = vscode.commands.registerCommand(
         `${c.cfgSection}.${c.startREPLCommand}`,
         () => {
@@ -214,42 +230,15 @@ function registerCommands(env: {
  * @param f The function to bind the command to.
  */
 function registerTextEditorCommand(
-    env: {
-        config: vscode.WorkspaceConfiguration;
-        outChannel: vscode.OutputChannel;
-        context: vscode.ExtensionContext;
-        evalDecoration: vscode.TextEditorDecorationType;
-        evalDecorations: WeakMap<
-            vscode.TextDocument,
-            vscode.DecorationOptions[]
-        >;
-        evalErrorDecoration: vscode.TextEditorDecorationType;
-        evalErrorDecorations: WeakMap<
-            vscode.TextDocument,
-            vscode.DecorationOptions[]
-        >;
-    },
+    env: h.Env,
     commandString: string,
     f: (
         // eslint-disable-next-line no-unused-vars
-        fEnv: {
-            config: vscode.WorkspaceConfiguration;
-            outChannel: vscode.OutputChannel;
-            evalDecoration: vscode.TextEditorDecorationType;
-            evalDecorations: WeakMap<
-                vscode.TextDocument,
-                vscode.DecorationOptions[]
-            >;
-            evalErrorDecoration: vscode.TextEditorDecorationType;
-            evalErrorDecorations: WeakMap<
-                vscode.TextDocument,
-                vscode.DecorationOptions[]
-            >;
-        },
+        fEnv: h.Env,
         // eslint-disable-next-line no-unused-vars
         editor: vscode.TextEditor
     ) => Promise<void>
-) {
+): void {
     const subscription = vscode.commands.registerTextEditorCommand(
         `${c.cfgSection}.${commandString}`,
         (editor) => f(env, editor)

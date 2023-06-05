@@ -24,20 +24,7 @@ import * as vscode from "vscode";
  * @param editor The document containing the source to evaluate.
  */
 export async function evalLastSexp(
-    env: {
-        config: vscode.WorkspaceConfiguration;
-        outChannel: vscode.OutputChannel;
-        evalDecoration: vscode.TextEditorDecorationType;
-        evalDecorations: WeakMap<
-            vscode.TextDocument,
-            vscode.DecorationOptions[]
-        >;
-        evalErrorDecoration: vscode.TextEditorDecorationType;
-        evalErrorDecorations: WeakMap<
-            vscode.TextDocument,
-            vscode.DecorationOptions[]
-        >;
-    },
+    env: h.Env,
     editor: vscode.TextEditor
 ): Promise<void> {
     const selectedRange = h.rangeFromPositions([0, 0], editor.selection.end);
@@ -48,7 +35,12 @@ export async function evalLastSexp(
             [exp.startLine, exp.startCol],
             editor.selection.end
         );
-        await processREPLOutput(env, editor, exp, sexpRange, c.evalLast);
+        await evalSexp(env, {
+            editor,
+            exp,
+            range: sexpRange,
+            vscodeCommand: c.evalLast,
+        });
     } else {
         env.outChannel.appendLine(
             `Not sent ${editor.selection.end.line}:${editor.selection.end.character} to REPL using command ${c.cfgSection}.${c.sendLastToREPL}`
@@ -62,20 +54,7 @@ export async function evalLastSexp(
  * @param editor The document containing the source to evaluate.
  */
 export async function evalSelectedSexp(
-    env: {
-        config: vscode.WorkspaceConfiguration;
-        outChannel: vscode.OutputChannel;
-        evalDecoration: vscode.TextEditorDecorationType;
-        evalDecorations: WeakMap<
-            vscode.TextDocument,
-            vscode.DecorationOptions[]
-        >;
-        evalErrorDecoration: vscode.TextEditorDecorationType;
-        evalErrorDecorations: WeakMap<
-            vscode.TextDocument,
-            vscode.DecorationOptions[]
-        >;
-    },
+    env: h.Env,
     editor: vscode.TextEditor
 ): Promise<void> {
     const selectedRange = h.rangeFromPositions(
@@ -85,13 +64,12 @@ export async function evalSelectedSexp(
     const selectedText = editor.document.getText(selectedRange);
     if (selectedText.length) {
         const exp = sexp.getSexpToLeft(selectedText);
-        await processREPLOutput(
-            env,
+        await evalSexp(env, {
             editor,
             exp,
-            selectedRange,
-            c.evalSelection
-        );
+            range: selectedRange,
+            vscodeCommand: c.evalSelection,
+        });
     } else {
         env.outChannel.appendLine(
             `Not sent ${editor.selection.end.line}:${editor.selection.end.character} to REPL using command ${c.cfgSection}.${c.evalSelection}`
@@ -99,52 +77,48 @@ export async function evalSelectedSexp(
     }
 }
 
-async function processREPLOutput(
-    env: {
-        config: vscode.WorkspaceConfiguration;
-        outChannel: vscode.OutputChannel;
-        evalDecoration: vscode.TextEditorDecorationType;
-        evalDecorations: WeakMap<
-            vscode.TextDocument,
-            vscode.DecorationOptions[]
-        >;
-        evalErrorDecoration: vscode.TextEditorDecorationType;
-        evalErrorDecorations: WeakMap<
-            vscode.TextDocument,
-            vscode.DecorationOptions[]
-        >;
-    },
-    editor: vscode.TextEditor,
-    exp: {
-        sexp: string;
-        startLine: number;
-        startCol: number;
-    },
-    range: vscode.Range,
-    vscodeCommand: string
+/**
+ * Eval the given sexp `data.exp` and display the result using the given
+ * decorations.
+ * @param env The needed environment.
+ * @param data The needed data.
+ */
+// eslint-disable-next-line max-lines-per-function
+async function evalSexp(
+    env: h.Env,
+    data: {
+        editor: vscode.TextEditor;
+        exp: {
+            sexp: string;
+            startLine: number;
+            startCol: number;
+        };
+        range: vscode.Range;
+        vscodeCommand: string;
+    }
 ): Promise<void> {
-    const out = await runREPLCommand(env.config, editor, exp.sexp);
+    const out = await runREPLCommand(env.config, data.editor, data.exp.sexp);
     if (out.stderr) {
         const errMsg = out.stderr.trim();
         decor.addEditorDecoration({
-            editor,
+            editor: data.editor,
             evalDecoration: env.evalErrorDecoration,
             evalDecorations: env.evalErrorDecorations,
-            range,
+            range: data.range,
             text: errMsg,
         });
     } else {
         const match = out.stdout ? out.stdout.match(/>([^>]+)$/u) : "";
         const response = match ? match[1].trim() : "";
         env.outChannel.appendLine(
-            `Sent ${exp.sexp} to REPL using command ${c.cfgSection}.${vscodeCommand}`
+            `Sent ${data.exp.sexp} to REPL using command ${c.cfgSection}.${data.vscodeCommand}`
         );
 
         decor.addEditorDecoration({
-            editor,
+            editor: data.editor,
             evalDecoration: env.evalDecoration,
             evalDecorations: env.evalDecorations,
-            range,
+            range: data.range,
             text: response,
         });
     }

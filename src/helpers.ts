@@ -17,6 +17,23 @@ import * as vscode from "vscode";
 import internal = require("stream");
 
 /**
+ * The type of the extension's environment.
+ * That is state that is almost always needed.
+ */
+export type Env = {
+    config: vscode.WorkspaceConfiguration;
+    outChannel: vscode.OutputChannel;
+    context: vscode.ExtensionContext;
+    evalDecoration: vscode.TextEditorDecorationType;
+    evalDecorations: WeakMap<vscode.TextDocument, vscode.DecorationOptions[]>;
+    evalErrorDecoration: vscode.TextEditorDecorationType;
+    evalErrorDecorations: WeakMap<
+        vscode.TextDocument,
+        vscode.DecorationOptions[]
+    >;
+};
+
+/**
  * The `Maybe` type. Either `undefined`/`null` or a value.
  */
 export type Maybe<T> = T | undefined | null;

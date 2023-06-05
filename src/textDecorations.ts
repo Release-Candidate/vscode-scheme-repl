@@ -230,13 +230,17 @@ export function textEvalErrorDecoration(
     };
 }
 
+/**
+ * Add a text decoration with the string `data.text` to `data.editor`.
+ * @param data The data needed to add the decoration.
+ */
 export function addEditorDecoration(data: {
     evalDecoration: vscode.TextEditorDecorationType;
     evalDecorations: WeakMap<vscode.TextDocument, vscode.DecorationOptions[]>;
     editor: vscode.TextEditor;
     range: vscode.Range;
     text: string;
-}) {
+}): void {
     data.editor.setDecorations(data.evalDecoration, []);
     const options = textEvalDecoration(data.text, data.range);
     const decoration = data.evalDecorations.get(data.editor.document);
