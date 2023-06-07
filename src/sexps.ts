@@ -36,6 +36,12 @@ const leftUntilDelimiter = /.*?(?<sexp>[^\s()[\]{},"]+)\s*$/dsu;
 const leftUntilQuote = /.*?(?<sexp>[^"]+)\s*$/du;
 
 /**
+ * Regex to match the vector prefix of a vector.
+ * The vector prefix is returned in the first match group.
+ */
+const vectorRegex = /([`']?#\d*(?:vfx|vu8)?)\($/u;
+
+/**
  * Return the s-expression that ends at the end of `text`.
  * Also returns the start position of the sexp, in `startLine` and `startCol`.
  * @param text The text to parse.
@@ -249,18 +255,34 @@ function parseBetweenDelimiters(data: {
  * @returns The left delimiter at the end of the string `s` or `undefined` if the
  * end is not a delimiter of a sexp.
  */
+// eslint-disable-next-line max-lines-per-function, complexity
 function endOfSexp(data: {
     s: string;
     delim: Delimiter | undefined;
     delimStack: Delimiter[];
     level: number;
 }): string | undefined {
+    const vecMatch = data.s.match(vectorRegex);
     if (data.s.endsWith("'(") && data.delim === "Paren") {
         return endOfSubSexp({
             s: data.s,
             level: data.level,
             delimStack: data.delimStack,
             delimString: "'(",
+        });
+    } else if (data.s.endsWith("`(") && data.delim === "Paren") {
+        return endOfSubSexp({
+            s: data.s,
+            level: data.level,
+            delimStack: data.delimStack,
+            delimString: "`(",
+        });
+    } else if (vecMatch && data.delim === "Paren") {
+        return endOfSubSexp({
+            s: data.s,
+            level: data.level,
+            delimStack: data.delimStack,
+            delimString: `${vecMatch[1]}(`,
         });
     } else if (data.s.endsWith("(") && data.delim === "Paren") {
         return endOfSubSexp({
@@ -269,12 +291,61 @@ function endOfSexp(data: {
             delimStack: data.delimStack,
             delimString: "(",
         });
+    } else if (data.s.endsWith("`[") && data.delim === "Bracket") {
+        return endOfSubSexp({
+            s: data.s,
+            level: data.level,
+            delimStack: data.delimStack,
+            delimString: "`[",
+        });
+    } else if (data.s.endsWith("'[") && data.delim === "Bracket") {
+        return endOfSubSexp({
+            s: data.s,
+            level: data.level,
+            delimStack: data.delimStack,
+            delimString: "'[",
+        });
     } else if (data.s.endsWith("[") && data.delim === "Bracket") {
         return endOfSubSexp({
             s: data.s,
             level: data.level,
             delimStack: data.delimStack,
             delimString: "[",
+        });
+    } else if (data.s.endsWith("'#{") && data.delim === "Brace") {
+        return endOfSubSexp({
+            s: data.s,
+            level: data.level,
+            delimStack: data.delimStack,
+            delimString: "'#{",
+        });
+    } else if (data.s.endsWith("`#{") && data.delim === "Brace") {
+        return endOfSubSexp({
+            s: data.s,
+            level: data.level,
+            delimStack: data.delimStack,
+            delimString: "`#{",
+        });
+    } else if (data.s.endsWith("#{") && data.delim === "Brace") {
+        return endOfSubSexp({
+            s: data.s,
+            level: data.level,
+            delimStack: data.delimStack,
+            delimString: "#{",
+        });
+    } else if (data.s.endsWith("`{") && data.delim === "Brace") {
+        return endOfSubSexp({
+            s: data.s,
+            level: data.level,
+            delimStack: data.delimStack,
+            delimString: "`{",
+        });
+    } else if (data.s.endsWith("'{") && data.delim === "Brace") {
+        return endOfSubSexp({
+            s: data.s,
+            level: data.level,
+            delimStack: data.delimStack,
+            delimString: "'{",
         });
     } else if (data.s.endsWith("{") && data.delim === "Brace") {
         return endOfSubSexp({

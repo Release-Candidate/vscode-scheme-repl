@@ -171,11 +171,81 @@ mocha.describe("Sexp parsing functions", () => {
                 "String 'fsdg (dsghjkl {sdfgh})' -> '(dsghjkl {sdfgh})' "
             );
         });
-        mocha.it("S-exp  'sdfgdgf(define (f x)\\n(* 8 x))'", () => {
+        mocha.it("S-exp 'sdfgdgf(define (f x)\\n(* 8 x))'", () => {
             chai.assert.deepEqual(
                 s.getSexpToLeft("sdfgdgf(define (f x)\n(* 8 x))"),
                 { sexp: "(define (f x)\n(* 8 x))", startCol: 7, startLine: 0 },
                 "String 'sdfgdgf(define (f x)\\n(* 8 x))' -> '(define (f x)\\n(* 8 x))' "
+            );
+        });
+        mocha.it("Quoted s-exp `sdfgdgf'(define (f x)\\n(* 8 x))`", () => {
+            chai.assert.deepEqual(
+                s.getSexpToLeft("sdfgdgf'(define (f x)\n(* 8 x))"),
+                { sexp: "'(define (f x)\n(* 8 x))", startCol: 7, startLine: 0 },
+                "String 'sdfgdgf'(define (f x)\\n(* 8 x))' -> `'(define (f x)\\n(* 8 x))`"
+            );
+        });
+        mocha.it("Vector 'sdfgdgf #(asdf fdsa 156)'", () => {
+            chai.assert.deepEqual(
+                s.getSexpToLeft("sdfgdgf #(asdf fdsa 156)"),
+                { sexp: "#(asdf fdsa 156)", startCol: 8, startLine: 0 },
+                "Vector 'sdfgdgf #(asdf fdsa 156)' -> '#(asdf fdsa 156)' "
+            );
+        });
+        mocha.it("Vector 'sdfgdgf #10(asdf fdsa 156)'", () => {
+            chai.assert.deepEqual(
+                s.getSexpToLeft("sdfgdgf #10(asdf fdsa 156)"),
+                { sexp: "#10(asdf fdsa 156)", startCol: 8, startLine: 0 },
+                "Vector 'sdfgdgf #10(asdf fdsa 156)' -> '#10(asdf fdsa 156)' "
+            );
+        });
+        mocha.it("Bytevector 'sdfgdgf #vu8(255 0 255)'", () => {
+            chai.assert.deepEqual(
+                s.getSexpToLeft("sdfgdgf #vu8(255 0 255)"),
+                { sexp: "#vu8(255 0 255)", startCol: 8, startLine: 0 },
+                "Vector 'sdfgdgf #vu8(255 0 255)' -> '#vu8(255 0 255)' "
+            );
+        });
+        mocha.it("Bytevector 'sdfgdgf #4vu8(255 0 255)'", () => {
+            chai.assert.deepEqual(
+                s.getSexpToLeft("sdfgdgf #4vu8(255 0 255)"),
+                { sexp: "#4vu8(255 0 255)", startCol: 8, startLine: 0 },
+                "Vector 'sdfgdgf #4vu8(255 0 255)' -> '#4vu8(255 0 255)' "
+            );
+        });
+        mocha.it("Fixnum vector 'sdfgdgf #vfx(255 0 255)'", () => {
+            chai.assert.deepEqual(
+                s.getSexpToLeft("sdfgdgf #vfx(255 0 255)"),
+                { sexp: "#vfx(255 0 255)", startCol: 8, startLine: 0 },
+                "Vector 'sdfgdgf #vfx(255 0 255)' -> '#vfx(255 0 255)' "
+            );
+        });
+        mocha.it("Fixnum vector 'sdfgdgf #125vfx(255 0 255)'", () => {
+            chai.assert.deepEqual(
+                s.getSexpToLeft("sdfgdgf #125vfx(255 0 255)"),
+                { sexp: "#125vfx(255 0 255)", startCol: 8, startLine: 0 },
+                "Vector 'sdfgdgf #125vfx(255 0 255)' -> '#125vfx(255 0 255)' "
+            );
+        });
+        mocha.it("Gensym 'sdfgdgf #{g0 gdfgez754123245}'", () => {
+            chai.assert.deepEqual(
+                s.getSexpToLeft("sdfgdgf #{g0 gdfgez754123245}"),
+                { sexp: "#{g0 gdfgez754123245}", startCol: 8, startLine: 0 },
+                "Vector 'sdfgdgf #{g0 gdfgez754123245}' -> '#{g0 gdfgez754123245}' "
+            );
+        });
+        mocha.it("Quoted gensym `sdfgdgf '#{g0 gdfgez754123245}`", () => {
+            chai.assert.deepEqual(
+                s.getSexpToLeft("sdfgdgf '#{g0 gdfgez754123245}"),
+                { sexp: "'#{g0 gdfgez754123245}", startCol: 8, startLine: 0 },
+                "Vector `sdfgdgf '#{g0 gdfgez754123245}` -> `'#{g0 gdfgez754123245}` "
+            );
+        });
+        mocha.it("Quasiquoted gensym 'sdfgdgf `#{g0 gdfgez754123245}'", () => {
+            chai.assert.deepEqual(
+                s.getSexpToLeft("sdfgdgf `#{g0 gdfgez754123245}"),
+                { sexp: "`#{g0 gdfgez754123245}", startCol: 8, startLine: 0 },
+                "Vector 'sdfgdgf `#{g0 gdfgez754123245}' -> '`#{g0 gdfgez754123245}' "
             );
         });
         mocha.it("Invalid s-exp 'fsdg (dsghjkl] {sdfgh})'", () => {

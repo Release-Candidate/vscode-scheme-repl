@@ -12,7 +12,13 @@
 ;; Code formatting of documentation
 ;; (with-output-to-string thunk)
 
+#vu8(255 0 255)
+
+`#10vfx(1 2 3)
+
 (+ 5 6)
+
+`#{g0 bcsfg5eq4e9b3h9o-a}
 
 ;; Problem: documentation parts missing. Because the second part of the
 ;; documentation has it's own link name.
