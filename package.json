@@ -109,6 +109,12 @@
                 "title": "Chez Scheme REPL: Expand all macros in the s-expression left of the cursor."
             }
         ],
+        "snippets": [
+            {
+                "language": "scheme",
+                "path": "./package_files/snippets.json"
+            }
+        ],
         "configuration": {
             "title": "Chez Scheme REPL",
             "properties": {

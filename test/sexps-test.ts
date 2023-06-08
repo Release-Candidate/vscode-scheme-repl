@@ -248,6 +248,27 @@ mocha.describe("Sexp parsing functions", () => {
                 "Vector 'sdfgdgf `#{g0 gdfgez754123245}' -> '`#{g0 gdfgez754123245}' "
             );
         });
+        mocha.it("Filter 'asdf fdsadf (filter ...'", () => {
+            chai.assert.deepEqual(
+                s.getSexpToLeft(`asdf fdsadf (filter
+  (lambda (x)
+    (cond
+      [(symbol? x) (eqv? "f" (substring (symbol->string x) 0 1))]
+      [else #f]))
+  (apropos-list 'f (interaction-environment)))`),
+                {
+                    sexp: `(filter
+  (lambda (x)
+    (cond
+      [(symbol? x) (eqv? "f" (substring (symbol->string x) 0 1))]
+      [else #f]))
+  (apropos-list 'f (interaction-environment)))`,
+                    startCol: 12,
+                    startLine: 0,
+                },
+                "Filter 'asdf fdsadf (filter...' -> '(filter\\n  (lambda (x)\\n    (cond\\n' "
+            );
+        });
         mocha.it("Invalid s-exp 'fsdg (dsghjkl] {sdfgh})'", () => {
             chai.assert.deepEqual(
                 s.getSexpToLeft("fsdg (dsghjkl] {sdfgh})"),

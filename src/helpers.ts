@@ -49,6 +49,18 @@ export function id<T>(x: T): T {
 }
 
 /**
+ * Return the last element of `a` or `undefined`, if `a` is an empty array.
+ * @param a The array to return the last element of.
+ * @returns The last element of `a` or `undefined`, if `a` is an empty array.
+ */
+export function last<T>(a: T[]): T | undefined {
+    if (a.length === 0) {
+        return undefined;
+    }
+    return a[a.length - 1];
+}
+
+/**
  * Object holding the output of a process.
  *
  * Only two possible `Output`s exist: either

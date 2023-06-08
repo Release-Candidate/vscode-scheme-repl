@@ -1,0 +1,12 @@
+{
+    "Disable Chez Extensions": {
+        "prefix": ["#!r6rs"],
+        "description": "Insert #!r6rs marker to disable Chez Scheme extensions.",
+        "body": ["#!r6rs", "$0"]
+    },
+    "Enable Chez Extensions": {
+        "prefix": ["#!chezscheme"],
+        "description": "Insert #!chezscheme marker to enable Chez Scheme extensions.",
+        "body": ["#!chezscheme", "$0"]
+    }
+}

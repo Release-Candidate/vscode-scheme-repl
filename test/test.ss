@@ -6,6 +6,7 @@
 ;; Date:     15.May.2023
 ;;
 ;; ==============================================================================
+#!chezscheme
 
 (machine-type)
 
@@ -26,6 +27,8 @@
 
 (define (f x)
   (* 8 x))
+
+(apropos-list 'f (interaction-environment))
 
 (f 5)
 
@@ -51,3 +54,10 @@ y
 (apropos-list 'real?)
 
 (define url-list-of-forms "https://cisco.github.io/ChezScheme/csug9.5/summary.html")
+
+(filter
+  (lambda (x)
+    (cond
+      [(symbol? x) (eqv? "f" (substring (symbol->string x) 0 1))]
+      [else #f]))
+  (apropos-list 'f (interaction-environment)))

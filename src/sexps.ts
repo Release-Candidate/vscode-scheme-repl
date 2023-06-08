@@ -72,7 +72,7 @@ function parseSexpToLeft(
     s: string,
     level: number
 ): string {
-    const delim = delimStack.pop();
+    const delim = h.last(delimStack);
 
     const foundStart = startOfSexp({ s, delim, delimStack, level });
     if (foundStart) {
@@ -89,7 +89,7 @@ function parseSexpToLeft(
         return foundEnd;
     }
 
-    return parseBetweenDelimiters({ delimStack, delim, s, level });
+    return parseBetweenDelimiters({ s, delim, delimStack, level });
 }
 
 /**
@@ -135,9 +135,6 @@ function startOfSexp(data: {
             delimString: "}",
         });
     } else if (data.s.endsWith('"') && data.delim !== "Quote") {
-        if (data.delim) {
-            data.delimStack.push(data.delim);
-        }
         data.delimStack.push("Quote");
         return (
             parseSexpToLeft(
@@ -216,8 +213,6 @@ function parseBetweenDelimiters(data: {
     s: string;
     level: number;
 }): string {
-    data.delimStack.push(data.delim ? data.delim : "Any");
-
     switch (data.delim) {
         case "Paren":
         case "Bracket":
@@ -266,6 +261,7 @@ function endOfSexp(data: {
     if (data.s.endsWith("'(") && data.delim === "Paren") {
         return endOfSubSexp({
             s: data.s,
+            length: 2,
             level: data.level,
             delimStack: data.delimStack,
             delimString: "'(",
@@ -273,6 +269,7 @@ function endOfSexp(data: {
     } else if (data.s.endsWith("`(") && data.delim === "Paren") {
         return endOfSubSexp({
             s: data.s,
+            length: 2,
             level: data.level,
             delimStack: data.delimStack,
             delimString: "`(",
@@ -280,6 +277,7 @@ function endOfSexp(data: {
     } else if (vecMatch && data.delim === "Paren") {
         return endOfSubSexp({
             s: data.s,
+            length: vecMatch[1].length,
             level: data.level,
             delimStack: data.delimStack,
             delimString: `${vecMatch[1]}(`,
@@ -287,6 +285,7 @@ function endOfSexp(data: {
     } else if (data.s.endsWith("(") && data.delim === "Paren") {
         return endOfSubSexp({
             s: data.s,
+            length: 1,
             level: data.level,
             delimStack: data.delimStack,
             delimString: "(",
@@ -294,6 +293,7 @@ function endOfSexp(data: {
     } else if (data.s.endsWith("`[") && data.delim === "Bracket") {
         return endOfSubSexp({
             s: data.s,
+            length: 2,
             level: data.level,
             delimStack: data.delimStack,
             delimString: "`[",
@@ -301,6 +301,7 @@ function endOfSexp(data: {
     } else if (data.s.endsWith("'[") && data.delim === "Bracket") {
         return endOfSubSexp({
             s: data.s,
+            length: 2,
             level: data.level,
             delimStack: data.delimStack,
             delimString: "'[",
@@ -308,6 +309,7 @@ function endOfSexp(data: {
     } else if (data.s.endsWith("[") && data.delim === "Bracket") {
         return endOfSubSexp({
             s: data.s,
+            length: 1,
             level: data.level,
             delimStack: data.delimStack,
             delimString: "[",
@@ -315,6 +317,7 @@ function endOfSexp(data: {
     } else if (data.s.endsWith("'#{") && data.delim === "Brace") {
         return endOfSubSexp({
             s: data.s,
+            length: 3,
             level: data.level,
             delimStack: data.delimStack,
             delimString: "'#{",
@@ -322,6 +325,7 @@ function endOfSexp(data: {
     } else if (data.s.endsWith("`#{") && data.delim === "Brace") {
         return endOfSubSexp({
             s: data.s,
+            length: 3,
             level: data.level,
             delimStack: data.delimStack,
             delimString: "`#{",
@@ -329,6 +333,7 @@ function endOfSexp(data: {
     } else if (data.s.endsWith("#{") && data.delim === "Brace") {
         return endOfSubSexp({
             s: data.s,
+            length: 2,
             level: data.level,
             delimStack: data.delimStack,
             delimString: "#{",
@@ -336,6 +341,7 @@ function endOfSexp(data: {
     } else if (data.s.endsWith("`{") && data.delim === "Brace") {
         return endOfSubSexp({
             s: data.s,
+            length: 2,
             level: data.level,
             delimStack: data.delimStack,
             delimString: "`{",
@@ -343,6 +349,7 @@ function endOfSexp(data: {
     } else if (data.s.endsWith("'{") && data.delim === "Brace") {
         return endOfSubSexp({
             s: data.s,
+            length: 2,
             level: data.level,
             delimStack: data.delimStack,
             delimString: "'{",
@@ -350,11 +357,13 @@ function endOfSexp(data: {
     } else if (data.s.endsWith("{") && data.delim === "Brace") {
         return endOfSubSexp({
             s: data.s,
+            length: 1,
             level: data.level,
             delimStack: data.delimStack,
             delimString: "{",
         });
     } else if (data.s.endsWith('"') && data.delim === "Quote") {
+        data.delimStack.pop();
         const newLevel = data.level - 1;
         if (newLevel === 0) {
             return '"';
@@ -384,9 +393,6 @@ function parseInSexp(data: {
     currSexpDelim: Delimiter;
     delimString: string;
 }): string {
-    if (data.delim) {
-        data.delimStack.push(data.delim);
-    }
     data.delimStack.push(data.currSexpDelim);
     return (
         parseSexpToLeft(data.delimStack, data.s.slice(0, -1), data.level + 1) +
@@ -408,10 +414,6 @@ function addDelimAndContinue(data: {
     level: number;
     delimString: string;
 }): string {
-    if (data.delim) {
-        data.delimStack.push(data.delim);
-    }
-    data.delimStack.push(data.delim ? data.delim : "Any");
     return (
         parseSexpToLeft(data.delimStack, data.s.slice(0, -1), data.level) +
         data.delimString
@@ -427,10 +429,12 @@ function addDelimAndContinue(data: {
  */
 function endOfSubSexp(data: {
     s: string;
+    length: number;
     level: number;
     delimStack: Delimiter[];
     delimString: string;
 }): string {
+    data.delimStack.pop();
     const newLevel = data.level - 1;
     if (newLevel === 0) {
         return data.delimString;
@@ -438,8 +442,8 @@ function endOfSubSexp(data: {
         return (
             parseSexpToLeft(
                 data.delimStack,
-                data.s.slice(0, -1),
-                data.level - 1
+                data.s.slice(0, -data.length),
+                newLevel
             ) + data.delimString
         );
     }
