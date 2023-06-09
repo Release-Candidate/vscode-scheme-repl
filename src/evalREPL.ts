@@ -17,12 +17,23 @@ import * as h from "./helpers";
 import * as sexp from "./sexps";
 import * as vscode from "vscode";
 
+/**
+ * Returns a list of identifiers beginning with the string `prefix` or
+ * `undefined` if no such identifier exists.
+ * Runs the function `evalIdentifiers(prefix)` in a REPL with `document` loaded
+ * to get all local identifiers.
+ * @param env The needed environment.
+ * @param document The source file.
+ * @param prefix The string to search for.
+ * @returns A list of identifiers beginning with the string `prefix` or
+ * `undefined` if no such identifier exists.
+ */
 // eslint-disable-next-line max-statements
 export async function evalGetIds(
     env: h.Env,
     document: vscode.TextDocument,
     prefix: string
-) {
+): Promise<string[] | undefined> {
     env.outChannel.appendLine(`Searching for completions of ${prefix}`);
     const out = await runREPLCommand(
         env.config,
@@ -44,7 +55,6 @@ export async function evalGetIds(
     } else {
         env.outChannel.appendLine(`Got no completions for ${prefix}`);
     }
-
     return undefined;
 }
 

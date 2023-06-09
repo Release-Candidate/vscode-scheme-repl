@@ -38,6 +38,12 @@ export type FunctionDoc = {
     description: string;
 };
 
+/**
+ * Return `true`, if an identifier with name `id` exists in `l`, `false` else.
+ * @param id The identifier to search for in `l`.
+ * @param l The list of identifiers to search.
+ * @returns `true`, if an identifier with name `id` exists in `l`, `false` else.
+ */
 export function isIdInList(id: string, l: FunctionDoc[]) {
     for (const e of l) {
         if (e.name.trimEnd() === id) {
