@@ -118,6 +118,22 @@ export const evalLast = "evalLastSexp";
 export const expandLast = "expandLastSexp";
 
 /**
+ * Return a Chez Scheme function to get a list of local identifiers starting
+ * with `prefix`.
+ * @param prefix The substring to search for in the list of identifiers.
+ * @returns a Chez Scheme function to get a list of local identifiers starting
+ * with `prefix`.
+ */
+export function evalIdentifiers(prefix: string): string {
+    return `(filter
+      (lambda (x)
+        (cond
+          [(symbol? x) (equal? "${prefix}" (substring (symbol->string x) 0 ${prefix.length}))]
+          [else #f]))
+      (apropos-list "${prefix}" (interaction-environment)))`;
+}
+
+/**
  ******************************************************************************
  *  Color constants.
  */

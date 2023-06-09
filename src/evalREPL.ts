@@ -17,6 +17,37 @@ import * as h from "./helpers";
 import * as sexp from "./sexps";
 import * as vscode from "vscode";
 
+// eslint-disable-next-line max-statements
+export async function evalGetIds(
+    env: h.Env,
+    document: vscode.TextDocument,
+    prefix: string
+) {
+    env.outChannel.appendLine(`Searching for completions of ${prefix}`);
+    const out = await runREPLCommand(
+        env.config,
+        document,
+        c.evalIdentifiers(prefix)
+    );
+    if (out.error || out.stderr) {
+        env.outChannel.appendLine(
+            `Completion output error: ${out.error ? out.error : ""} ${
+                out.stderr ? out.stderr : ""
+            }\nusing ${c.evalIdentifiers(prefix)}`
+        );
+    } else if (out.stdout) {
+        const match = out.stdout ? out.stdout.match(/>\n\((.+)\)\s*$/su) : "";
+        const response = match ? match[1].trim() : "";
+        const outArr = response.split(/\s+/gu);
+        env.outChannel.appendLine(`Got completions: ${outArr}`);
+        return outArr;
+    } else {
+        env.outChannel.appendLine(`Got no completions for ${prefix}`);
+    }
+
+    return undefined;
+}
+
 /**
  * Evaluate the sexp to the left of the cursor and print the result inline using
  * a decoration.
@@ -97,7 +128,11 @@ async function evalSexp(
         vscodeCommand: string;
     }
 ): Promise<void> {
-    const out = await runREPLCommand(env.config, data.editor, data.exp.sexp);
+    const out = await runREPLCommand(
+        env.config,
+        data.editor.document,
+        data.exp.sexp
+    );
     if (out.stderr) {
         const errMsg = out.stderr.trim();
         decor.addEditorDecoration({
@@ -128,14 +163,14 @@ async function evalSexp(
  * Return the output of the Chez REPL after loading the file of `editor` and
  * evaluating `exp`.
  * @param config The extension's configuration.
- * @param editor The source code containing the sexp to evaluate.
+ * @param document The source code containing the sexp to evaluate.
  * @param exp The sexp to evaluate.
  * @returns The output of the Chez REPL after loading the file of `editor` and
  * evaluating `exp`.
  */
 async function runREPLCommand(
     config: vscode.WorkspaceConfiguration,
-    editor: vscode.TextEditor,
+    document: vscode.TextDocument,
     exp: string
 ): Promise<h.Output> {
     const root = await h.askForWorkspace("Scheme");
@@ -143,6 +178,6 @@ async function runREPLCommand(
         root: root ? root.uri.fsPath : "./",
         args: [c.replQuietArg],
         cmd: c.getCfgREPLPath(config),
-        input: c.replLoadFileAndSexp(editor.document.fileName, exp),
+        input: c.replLoadFileAndSexp(document.fileName, exp),
     });
 }

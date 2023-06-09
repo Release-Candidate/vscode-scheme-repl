@@ -81,7 +81,8 @@ async function setupExtension(env: h.Env) {
 
     const completionSubscription =
         vscode.languages.registerCompletionItemProvider(c.languageName, {
-            provideCompletionItems,
+            provideCompletionItems: (document, position) =>
+                provideCompletionItems(env, document, position),
         });
     env.context.subscriptions.push(completionSubscription);
 
@@ -132,24 +133,38 @@ function provideHover(
 
 /**
  * Return a list of completions of the partial identifier at `position`.
+ * @param env The needed environment.
  * @param document The current document containing the source code.
  * @param position The position of the partial identifier to complete.
  * @returns a list of completions of the partial identifier at `position`.
  */
-function provideCompletionItems(
+async function provideCompletionItems(
+    env: h.Env,
     document: vscode.TextDocument,
     position: vscode.Position
-): vscode.CompletionItem[] {
+): Promise<vscode.CompletionItem[]> {
     const word = h.getWordAtPosition(document, position);
     const wordRegex = new RegExp(
         `^[(]?${h.escapeRegexp(h.fromMaybe(word, ""))}(:?.*)?[)]?$`,
         "u"
     );
-    const funcIDs = word
-        ? functionDocs.filter((id) => id.name.match(wordRegex))
-        : functionDocs;
-    const completions = funcIDs.map((id) => iD.functionDocToCompletionItem(id));
-    return completions;
+    if (word) {
+        const funcIDs = functionDocs.filter((id) => id.name.match(wordRegex));
+        const completions = funcIDs.map((id) =>
+            iD.functionDocToCompletionItem(id)
+        );
+        const local = await eR.evalGetIds(env, document, word);
+        if (local) {
+            local.forEach((id) => {
+                if (!iD.isIdInList(id, funcIDs)) {
+                    completions.push(new vscode.CompletionItem(id));
+                }
+            });
+        }
+        return completions;
+    } else {
+        return functionDocs.map((id) => iD.functionDocToCompletionItem(id));
+    }
 }
 
 /**

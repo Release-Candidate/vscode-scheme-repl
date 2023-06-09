@@ -8,6 +8,8 @@
 ;; ==============================================================================
 #!chezscheme
 
+(import (test test-lib))
+
 (machine-type)
 
 ;; Code formatting of documentation
@@ -28,7 +30,6 @@
 (define (f x)
   (* 8 x))
 
-(apropos-list 'f (interaction-environment))
 
 (f 5)
 
@@ -51,13 +52,6 @@ y
 (f 9)
 
 (environment-symbols (interaction-environment))
-(apropos-list 'real?)
+(get-identifiers "get-i")
 
 (define url-list-of-forms "https://cisco.github.io/ChezScheme/csug9.5/summary.html")
-
-(filter
-  (lambda (x)
-    (cond
-      [(symbol? x) (eqv? "f" (substring (symbol->string x) 0 1))]
-      [else #f]))
-  (apropos-list 'f (interaction-environment)))

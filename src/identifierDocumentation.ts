@@ -38,6 +38,15 @@ export type FunctionDoc = {
     description: string;
 };
 
+export function isIdInList(id: string, l: FunctionDoc[]) {
+    for (const e of l) {
+        if (e.name.trimEnd() === id) {
+            return true;
+        }
+    }
+    return false;
+}
+
 /**
  * Convert the given `IdentifierType` to a `CompletionItemKind`.
  * @param identifierType The `IdentifierType` to convert.
