@@ -19,21 +19,20 @@ import * as vscode from "vscode";
 
 /**
  * Returns a list of identifiers beginning with the string `prefix` or
- * `undefined` if no such identifier exists.
+ * the empty list `[]` if no such identifier exists.
  * Runs the function `evalIdentifiers(prefix)` in a REPL with `document` loaded
  * to get all local identifiers.
  * @param env The needed environment.
  * @param document The source file.
  * @param prefix The string to search for.
  * @returns A list of identifiers beginning with the string `prefix` or
- * `undefined` if no such identifier exists.
+ * the empty list `[]` if no such identifier exists.
  */
-// eslint-disable-next-line max-statements
 export async function evalGetIds(
     env: h.Env,
     document: vscode.TextDocument,
     prefix: string
-): Promise<string[] | undefined> {
+): Promise<string[]> {
     env.outChannel.appendLine(`Searching for completions of ${prefix}`);
     const out = await runREPLCommand(
         env.config,
@@ -42,20 +41,17 @@ export async function evalGetIds(
     );
     if (out.error || out.stderr) {
         env.outChannel.appendLine(
-            `Completion output error: ${out.error ? out.error : ""} ${
-                out.stderr ? out.stderr : ""
-            }\nusing ${c.evalIdentifiers(prefix)}`
+            `Completion error: ${h.fromMaybe(out.error, "")} ${h.fromMaybe(
+                out.stderr,
+                ""
+            )}\nusing ${c.evalIdentifiers(prefix)}`
         );
-    } else if (out.stdout) {
-        const match = out.stdout ? out.stdout.match(/>\n\((.+)\)\s*$/su) : "";
-        const response = match ? match[1].trim() : "";
-        const outArr = response.split(/\s+/gu);
-        env.outChannel.appendLine(`Got completions: ${outArr}`);
-        return outArr;
-    } else {
-        env.outChannel.appendLine(`Got no completions for ${prefix}`);
     }
-    return undefined;
+    const match = out.stdout ? out.stdout.match(/>\n\((.+)\)\s*$/su) : "";
+    const response = match ? match[1].trim() : "";
+    const outArr = response.split(/\s+/gu);
+    env.outChannel.appendLine(`Got completions: ${outArr}`);
+    return outArr;
 }
 
 /**

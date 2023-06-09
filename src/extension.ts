@@ -154,13 +154,11 @@ async function provideCompletionItems(
             iD.functionDocToCompletionItem(id)
         );
         const local = await eR.evalGetIds(env, document, word);
-        if (local) {
-            local.forEach((id) => {
-                if (!iD.isIdInList(id, funcIDs)) {
-                    completions.push(new vscode.CompletionItem(id));
-                }
-            });
-        }
+        local.forEach((id) => {
+            if (!iD.isIdInList(id, funcIDs)) {
+                completions.push(new vscode.CompletionItem(id));
+            }
+        });
         return completions;
     } else {
         return functionDocs.map((id) => iD.functionDocToCompletionItem(id));

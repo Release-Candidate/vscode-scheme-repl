@@ -110,10 +110,10 @@ export function escapeRegexp(text: string) {
 }
 
 /**
- * Return `def` if `s` if `undefined` or `null`, `def` else.
+ * Return `def` if `s` if `undefined` or `null`, `s` else.
  * @param s The object that can be either `undefined`/`null` or not.
  * @param def The value to return if `s` is `undefined` or `null`.
- * @returns `def` if `s` if `undefined` or `null`, `def` else.
+ * @returns `def` if `s` if `undefined` or `null`, `s` else.
  */
 export function fromMaybe<T>(s: Maybe<T>, def: T): T {
     return s ? s : def;
