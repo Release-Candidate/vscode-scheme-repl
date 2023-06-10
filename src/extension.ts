@@ -208,6 +208,7 @@ function redrawDecorations(editor: vscode.TextEditor, env: h.Env): void {
  * Register all commands that the extension provides with VS Code.
  * @param env The needed environment of the extension.
  */
+// eslint-disable-next-line max-statements
 function registerCommands(env: h.Env): void {
     const replCommand = vscode.commands.registerCommand(
         `${c.cfgSection}.${c.startREPLCommand}`,
@@ -237,6 +238,8 @@ function registerCommands(env: h.Env): void {
     registerTextEditorCommand(env, c.evalSelection, eR.evalSelectedSexp);
 
     registerTextEditorCommand(env, c.sendFileToREPL, pR.sendFileToRepl);
+
+    registerTextEditorCommand(env, c.checkFile, eR.loadFile);
 
     env.outChannel.appendLine(`Registered all commands`);
 }

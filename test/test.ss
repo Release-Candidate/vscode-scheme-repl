@@ -15,7 +15,7 @@
 (waiter-prompt-string "λ>")
 
 ;; Code formatting of documentation
-;; (with-output-to-string thunk)
+;;(with-output-to-string thunk)
 
 #vu8(255 0 255)
 
@@ -32,8 +32,7 @@
 (define (f x)
   (* 8 x))
 
-
-(f 5)
+(f 6)
 
 (define-syntax incr!
   (syntax-rules ()
@@ -51,7 +50,7 @@ y
 
 '(1 2 3 4)
 
-(f 9)
+(f 6)
 
 (environment-symbols (interaction-environment))
 (get-identifiers "get-i")

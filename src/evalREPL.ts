@@ -18,6 +18,27 @@ import * as sexp from "./sexps";
 import * as vscode from "vscode";
 
 /**
+ * Matches an exception with line and column printed.
+ * The line is saved in the match group `line`, the column is saved in group
+ * `col`.
+ */
+const lineColumnRegex =
+    /^\s*Exception.+\s+at\s+line\s+(?<line>\d+),\s+char\s+(?<col>\d+)\s+/mu;
+
+/**
+ * Matches an exception with character printed.
+ * The character's number is saved in the match group `char`.
+ */
+const characterRegex = /^\s*Exception.+\s+at\s+.+:(?<char>\d+)\s*>/mu;
+
+/**
+ * Matches an exception of type "variable FOO not bound".
+ * Saves the unbound identifier in the match group `name`.
+ */
+const notBoundRegex =
+    /^\s*Exception:\s+variable\s+(?<name>\S+)\s+is\s+not\s+bound\s+/mu;
+
+/**
  * Returns a list of identifiers beginning with the string `prefix` or
  * the empty list `[]` if no such identifier exists.
  * Runs the function `evalIdentifiers(prefix)` in a REPL with `document` loaded
@@ -54,6 +75,64 @@ export async function evalGetIds(
     const outArr = response.split(/\s+/gu);
     env.outChannel.appendLine(`Got completions: ${outArr}`);
     return outArr;
+}
+
+/**
+ * Try to load a file to the REPL and check for errors.
+ * Add the errors to the list of diagnostics.
+ * @param env The needed environment.
+ * @param editor The file to load.
+ */
+export async function loadFile(
+    env: h.Env,
+    editor: vscode.TextEditor
+): Promise<void> {
+    const out = await runREPLCommand(env.config, editor.document, "");
+    if (out.error) {
+        env.outChannel.appendLine(
+            `Error checking file ${editor.document.fileName}:\n${out.error}\nStderr: ${out.stderr}\nStdout: ${out.stdout}`
+        );
+    } else if (out.stderr) {
+        env.outChannel.appendLine(
+            `Checking file ${editor.document.fileName} yields error:\n${out.stderr}\nStdout: ${out.stdout}`
+        );
+        const errRange = parseError(out, editor);
+        env.diagnostics.set(editor.document.uri, [
+            {
+                message: out.stderr,
+                range: errRange,
+                severity: vscode.DiagnosticSeverity.Error,
+                source: c.diagnosticsCollName,
+            },
+        ]);
+    } else if (out.stdout) {
+        env.outChannel.appendLine(
+            `Checking file ${editor.document.fileName} successful:\n${out.stdout}`
+        );
+        env.diagnostics.delete(editor.document.uri);
+    }
+}
+
+// eslint-disable-next-line max-statements
+function parseError(out: h.Output, editor: vscode.TextEditor) {
+    const lineMatch = out.stderr?.match(lineColumnRegex);
+    const charMatch = out.stderr?.match(characterRegex);
+    const unboundMatch = out.stderr?.match(notBoundRegex);
+    let errRange = h.rangeFromPositions([0, 0], [0, 0]);
+    if (lineMatch) {
+        const line = lineMatch.groups ? Number(lineMatch.groups.line) - 1 : 0;
+        const col = lineMatch.groups ? Number(lineMatch.groups.col) - 1 : 0;
+        errRange = h.rangeFromPositions([line, col], [line, col]);
+    } else if (charMatch) {
+        const character = charMatch.groups ? Number(charMatch.groups.char) : 0;
+        errRange = h.rangeFromPositions([0, character], [0, character]);
+    } else if (unboundMatch) {
+        const unboundName = unboundMatch.groups ? unboundMatch.groups.name : "";
+        unboundName.at(0);
+        editor.document.getText();
+        out.stdout?.at(0);
+    }
+    return errRange;
 }
 
 /**
@@ -122,7 +201,7 @@ export async function evalSelectedSexp(
  * @param env The needed environment.
  * @param data The needed data.
  */
-// eslint-disable-next-line max-lines-per-function
+// eslint-disable-next-line max-lines-per-function, max-statements
 async function evalSexp(
     env: h.Env,
     data: {
@@ -141,6 +220,9 @@ async function evalSexp(
         data.editor.document,
         data.exp.sexp
     );
+    env.outChannel.appendLine(
+        `Sent ${data.exp.sexp} to REPL using command ${c.cfgSection}.${data.vscodeCommand}`
+    );
     if (out.stderr) {
         const errMsg = out.stderr.trim();
         decor.addEditorDecoration({
@@ -150,21 +232,29 @@ async function evalSexp(
             range: data.range,
             text: errMsg,
         });
+        decor.removeRange({
+            decorations: env.evalDecorations,
+            decoration: env.evalDecoration,
+            editor: data.editor,
+            range: data.range,
+        });
     } else {
         const match = out.stdout
             ? out.stdout.match(matchREPLResponse("(.+?)"))
             : "";
         const response = match ? match[1].trim() : "";
-        env.outChannel.appendLine(
-            `Sent ${data.exp.sexp} to REPL using command ${c.cfgSection}.${data.vscodeCommand}\nResponse was:\n${out.stdout}`
-        );
-
         decor.addEditorDecoration({
             editor: data.editor,
             evalDecoration: env.evalDecoration,
             evalDecorations: env.evalDecorations,
             range: data.range,
             text: response,
+        });
+        decor.removeRange({
+            decorations: env.evalErrorDecorations,
+            decoration: env.evalErrorDecoration,
+            editor: data.editor,
+            range: data.range,
         });
     }
 }

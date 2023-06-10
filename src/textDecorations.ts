@@ -245,11 +245,61 @@ export function addEditorDecoration(data: {
     const options = textEvalDecoration(data.text, data.range);
     const decoration = data.evalDecorations.get(data.editor.document);
     if (decoration) {
-        decoration.push(options);
+        addOrReplaceDecoration(decoration, options);
         data.evalDecorations.set(data.editor.document, decoration);
         data.editor.setDecorations(data.evalDecoration, decoration);
     } else {
         data.editor.setDecorations(data.evalDecoration, [options]);
         data.evalDecorations.set(data.editor.document, [options]);
+    }
+}
+
+/**
+ * Adds `options` to the list of decorations if no decoration with the same
+ * `Range` already exists. If such a decoration already exists in the list,
+ * replace it with `options`.
+ * @param decoration The list of decorations to alter.
+ * @param options The decoration to add or replace an existing decoration with.
+ */
+function addOrReplaceDecoration(
+    decoration: vscode.DecorationOptions[],
+    options: vscode.DecorationOptions
+) {
+    const sameRange = decoration.findIndex(
+        (d) =>
+            d.range.start.line === options.range.start.line &&
+            d.range.end.line === options.range.end.line
+    );
+    if (sameRange > -1) {
+        decoration[sameRange] = options;
+    } else {
+        decoration.push(options);
+    }
+}
+
+/**
+ * Remove the `editor`'s decoration with `Range` `range` from `decorations`, if
+ * there exists such a decoration.
+ * @param data The needed data.
+ */
+export function removeRange(data: {
+    decorations: WeakMap<vscode.TextDocument, vscode.DecorationOptions[]>;
+    decoration: vscode.TextEditorDecorationType;
+    editor: vscode.TextEditor;
+    range: vscode.Range;
+}) {
+    const maybeRemove = data.decorations.get(data.editor.document);
+    if (maybeRemove) {
+        const removeIDX = maybeRemove.findIndex(
+            (d) =>
+                d.range.start.line === data.range.start.line &&
+                d.range.end.line === data.range.end.line
+        );
+        if (removeIDX > -1) {
+            maybeRemove.splice(removeIDX, 1);
+            data.decorations.delete(data.editor.document);
+            data.decorations.set(data.editor.document, maybeRemove);
+            data.editor.setDecorations(data.decoration, maybeRemove);
+        }
     }
 }

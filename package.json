@@ -107,6 +107,10 @@
             {
                 "command": "chezScheme.expandLastSexp",
                 "title": "Chez Scheme REPL: Expand all macros in the s-expression left of the cursor."
+            },
+            {
+                "command": "chezScheme.checkFile",
+                "title": "Chez Scheme REPL: Check the current file for errors."
             }
         ],
         "snippets": [

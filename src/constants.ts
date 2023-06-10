@@ -74,7 +74,7 @@ export function setREPLPrompt(prompt: string): string {
  * `fileName` and evaluate `sexp`.
  */
 export function replLoadFileAndSexp(fileName: string, sexp: string): string {
-    return `(load "${fileName}" (lambda (x) (pretty-print x) (eval x)))\n${setREPLPrompt(
+    return `(load "${fileName}" (lambda (x) (pretty-print (if (annotation? x) (annotation-stripped x) x)) (newline) (eval x)))\n${setREPLPrompt(
         replPrompt
     )}\n ${sexp}`;
 }
@@ -154,6 +154,11 @@ export const evalLast = "evalLastSexp";
  * Expand all macros in the sexp left of the cursor.
  */
 export const expandLast = "expandLastSexp";
+
+/**
+ * Check the current file by loading it in the REPL.
+ */
+export const checkFile = "checkFile";
 
 /**
  ******************************************************************************
