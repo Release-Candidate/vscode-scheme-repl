@@ -34,6 +34,11 @@ export const outputChannelName = "Chez Scheme REPL";
 export const replTerminalName = "Chez Scheme REPL";
 
 /**
+ * The name of the diagnostics collection.
+ */
+export const diagnosticsCollName = "Chez Scheme REPL";
+
+/**
  * The command to start the Chez Scheme REPL.
  */
 export const replCommand = "scheme";
@@ -44,17 +49,50 @@ export const replCommand = "scheme";
 export const replQuietArg = "-q";
 
 /**
+ * The default interactive REPl prompt and the prompt of the "eval" REPL.
+ */
+export const replPrompt = "λ>";
+
+/**
+ * Return the Chez Scheme function to set the REPL prompt to `prompt`.
+ * @param prompt The string to use as prompt.
+ * @returns The Chez Scheme function to set the REPL prompt to `prompt`.
+ */
+export function setREPLPrompt(prompt: string): string {
+    return `(waiter-prompt-string "${prompt}")`;
+}
+
+/**
  * Return the command to send to a running Chez REPL to load the file
  * `fileName` and evaluate `sexp`.
  * The lambda to `load` helps in getting a bit of context about an error, if an
  * error occurs when loading `fileName`.
+ * Set the REPL prompt to `replPrompt`.
  * @param fileName The Scheme file to load.
  * @param sexp The sexp to evaluate in the REPL.
  * @returns The command to send to a running Chez REPL to load the file
  * `fileName` and evaluate `sexp`.
  */
 export function replLoadFileAndSexp(fileName: string, sexp: string): string {
-    return `(load "${fileName}" (lambda (x) (pretty-print x) (eval x))) ${sexp}`;
+    return `(load "${fileName}" (lambda (x) (pretty-print x) (eval x)))\n${setREPLPrompt(
+        replPrompt
+    )}\n ${sexp}`;
+}
+
+/**
+ * Return a Chez Scheme function to get a list of local identifiers starting
+ * with `prefix`.
+ * @param prefix The substring to search for in the list of identifiers.
+ * @returns a Chez Scheme function to get a list of local identifiers starting
+ * with `prefix`.
+ */
+export function evalIdentifiers(prefix: string): string {
+    return `(filter
+      (lambda (x)
+        (cond
+          [(symbol? x) (equal? "${prefix}" (substring (symbol->string x) 0 ${prefix.length}))]
+          [else #f]))
+      (apropos-list "${prefix}" (interaction-environment)))`;
 }
 
 /**
@@ -118,22 +156,6 @@ export const evalLast = "evalLastSexp";
 export const expandLast = "expandLastSexp";
 
 /**
- * Return a Chez Scheme function to get a list of local identifiers starting
- * with `prefix`.
- * @param prefix The substring to search for in the list of identifiers.
- * @returns a Chez Scheme function to get a list of local identifiers starting
- * with `prefix`.
- */
-export function evalIdentifiers(prefix: string): string {
-    return `(filter
-      (lambda (x)
-        (cond
-          [(symbol? x) (equal? "${prefix}" (substring (symbol->string x) 0 ${prefix.length}))]
-          [else #f]))
-      (apropos-list "${prefix}" (interaction-environment)))`;
-}
-
-/**
  ******************************************************************************
  *  Color constants.
  */
@@ -176,10 +198,32 @@ export const cfgREPLPath = "schemePath";
 export const cfgREPLDefaultPath = replCommand;
 
 /**
+ * The string to use as the Chez REPL prompt.
+ */
+export const cfgREPLPrompt = "waiterPrompt";
+
+export const cfgREPLDefaultPrompt = replPrompt;
+
+/**
  * Return the configuration value for `schemePath`.
  * @param config The configuration object to use.
  * @returns The configuration value for `schemePath`.
  */
 export function getCfgREPLPath(config: vscode.WorkspaceConfiguration) {
     return config.get<string>(cfgREPLPath) || cfgREPLDefaultPath;
+}
+
+/**
+ * Return the Chez Scheme function to set the REPL prompt to the configured
+ * value of for `waiterPrompt`.
+ * @param config The configuration object to use.
+ * @returns The Chez Scheme function to set the REPL prompt to the configured
+ * value of for `waiterPrompt`.
+ */
+export function getCfgREPLPromptFunction(
+    config: vscode.WorkspaceConfiguration
+) {
+    const promptString =
+        config.get<string>(cfgREPLPrompt) || cfgREPLDefaultPrompt;
+    return setREPLPrompt(promptString);
 }

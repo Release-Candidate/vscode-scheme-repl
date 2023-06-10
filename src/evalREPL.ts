@@ -47,7 +47,9 @@ export async function evalGetIds(
             )}\nusing ${c.evalIdentifiers(prefix)}`
         );
     }
-    const match = out.stdout ? out.stdout.match(/>\n\((.+)\)\s*$/su) : "";
+    const match = out.stdout
+        ? out.stdout.match(matchREPLResponse("\\((.*?)\\)"))
+        : "";
     const response = match ? match[1].trim() : "";
     const outArr = response.split(/\s+/gu);
     env.outChannel.appendLine(`Got completions: ${outArr}`);
@@ -149,10 +151,12 @@ async function evalSexp(
             text: errMsg,
         });
     } else {
-        const match = out.stdout ? out.stdout.match(/>([^>]+)$/u) : "";
+        const match = out.stdout
+            ? out.stdout.match(matchREPLResponse("(.+?)"))
+            : "";
         const response = match ? match[1].trim() : "";
         env.outChannel.appendLine(
-            `Sent ${data.exp.sexp} to REPL using command ${c.cfgSection}.${data.vscodeCommand}`
+            `Sent ${data.exp.sexp} to REPL using command ${c.cfgSection}.${data.vscodeCommand}\nResponse was:\n${out.stdout}`
         );
 
         decor.addEditorDecoration({
@@ -163,6 +167,18 @@ async function evalSexp(
             text: response,
         });
     }
+}
+
+/**
+ * Return a `RegExp` to parse the output of a REPL evaluation or completion.
+ * @param group The regexp string to match the actual result.
+ * @returns A `RegExp` to parse the output of a REPL evaluation or completion.
+ */
+function matchREPLResponse(group: string): RegExp {
+    return new RegExp(
+        `(?:${c.replPrompt}\\s+)+${group}\\n${c.replPrompt}\\s+$`,
+        "su"
+    );
 }
 
 /**

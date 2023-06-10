@@ -122,6 +122,11 @@
                     "type": "string",
                     "default": "scheme",
                     "markdownDescription": "Path to the Chez Scheme executable `scheme`. Can be either an absolute path or relative to the workspace root. Default: `scheme`, which works if `scheme` is in your `PATH`."
+                },
+                "chezScheme.waiterPrompt": {
+                    "type": "string",
+                    "default": "λ>",
+                    "markdownDescription": "Set the prompt string for the interactive REPL beside the editor. Default: `λ>`."
                 }
             }
         },

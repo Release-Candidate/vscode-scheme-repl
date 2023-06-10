@@ -12,6 +12,8 @@
 
 (machine-type)
 
+(waiter-prompt-string "λ>")
+
 ;; Code formatting of documentation
 ;; (with-output-to-string thunk)
 

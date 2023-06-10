@@ -24,6 +24,7 @@ export type Env = {
     config: vscode.WorkspaceConfiguration;
     outChannel: vscode.OutputChannel;
     context: vscode.ExtensionContext;
+    diagnostics: vscode.DiagnosticCollection;
     evalDecoration: vscode.TextEditorDecorationType;
     evalDecorations: WeakMap<vscode.TextDocument, vscode.DecorationOptions[]>;
     evalErrorDecoration: vscode.TextEditorDecorationType;

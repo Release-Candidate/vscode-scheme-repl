@@ -212,5 +212,6 @@ export async function createREPL(
     });
     terminal.sendText(`${c.getCfgREPLPath(config)}`);
     await help.sleep(c.replSleepTime);
+    terminal.sendText(`${c.getCfgREPLPromptFunction(config)}`);
     return terminal;
 }

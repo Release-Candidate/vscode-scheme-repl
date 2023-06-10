@@ -42,10 +42,15 @@ export async function activate(context: vscode.ExtensionContext) {
         vscode.DecorationOptions[]
     >();
 
+    const diagnostics = vscode.languages.createDiagnosticCollection(
+        c.diagnosticsCollName
+    );
+
     await setupExtension({
         config,
         context,
         outChannel,
+        diagnostics,
         evalDecoration: decor.getEvalDecorationStyle(),
         evalDecorations,
         evalErrorDecoration: decor.getEvalErrorDecorationStyle(),
