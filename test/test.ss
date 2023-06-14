@@ -50,8 +50,6 @@ y
 
 '(1 2 3 4)
 
-(f 6)
-
 (environment-symbols (interaction-environment))
 (get-identifiers "get-i")
 

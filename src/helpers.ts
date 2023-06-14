@@ -100,14 +100,43 @@ export async function sleep(ms: number) {
 const escapeRegex = /[.*+?^${}()|[\]\\]/gu;
 
 /**
+ * Regex to whitespace.
+ */
+const whitespaceRegex = /[\s]+/gu;
+
+/**
+ * Regex that matches left parens, brackets or braces.
+ */
+const parenRegexLeft = /[\]{<]|(?:\\\()/gu;
+
+/**
+ * Regex that matches right parens, brackets or braces.
+ */
+const parenRegexRight = /[\]}>]|(?:\\\))/gu;
+
+/**
  * Return the string `text` with all special characters escaped, for use in a
  * `RegExp`.
  * @param text The string to escape all special characters in.
  * @returns The string `text` with all special characters escaped, for use in a
  * `RegExp`.
  */
-export function escapeRegexp(text: string) {
+export function escapeRegexp(text: string): string {
     return text.replace(escapeRegex, "\\$&");
+}
+
+/**
+ * Return the given string `text` with all potential places of whitespace
+ * replaced with a whitespace regex `\\s*`.
+ * @param text The string to process.
+ * @returns The given string `text` with all potential places of whitespace
+ * replaced with a whitespace regex `\\s*`.
+ */
+export function makeWhitespaceGeneric(text: string): string {
+    return text
+        .replace(whitespaceRegex, "\\s+")
+        .replace(parenRegexLeft, "$&\\s*")
+        .replace(parenRegexRight, "\\s*$&");
 }
 
 /**
@@ -268,6 +297,26 @@ export function rangeFromPositions(
 }
 
 /**
+ * Return the line and column of the character with index `charIndex` in `text`.
+ * Return `{ startLine: 0; startCol: 0 }` if something goes wrong, like an empty
+ * string for `text`. Lines and columns start at zero (`0`), not one (`1`).
+ * @param charIndex The index of the character in `text`.
+ * @param text The string to get the position of `charIndex` as line and column.
+ * @returns The line and column of the character with index `charIndex` in `text`.
+ */
+export function getLineColFromCharIndex(
+    charIndex: number,
+    text: string
+): { startLine: number; startCol: number } {
+    const before = text.slice(0, charIndex);
+    const lastNewlineIdx = before.lastIndexOf("\n");
+    const startCol = charIndex - (lastNewlineIdx < 0 ? 0 : lastNewlineIdx + 1);
+    const startLine = before.split("\n").length - 1;
+
+    return { startLine, startCol };
+}
+
+/**
  * Return the start position (line and column/character) of `end` in `text`.
  * The prerequisite is that `end` does not end in whitespace, as whitespace is
  * trimmed from `text`.
@@ -282,10 +331,5 @@ export function getStartPosition(
     const trimmed = text.trimEnd();
     const whitespaceDiff = text.length - trimmed.length;
     const idx = text.length - end.length - whitespaceDiff;
-    const before = text.slice(0, idx);
-    const lastNewlineIdx = before.lastIndexOf("\n");
-    const startCol = idx - (lastNewlineIdx < 0 ? 0 : lastNewlineIdx + 1);
-    const startLine = before.split("\n").length - 1;
-
-    return { startLine, startCol };
+    return getLineColFromCharIndex(idx, text);
 }

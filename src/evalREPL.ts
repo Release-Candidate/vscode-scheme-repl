@@ -26,17 +26,43 @@ const lineColumnRegex =
     /^\s*Exception.+\s+at\s+line\s+(?<line>\d+),\s+char\s+(?<col>\d+)\s+/mu;
 
 /**
- * Matches an exception with character printed.
+ * Matches an exception of type "wrong number of arguments".
+ * The function's name is saved in the group `name`.
  * The character's number is saved in the match group `char`.
  */
-const characterRegex = /^\s*Exception.+\s+at\s+.+:(?<char>\d+)\s*>/mu;
+const wrongNumArgRegex =
+    /^\s*Exception:\s+incorrect\s+number.+\s+arguments.+procedure\s+(?<name>\S+)\s+at\s+.+:(?<char>\d+)\s*>/mu;
 
 /**
  * Matches an exception of type "variable FOO not bound".
  * Saves the unbound identifier in the match group `name`.
  */
 const notBoundRegex =
-    /^\s*Exception:\s+variable\s+(?<name>\S+)\s+is\s+not\s+bound\s+/mu;
+    /^\s*Exception:\s+variable\s+(?<name>\S+)\s+is\s+not\s+bound/mu;
+
+/**
+ * Matches an exception of type "non-procedure called".
+ * The name of the identifier, which isn't the name of a function is saved in
+ * the match group `func`.
+ */
+const applyNonProcRegex =
+    /^\s*Exception:\s+.+apply\s+non-procedure\s+(?<func>.*)/mu;
+
+/**
+ * Matches an exception of type "not an environment".
+ * The function's name which's argument should be an environment is saved in the
+ * match group `func`.
+ * The value, which isn't an environment is saved in the match group `val`.
+ */
+const notAnEnvRegex =
+    /^\s*Exception\s+in\s+(?<func>.*?):\s+(?<val>.*?)\s+is\s+not\s+an\s+environment/mu;
+
+/**
+ * Regex to match the last (real) expression in the output of the `load`
+ * function of the REPL.
+ * The last expression is saved in the match group `last`.
+ */
+const lastExprRegex = /\n(?<last>[^\n]+)\s+(\S?\S?\S?[>%@#$~^&])\s\2?\s?\n*$/su;
 
 /**
  * Returns a list of identifiers beginning with the string `prefix` or
@@ -96,10 +122,10 @@ export async function loadFile(
         env.outChannel.appendLine(
             `Checking file ${editor.document.fileName} yields error:\n${out.stderr}\nStdout: ${out.stdout}`
         );
-        const errRange = parseError(out, editor);
+        const errRange = parseError(out, editor.document.getText());
         env.diagnostics.set(editor.document.uri, [
             {
-                message: out.stderr,
+                message: `${out.stderr}\nThe error has been thrown at the end of:\n${out.stdout}`,
                 range: errRange,
                 severity: vscode.DiagnosticSeverity.Error,
                 source: c.diagnosticsCollName,
@@ -113,26 +139,108 @@ export async function loadFile(
     }
 }
 
-// eslint-disable-next-line max-statements
-function parseError(out: h.Output, editor: vscode.TextEditor) {
+// eslint-disable-next-line max-statements, max-lines-per-function
+export function parseError(out: h.Output, text: string): vscode.Range {
     const lineMatch = out.stderr?.match(lineColumnRegex);
-    const charMatch = out.stderr?.match(characterRegex);
     const unboundMatch = out.stderr?.match(notBoundRegex);
-    let errRange = h.rangeFromPositions([0, 0], [0, 0]);
-    if (lineMatch) {
-        const line = lineMatch.groups ? Number(lineMatch.groups.line) - 1 : 0;
-        const col = lineMatch.groups ? Number(lineMatch.groups.col) - 1 : 0;
-        errRange = h.rangeFromPositions([line, col], [line, col]);
-    } else if (charMatch) {
-        const character = charMatch.groups ? Number(charMatch.groups.char) : 0;
-        errRange = h.rangeFromPositions([0, character], [0, character]);
-    } else if (unboundMatch) {
-        const unboundName = unboundMatch.groups ? unboundMatch.groups.name : "";
-        unboundName.at(0);
-        editor.document.getText();
-        out.stdout?.at(0);
+    const nonProcMatch = out.stderr?.match(applyNonProcRegex);
+    const notEnvMatch = out.stderr?.match(notAnEnvRegex);
+    if (lineMatch?.groups) {
+        const line = Number(lineMatch.groups.line) - 1;
+        const col = Number(lineMatch.groups.col) - 1;
+        return h.rangeFromPositions([line, col], [line, col]);
+    } else if (unboundMatch?.groups) {
+        const inTextRegex = new RegExp(
+            `(${h.escapeRegexp(unboundMatch.groups.name)})`,
+            "dsu"
+        );
+        const inText = text.match(inTextRegex);
+        // eslint-disable-next-line max-depth
+        if (inText?.indices) {
+            const lineColS = h.getLineColFromCharIndex(
+                inText.indices[1][0],
+                text
+            );
+            const lineColE = h.getLineColFromCharIndex(
+                inText.indices[1][1],
+                text
+            );
+            return h.rangeFromPositions(
+                [lineColS.startLine, lineColS.startCol],
+                [lineColE.startLine, lineColE.startCol]
+            );
+        }
+    } else if (notEnvMatch?.groups) {
+        const notEnvFunc = notEnvMatch.groups.func;
+        const notEnvVal = notEnvMatch.groups.val;
+        const inTextRegex = new RegExp(
+            `\\((${notEnvFunc}\\s+(?!.*${notEnvFunc}.*?\\s+${notEnvVal})(?:.+\\s+)?${notEnvVal})`,
+            "dsu"
+        );
+        const inText = text.match(inTextRegex);
+        // eslint-disable-next-line max-depth
+        if (inText?.indices) {
+            const lineColS = h.getLineColFromCharIndex(
+                inText.indices[1][0],
+                text
+            );
+            const lineColE = h.getLineColFromCharIndex(
+                inText.indices[1][1],
+                text
+            );
+            return h.rangeFromPositions(
+                [lineColS.startLine, lineColS.startCol],
+                [lineColE.startLine, lineColE.startCol]
+            );
+        }
+    } else if (nonProcMatch?.groups) {
+        const nonProcName = nonProcMatch.groups.func;
+        const inTextRegex = new RegExp(`\\(\\s*(${nonProcName})`, "dsu");
+        const inText = text.match(inTextRegex);
+        // eslint-disable-next-line max-depth
+        if (inText?.indices) {
+            const lineColS = h.getLineColFromCharIndex(
+                inText.indices[1][0],
+                text
+            );
+            const lineColE = h.getLineColFromCharIndex(
+                inText.indices[1][1],
+                text
+            );
+            return h.rangeFromPositions(
+                [lineColS.startLine, lineColS.startCol],
+                [lineColE.startLine, lineColE.startCol]
+            );
+        }
     }
-    return errRange;
+    if (out.stdout) {
+        const lastMatch = out.stdout.match(lastExprRegex);
+        if (lastMatch?.groups?.last) {
+            const inTextRegex = new RegExp(
+                `(${h.makeWhitespaceGeneric(
+                    h.escapeRegexp(lastMatch?.groups?.last)
+                )})`,
+                "dsu"
+            );
+            const inText = text.match(inTextRegex);
+            // eslint-disable-next-line max-depth
+            if (inText?.indices) {
+                const lineColS = h.getLineColFromCharIndex(
+                    inText.indices[1][0],
+                    text
+                );
+                const lineColE = h.getLineColFromCharIndex(
+                    inText.indices[1][1],
+                    text
+                );
+                return h.rangeFromPositions(
+                    [lineColS.startLine, lineColS.startCol],
+                    [lineColE.startLine, lineColE.startCol]
+                );
+            }
+        }
+    }
+    return h.rangeFromPositions([0, 0], [0, 0]);
 }
 
 /**
