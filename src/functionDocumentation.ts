@@ -4,7 +4,7 @@
  *
  * Project:  vscode-scheme-repl
  * File:     functionDocumentation.ts
- * Date:     25.5.2023
+ * Date:     14.6.2023
  *
  * ==============================================================================
  * The Chez Scheme user's guide is licensed under the Apache License Version 2:
@@ -1981,9 +1981,9 @@ As implied by the names of the arguments, \`=\` is defined for complex arguments
 `
     },
     {
-        name: "(abort)",
-        startParen: false,
-        endParen: false,
+        name: "abort",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -2435,9 +2435,9 @@ Annotation-options enumeration sets may be passed to \`make-annotation\` to cont
 `
     },
     {
-        name: "(append)",
-        startParen: false,
-        endParen: false,
+        name: "append",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs base)", "(rnrs)"],
@@ -3976,9 +3976,9 @@ Two identifiers that are \`free-identifier=?\` may not be \`bound-identifier=?\`
 `
     },
     {
-        name: "(break)",
-        startParen: false,
-        endParen: false,
+        name: "break",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -4081,9 +4081,9 @@ The value of this parameter must be a procedure. The current break handler is ca
 `
     },
     {
-        name: "(bytes-allocated)",
-        startParen: false,
-        endParen: false,
+        name: "bytes-allocated",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -4111,9 +4111,9 @@ If *\`g\`* is supplied, \`bytes-allocated\` returns the number of bytes currentl
 `
     },
     {
-        name: "(bytes-deallocated)",
-        startParen: false,
-        endParen: false,
+        name: "bytes-deallocated",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -8657,9 +8657,9 @@ A character is alphabetic if it has the Unicode "Alphabetic" property, numeric i
 `
     },
     {
-        name: "(char-ready?)",
-        startParen: false,
-        endParen: false,
+        name: "char-ready?",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -9174,9 +9174,9 @@ These predicates behave in a similar manner to the numeric predicates \`=\`, \`<
 `
     },
     {
-        name: "(clear-input-port)",
-        startParen: false,
-        endParen: false,
+        name: "clear-input-port",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -9204,9 +9204,9 @@ If *\`input-port\`* is not supplied, it defaults to the current input port. This
 `
     },
     {
-        name: "(clear-output-port)",
-        startParen: false,
-        endParen: false,
+        name: "clear-output-port",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -9280,9 +9280,9 @@ If *\`port\`* is not already closed, \`close-port\` closes it, first flushing an
 `
     },
     {
-        name: "(collect)",
-        startParen: false,
-        endParen: false,
+        name: "collect",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -9408,9 +9408,9 @@ If \`collect-notify\` is set to a true value, the collector prints a message whe
 `
     },
     {
-        name: "(collect-rendezvous)",
-        startParen: false,
-        endParen: false,
+        name: "collect-rendezvous",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -9455,9 +9455,9 @@ This parameter determines the approximate amount of storage that is allowed to b
 `
     },
     {
-        name: "(collections)",
-        startParen: false,
-        endParen: false,
+        name: "collections",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -9480,9 +9480,9 @@ This parameter determines the approximate amount of storage that is allowed to b
 `
     },
     {
-        name: "(command-line)",
-        startParen: false,
-        endParen: false,
+        name: "command-line",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs programs)", "(rnrs)"],
@@ -11148,9 +11148,9 @@ and count on the introduce \`let\` expression to be eliminated if \`e\` turns ou
 `
     },
     {
-        name: "(cpu-time)",
-        startParen: false,
-        endParen: false,
+        name: "cpu-time",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -11163,9 +11163,9 @@ See also \`current-time\`, which returns more precise information. <br>
 `
     },
     {
-        name: "(create-exception-state)",
-        startParen: false,
-        endParen: false,
+        name: "create-exception-state",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -11230,9 +11230,9 @@ The use of \`dynamic-wind\` ensures that interrupts are disabled whenever the bo
 `
     },
     {
-        name: "(current-date)",
-        startParen: false,
-        endParen: false,
+        name: "current-date",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -11312,9 +11312,9 @@ When invoked without arguments, \`current-directory\` returns a string represent
 `
     },
     {
-        name: "(current-error-port)",
-        startParen: false,
-        endParen: false,
+        name: "current-error-port",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs io ports)", "(rnrs io simple)", "(rnrs)"],
@@ -11381,9 +11381,9 @@ The values returned by \`current-input-port\` and \`current-output-port\` can be
 `
     },
     {
-        name: "(current-input-port)",
-        startParen: false,
-        endParen: false,
+        name: "current-input-port",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs io ports)", "(rnrs io simple)", "(rnrs)"],
@@ -11429,9 +11429,9 @@ Adjust this parameter to, for example, eagerly convert a position integer to a f
 `
     },
     {
-        name: "(current-memory-bytes)",
-        startParen: false,
-        endParen: false,
+        name: "current-memory-bytes",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -11456,9 +11456,9 @@ Adjust this parameter to, for example, eagerly convert a position integer to a f
 `
     },
     {
-        name: "(current-output-port)",
-        startParen: false,
-        endParen: false,
+        name: "current-output-port",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs io ports)", "(rnrs io simple)", "(rnrs)"],
@@ -11475,9 +11475,9 @@ The values returned by \`current-input-port\` and \`current-output-port\` can be
 `
     },
     {
-        name: "(current-time)",
-        startParen: false,
-        endParen: false,
+        name: "current-time",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -11575,9 +11575,9 @@ If *\`offset\`* is not provided to \`time-utc->date\`, then the current time zon
 `
     },
     {
-        name: "(date-and-time)",
-        startParen: false,
-        endParen: false,
+        name: "date-and-time",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -12147,9 +12147,9 @@ Daylight Saving Time status for the current time zone and a name string for the 
 `
     },
     {
-        name: "(debug)",
-        startParen: false,
-        endParen: false,
+        name: "debug",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -12961,9 +12961,9 @@ If *\`rat\`* is an integer, including zero, the denominator is one. <br>
 `
     },
     {
-        name: "(directory-separator)",
-        startParen: false,
-        endParen: false,
+        name: "directory-separator",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -12989,9 +12989,9 @@ The character \`#\\/\` is a directory separator on all current machine types, an
 `
     },
     {
-        name: "(disable-interrupts)",
-        startParen: false,
-        endParen: false,
+        name: "disable-interrupts",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -13068,9 +13068,9 @@ If *\`textual-output-port\`* is not supplied, it defaults to the current output 
 `
     },
     {
-        name: "(display-statistics)",
-        startParen: false,
-        endParen: false,
+        name: "display-statistics",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -13565,9 +13565,9 @@ This parameter controls whether information is included with the object code for
 `
     },
     {
-        name: "(enable-interrupts)",
-        startParen: false,
-        endParen: false,
+        name: "enable-interrupts",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -13620,9 +13620,9 @@ One strategy for collecting object counts with minimal overhead is to enable obj
 `
     },
     {
-        name: "(engine-block)",
-        startParen: false,
-        endParen: false,
+        name: "engine-block",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -14139,9 +14139,9 @@ This procedure returns a list of symbols representing the identifiers bound in e
 `
     },
     {
-        name: "(eof-object)",
-        startParen: false,
-        endParen: false,
+        name: "eof-object",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs io ports)", "(rnrs io simple)", "(rnrs)"],
@@ -15097,9 +15097,9 @@ The lists *\`list1\`*\` \`*\`list2\`*\` ...\` must be of the same length. *\`pro
 `
     },
     {
-        name: "(exit)",
-        startParen: false,
-        endParen: false,
+        name: "exit",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs programs)", "(rnrs)"],
@@ -16063,9 +16063,9 @@ If a program must distinguish between finding \`#f\` in the list and finding no 
 `
     },
     {
-        name: "(fixnum-width)",
-        startParen: false,
-        endParen: false,
+        name: "fixnum-width",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs arithmetic fixnums)", "(rnrs)"],
@@ -17872,9 +17872,9 @@ The two expressions are identical except that the inner \`let-syntax\` form in t
 `
     },
     {
-        name: "(flush-output-port)",
-        startParen: false,
-        endParen: false,
+        name: "flush-output-port",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -18459,9 +18459,9 @@ Two identifiers that are \`free-identifier=?\` may not be \`bound-identifier=?\`
 `
     },
     {
-        name: "(fresh-line)",
-        startParen: false,
-        endParen: false,
+        name: "fresh-line",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -21714,9 +21714,9 @@ Transformers can introduce a fixed number of identifiers into their output by na
 `
     },
     {
-        name: "(gensym)",
-        startParen: false,
-        endParen: false,
+        name: "gensym",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -22051,9 +22051,9 @@ An implementation of \`format\` (Section ) might be written using string-output 
 `
     },
     {
-        name: "(get-process-id)",
-        startParen: false,
-        endParen: false,
+        name: "get-process-id",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -22234,9 +22234,9 @@ If the port is in nonblocking mode, this procedure reads no more than it can wit
 `
     },
     {
-        name: "(get-thread-id)",
-        startParen: false,
-        endParen: false,
+        name: "get-thread-id",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -22309,9 +22309,9 @@ If *\`binary-input-port\`* is at end of file, the eof object is returned. Otherw
 `
     },
     {
-        name: "(greatest-fixnum)",
-        startParen: false,
-        endParen: false,
+        name: "greatest-fixnum",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs arithmetic fixnums)", "(rnrs)"],
@@ -23678,9 +23678,9 @@ With the first form of \`identifier-syntax\`, an apparent assignment of the asso
 `
     },
     {
-        name: "(ieee-environment)",
-        startParen: false,
-        endParen: false,
+        name: "ieee-environment",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -23929,9 +23929,9 @@ An implementation-restriction condition indicates that the program has attempted
 `
     },
     {
-        name: "(implicit-exports #t)",
-        startParen: false,
-        endParen: false,
+        name: "implicit-exports #t",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "syntax",
         moduleNames: ["(chezscheme)"],
@@ -23947,9 +23947,9 @@ The advantage of \`(implicit-exports #t)\` is that indirect exports need not be 
 `
     },
     {
-        name: "(implicit-exports #f)",
-        startParen: false,
-        endParen: false,
+        name: "implicit-exports #f",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "syntax",
         moduleNames: ["(chezscheme)"],
@@ -24420,9 +24420,9 @@ These are alternative names for \`inexact\` and \`exact\`, supported for compati
 `
     },
     {
-        name: "(initial-bytes-allocated)",
-        startParen: false,
-        endParen: false,
+        name: "initial-bytes-allocated",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -24890,9 +24890,9 @@ cons => #<procedure cons>
 `
     },
     {
-        name: "(interactive?)",
-        startParen: false,
-        endParen: false,
+        name: "interactive?",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -25092,9 +25092,9 @@ Conditions of this type are usually included with a \`&message\` condition to pr
 `
     },
     {
-        name: "(latin-1-codec)",
-        startParen: false,
-        endParen: false,
+        name: "latin-1-codec",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs io ports)", "(rnrs)"],
@@ -25133,9 +25133,9 @@ The result is always nonnegative, i.e., common multiples of -1 are ignored. Alth
 `
     },
     {
-        name: "(least-fixnum)",
-        startParen: false,
-        endParen: false,
+        name: "least-fixnum",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs arithmetic fixnums)", "(rnrs)"],
@@ -25575,9 +25575,9 @@ The initial values of these parameters are shown below. <br>
 `
     },
     {
-        name: "(library-list)",
-        startParen: false,
-        endParen: false,
+        name: "library-list",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -26769,9 +26769,9 @@ If *\`binary-input-port\`* is at end of file, the eof object is returned. Otherw
 `
     },
     {
-        name: "(machine-type)",
-        startParen: false,
-        endParen: false,
+        name: "machine-type",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -26847,9 +26847,9 @@ The annotation is formed with *\`obj\`* as its expression component, *\`source-o
 `
     },
     {
-        name: "(make-assertion-violation)",
-        startParen: false,
-        endParen: false,
+        name: "make-assertion-violation",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs conditions)", "(rnrs)"],
@@ -27033,9 +27033,9 @@ prec => *exception: invalid syntax prec* <br>
 `
     },
     {
-        name: "(make-condition)",
-        startParen: false,
-        endParen: false,
+        name: "make-condition",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -27090,9 +27090,9 @@ This condition type can be included within a compound condition to indicate the 
 `
     },
     {
-        name: "(make-cost-center)",
-        startParen: false,
-        endParen: false,
+        name: "make-cost-center",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -27324,9 +27324,9 @@ This procedure creates a new enumeration type whose universe comprises the eleme
 `
     },
     {
-        name: "(make-ephemeron-eq-hashtable)",
-        startParen: false,
-        endParen: false,
+        name: "make-ephemeron-eq-hashtable",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -27374,9 +27374,9 @@ A copy of an ephemeron eq or eqv hashtable created by \`hashtable-copy\` is also
 `
     },
     {
-        name: "(make-ephemeron-eqv-hashtable)",
-        startParen: false,
-        endParen: false,
+        name: "make-ephemeron-eqv-hashtable",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -27424,9 +27424,9 @@ A copy of an ephemeron eq or eqv hashtable created by \`hashtable-copy\` is also
 `
     },
     {
-        name: "(make-eq-hashtable)",
-        startParen: false,
-        endParen: false,
+        name: "make-eq-hashtable",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs hashtables)", "(rnrs)"],
@@ -27470,9 +27470,9 @@ An eq hashtable compares keys using the \`eq?\` (pointer equality) procedure and
 `
     },
     {
-        name: "(make-eqv-hashtable)",
-        startParen: false,
-        endParen: false,
+        name: "make-eqv-hashtable",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs hashtables)", "(rnrs)"],
@@ -27502,9 +27502,9 @@ An eqv hashtable compares keys using the \`eqv?\` procedure and typically employ
 `
     },
     {
-        name: "(make-error)",
-        startParen: false,
-        endParen: false,
+        name: "make-error",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs conditions)", "(rnrs)"],
@@ -27526,9 +27526,9 @@ Conditions of this type indicate that an error has occurred with the program's i
 `
     },
     {
-        name: "(make-format-condition)",
-        startParen: false,
-        endParen: false,
+        name: "make-format-condition",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -27617,9 +27617,9 @@ It might also come from source outside of Scheme such as from a C routine called
 `
     },
     {
-        name: "(make-guardian)",
-        startParen: false,
-        endParen: false,
+        name: "make-guardian",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -27738,9 +27738,9 @@ With a bit of refactoring, it would be possible to register the encapsulated for
 `
     },
     {
-        name: "(make-hash-table)",
-        startParen: false,
-        endParen: false,
+        name: "make-hash-table",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -27861,9 +27861,9 @@ The final two condition types describe conditions that occur when implementation
 `
     },
     {
-        name: "(make-i/o-error)",
-        startParen: false,
-        endParen: false,
+        name: "make-i/o-error",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs io ports)", "(rnrs io simple)", "(rnrs files)", "(rnrs)"],
@@ -28067,9 +28067,9 @@ A condition of this type is usually included with a condition of one of the othe
 `
     },
     {
-        name: "(make-i/o-read-error)",
-        startParen: false,
-        endParen: false,
+        name: "make-i/o-read-error",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs io ports)", "(rnrs io simple)", "(rnrs files)", "(rnrs)"],
@@ -28091,9 +28091,9 @@ This condition type indicates that an error has occurred while reading from a po
 `
     },
     {
-        name: "(make-i/o-write-error)",
-        startParen: false,
-        endParen: false,
+        name: "make-i/o-write-error",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs io ports)", "(rnrs io simple)", "(rnrs files)", "(rnrs)"],
@@ -28115,9 +28115,9 @@ This condition type indicates that an error has occurred while writing to a port
 `
     },
     {
-        name: "(make-implementation-restriction-violation)",
-        startParen: false,
-        endParen: false,
+        name: "make-implementation-restriction-violation",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs conditions)", "(rnrs)"],
@@ -28197,9 +28197,9 @@ Conditions of this type are usually included with a \`&message\` condition to pr
 `
     },
     {
-        name: "(make-lexical-violation)",
-        startParen: false,
-        endParen: false,
+        name: "make-lexical-violation",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs conditions)", "(rnrs)"],
@@ -28294,9 +28294,9 @@ Conditions of this type are usually included with a \`&warning\` condition or on
 `
     },
     {
-        name: "(make-mutex)",
-        startParen: false,
-        endParen: false,
+        name: "make-mutex",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -28324,9 +28324,9 @@ Conditions of this type are usually included with a \`&warning\` condition or on
 `
     },
     {
-        name: "(make-no-infinities-violation)",
-        startParen: false,
-        endParen: false,
+        name: "make-no-infinities-violation",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs arithmetic flonums)", "(rnrs)"],
@@ -28349,9 +28349,9 @@ This condition indicates that the implementation has no representation for infin
 `
     },
     {
-        name: "(make-no-nans-violation)",
-        startParen: false,
-        endParen: false,
+        name: "make-no-nans-violation",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs arithmetic flonums)", "(rnrs)"],
@@ -28377,9 +28377,9 @@ ISBN 978-0-262-51298-5 / LOC QA76.73.S34D93<br>
 `
     },
     {
-        name: "(make-non-continuable-violation)",
-        startParen: false,
-        endParen: false,
+        name: "make-non-continuable-violation",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs conditions)", "(rnrs)"],
@@ -28738,9 +28738,9 @@ x => #<low quality blue marble>
 `
     },
     {
-        name: "(make-serious-condition)",
-        startParen: false,
-        endParen: false,
+        name: "make-serious-condition",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs conditions)", "(rnrs)"],
@@ -28849,9 +28849,9 @@ To compute the checksum encapsulated in the source-file descriptor, this procedu
 `
     },
     {
-        name: "(make-source-table)",
-        startParen: false,
-        endParen: false,
+        name: "make-source-table",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -29061,9 +29061,9 @@ Most built-in parameters are thread parameters, but some are global. All are mar
 `
     },
     {
-        name: "(make-undefined-violation)",
-        startParen: false,
-        endParen: false,
+        name: "make-undefined-violation",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs conditions)", "(rnrs)"],
@@ -29159,9 +29159,9 @@ As described in the lead-in to this section, transformers may simply be procedur
 `
     },
     {
-        name: "(make-violation)",
-        startParen: false,
-        endParen: false,
+        name: "make-violation",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs conditions)", "(rnrs)"],
@@ -29183,9 +29183,9 @@ Conditions of this type indicate that the program has violated some requirement,
 `
     },
     {
-        name: "(make-warning)",
-        startParen: false,
-        endParen: false,
+        name: "make-warning",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs conditions)", "(rnrs)"],
@@ -29207,9 +29207,9 @@ Warning conditions indicate situations that do not prevent the program from cont
 `
     },
     {
-        name: "(make-weak-eq-hashtable)",
-        startParen: false,
-        endParen: false,
+        name: "make-weak-eq-hashtable",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -29259,9 +29259,9 @@ A copy of a weak eq or eqv hashtable created by \`hashtable-copy\` is also weak.
 `
     },
     {
-        name: "(make-weak-eqv-hashtable)",
-        startParen: false,
-        endParen: false,
+        name: "make-weak-eqv-hashtable",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -29390,9 +29390,9 @@ This procedure directly marks the port closed so that no further input or output
 `
     },
     {
-        name: "(maximum-memory-bytes)",
-        startParen: false,
-        endParen: false,
+        name: "maximum-memory-bytes",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -30451,9 +30451,9 @@ The result of \`remainder\` has the same sign as *\`int1\`*, while the result of
 `
     },
     {
-        name: "(most-negative-fixnum)",
-        startParen: false,
-        endParen: false,
+        name: "most-negative-fixnum",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -30467,9 +30467,9 @@ These procedures are identical to the Revised Report \`greatest-fixnum\` and \`l
 `
     },
     {
-        name: "(most-positive-fixnum)",
-        startParen: false,
-        endParen: false,
+        name: "most-positive-fixnum",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -30766,9 +30766,9 @@ Mutexes are in Posix threads terminology, which means that the calling thread ca
 `
     },
     {
-        name: "(native-endianness)",
-        startParen: false,
-        endParen: false,
+        name: "native-endianness",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs bytevectors)", "(rnrs)"],
@@ -30786,9 +30786,9 @@ The return value is the symbol \`little\`, the symbol \`big\`, or some other end
 `
     },
     {
-        name: "(native-eol-style)",
-        startParen: false,
-        endParen: false,
+        name: "native-eol-style",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs io ports)", "(rnrs)"],
@@ -30800,9 +30800,9 @@ The native eol style is implementation-dependent and may vary by platform or loc
 `
     },
     {
-        name: "(native-transcoder)",
-        startParen: false,
-        endParen: false,
+        name: "native-transcoder",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs io ports)", "(rnrs)"],
@@ -30839,9 +30839,9 @@ The native transcoder is implementation-dependent and may vary by platform or lo
 `
     },
     {
-        name: "(new-cafe)",
-        startParen: false,
-        endParen: false,
+        name: "new-cafe",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -30867,9 +30867,9 @@ The native transcoder is implementation-dependent and may vary by platform or lo
 `
     },
     {
-        name: "(newline)",
-        startParen: false,
-        endParen: false,
+        name: "newline",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs io simple)", "(rnrs)"],
@@ -31401,9 +31401,9 @@ If *\`rat\`* is an integer, the numerator is *\`rat\`*. <br>
 `
     },
     {
-        name: "(object-counts)",
-        startParen: false,
-        endParen: false,
+        name: "object-counts",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -31433,9 +31433,9 @@ The association list returned by \`object-counts\` has the following structure: 
 `
     },
     {
-        name: "(oblist)",
-        startParen: false,
-        endParen: false,
+        name: "oblist",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -31569,9 +31569,9 @@ There is no need to close a bytevector port; it's storage will be reclaimed auto
 `
     },
     {
-        name: "(open-bytevector-output-port)",
-        startParen: false,
-        endParen: false,
+        name: "open-bytevector-output-port",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs io ports)", "(rnrs)"],
@@ -32171,9 +32171,9 @@ The following shows the use of \`open-output-file\` to write a list of objects (
 `
     },
     {
-        name: "(open-output-string)",
-        startParen: false,
-        endParen: false,
+        name: "open-output-string",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -32269,9 +32269,9 @@ There is no need to close a string port; it's storage will be reclaimed automati
 `
     },
     {
-        name: "(open-string-output-port)",
-        startParen: false,
-        endParen: false,
+        name: "open-string-output-port",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs io ports)", "(rnrs)"],
@@ -32961,9 +32961,9 @@ while the second can be produced (under Windows) with: <br>
 `
     },
     {
-        name: "(peek-char)",
-        startParen: false,
-        endParen: false,
+        name: "peek-char",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs io simple)", "(rnrs)"],
@@ -32991,9 +32991,9 @@ If *\`textual-input-port\`* is not supplied, it defaults to the current input po
 `
     },
     {
-        name: "(petite?)",
-        startParen: false,
-        endParen: false,
+        name: "petite?",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -34062,9 +34062,9 @@ A \`profile\` form has the effect of accounting to the source position identifie
 `
     },
     {
-        name: "(profile-clear)",
-        startParen: false,
-        endParen: false,
+        name: "profile-clear",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -34076,9 +34076,9 @@ Calling this procedure causes profile information to be cleared, i.e., the count
 `
     },
     {
-        name: "(profile-clear-database)",
-        startParen: false,
-        endParen: false,
+        name: "profile-clear-database",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -34091,9 +34091,9 @@ This procedure clears the compiler's profile database. It has no impact on the c
 `
     },
     {
-        name: "(profile-dump)",
-        startParen: false,
-        endParen: false,
+        name: "profile-dump",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -34139,9 +34139,9 @@ This procedure writes, in a machine-readable form consumable by \`profile-load-d
 `
     },
     {
-        name: "(profile-dump-html)",
-        startParen: false,
-        endParen: false,
+        name: "profile-dump-html",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -34187,9 +34187,9 @@ This procedure produces one or more HTML files, including profile.html, which co
 `
     },
     {
-        name: "(profile-dump-list)",
-        startParen: false,
-        endParen: false,
+        name: "profile-dump-list",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -34346,9 +34346,9 @@ A weight is a flonum in the range 0.0 to 1.0, inclusive, and denotes the ratio o
 `
     },
     {
-        name: "(profile-release-counters)",
-        startParen: false,
-        endParen: false,
+        name: "profile-release-counters",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -35200,9 +35200,9 @@ The \`real?\`, \`rational?\`, and \`integer?\` predicates do not recognize as re
 `
     },
     {
-        name: "(read)",
-        startParen: false,
-        endParen: false,
+        name: "read",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs io simple)", "(rnrs)"],
@@ -35230,9 +35230,9 @@ If *\`textual-input-port\`* is not supplied, it defaults to the current input po
 `
     },
     {
-        name: "(read-char)",
-        startParen: false,
-        endParen: false,
+        name: "read-char",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs io simple)", "(rnrs)"],
@@ -35260,9 +35260,9 @@ If *\`textual-input-port\`* is not supplied, it defaults to the current input po
 `
     },
     {
-        name: "(read-token)",
-        startParen: false,
-        endParen: false,
+        name: "read-token",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -35473,9 +35473,9 @@ If *\`num\`* is real, \`real-part\` returns *\`num\`*. <br>
 `
     },
     {
-        name: "(real-time)",
-        startParen: false,
-        endParen: false,
+        name: "real-time",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -37236,9 +37236,9 @@ These identifiers are auxiliary keywords for \`import\` and \`import-only\`. It 
 `
     },
     {
-        name: "(reset)",
-        startParen: false,
-        endParen: false,
+        name: "reset",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -37278,9 +37278,9 @@ The value of this parameter must be a procedure and should accept zero arguments
 `
     },
     {
-        name: "(reset-maximum-memory-bytes!)",
-        startParen: false,
-        endParen: false,
+        name: "reset-maximum-memory-bytes!",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -37506,9 +37506,9 @@ The procedure \`sc-expand\` is used to expand programs written using \`syntax-ca
 `
     },
     {
-        name: "(scheme-environment)",
-        startParen: false,
-        endParen: false,
+        name: "scheme-environment",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -37598,9 +37598,9 @@ To have any effect, this parameter must be set within a boot file. (See Chapter 
 `
     },
     {
-        name: "(scheme-version)",
-        startParen: false,
-        endParen: false,
+        name: "scheme-version",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -37618,9 +37618,9 @@ for . <br>
 `
     },
     {
-        name: "(scheme-version-number)",
-        startParen: false,
-        endParen: false,
+        name: "scheme-version-number",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -39319,9 +39319,9 @@ Implementations are encouraged, but not required, to return exact results for ex
 `
     },
     {
-        name: "(standard-error-port)",
-        startParen: false,
-        endParen: false,
+        name: "standard-error-port",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -39370,9 +39370,9 @@ The Revised Report version of this procedure does not accept the optional *\`b-m
 `
     },
     {
-        name: "(standard-error-port)",
-        startParen: false,
-        endParen: false,
+        name: "standard-error-port",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs io ports)", "(rnrs)"],
@@ -39389,9 +39389,9 @@ Because ports may be buffered, confusion can result if operations on more than o
 `
     },
     {
-        name: "(standard-input-port)",
-        startParen: false,
-        endParen: false,
+        name: "standard-input-port",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -39440,9 +39440,9 @@ The Revised Report version of this procedure does not accept the optional *\`b-m
 `
     },
     {
-        name: "(standard-input-port)",
-        startParen: false,
-        endParen: false,
+        name: "standard-input-port",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs io ports)", "(rnrs)"],
@@ -39459,9 +39459,9 @@ Because ports may be buffered, confusion can result if operations on more than o
 `
     },
     {
-        name: "(standard-output-port)",
-        startParen: false,
-        endParen: false,
+        name: "standard-output-port",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -39510,9 +39510,9 @@ The Revised Report version of this procedure does not accept the optional *\`b-m
 `
     },
     {
-        name: "(standard-output-port)",
-        startParen: false,
-        endParen: false,
+        name: "standard-output-port",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs io ports)", "(rnrs)"],
@@ -39529,9 +39529,9 @@ Because ports may be buffered, confusion can result if operations on more than o
 `
     },
     {
-        name: "(statistics)",
-        startParen: false,
-        endParen: false,
+        name: "statistics",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -42477,9 +42477,9 @@ These procedures return the output buffer, size, or index of the output port. Th
 `
     },
     {
-        name: "(threaded?)",
-        startParen: false,
-        endParen: false,
+        name: "threaded?",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -43325,9 +43325,9 @@ The following transcript demonstrates the use of \`trace\` in an interactive ses
 `
     },
     {
-        name: "(trace)",
-        startParen: false,
-        endParen: false,
+        name: "trace",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "syntax",
         moduleNames: ["(chezscheme)"],
@@ -43685,9 +43685,9 @@ As a side effect of creating the textual port, *\`binary-port\`* is closed to pr
 `
     },
     {
-        name: "(transcript-off)",
-        startParen: false,
-        endParen: false,
+        name: "transcript-off",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -44367,9 +44367,9 @@ The first call to \`square-minus-one\` indicates there is an error, the second (
 `
     },
     {
-        name: "(untrace)",
-        startParen: false,
-        endParen: false,
+        name: "untrace",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "syntax",
         moduleNames: ["(chezscheme)"],
@@ -44416,9 +44416,9 @@ The first call to \`square-minus-one\` indicates there is an error, the second (
 `
     },
     {
-        name: "(utf-16-codec)",
-        startParen: false,
-        endParen: false,
+        name: "utf-16-codec",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -44462,9 +44462,9 @@ The codecs returned by \`utf-16le-codec\` and \`utf-16be-codec\` are used to rea
 `
     },
     {
-        name: "(utf-16-codec)",
-        startParen: false,
-        endParen: false,
+        name: "utf-16-codec",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs io ports)", "(rnrs)"],
@@ -44479,9 +44479,9 @@ The codecs returned by \`utf-16le-codec\` and \`utf-16be-codec\` are used to rea
 `
     },
     {
-        name: "(utf-16be-codec)",
-        startParen: false,
-        endParen: false,
+        name: "utf-16be-codec",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -44502,9 +44502,9 @@ The codecs returned by \`utf-16le-codec\` and \`utf-16be-codec\` are used to rea
 `
     },
     {
-        name: "(utf-16le-codec)",
-        startParen: false,
-        endParen: false,
+        name: "utf-16le-codec",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -44525,9 +44525,9 @@ The codecs returned by \`utf-16le-codec\` and \`utf-16be-codec\` are used to rea
 `
     },
     {
-        name: "(utf-8-codec)",
-        startParen: false,
-        endParen: false,
+        name: "utf-8-codec",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(rnrs io ports)", "(rnrs)"],
@@ -45119,9 +45119,9 @@ Conditions of this type indicate that the program has violated some requirement,
 `
     },
     {
-        name: "(virtual-register-count)",
-        startParen: false,
-        endParen: false,
+        name: "virtual-register-count",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],
@@ -45168,9 +45168,9 @@ The return value is the value of the last expression whose last non-revisit comp
 `
     },
     {
-        name: "(void)",
-        startParen: false,
-        endParen: false,
+        name: "void",
+        startParen: true,
+        endParen: true,
         params: [""],
         type: "procedure",
         moduleNames: ["(chezscheme)"],

@@ -250,7 +250,17 @@ function parseTR(tr: HTMLTableRowElement): FunctionDoc {
             endParen,
         }));
     } else {
-        name = stringOrEmpty(nameElems[0].textContent);
+        const tmpName = stringOrEmpty(nameElems[0].textContent).trim();
+        startParen = tmpName.startsWith("(");
+        endParen = tmpName.endsWith(")");
+        // eslint-disable-next-line no-nested-ternary
+        name = startParen
+            ? endParen
+                ? tmpName.slice(1).slice(0, -1)
+                : tmpName.slice(1)
+            : endParen
+            ? tmpName.slice(0, -1)
+            : tmpName;
     }
     const url = new URL(
         // eslint-disable-next-line no-magic-numbers, dot-notation
@@ -288,7 +298,7 @@ function parseParamsAndName(data: {
     params: string[];
     endParen: boolean;
 }): { startParen: boolean; name: string; endParen: boolean } {
-    const tmpName = stringOrEmpty(data.nameElems[0].textContent);
+    const tmpName = stringOrEmpty(data.nameElems[0].textContent).trimStart();
     data.startParen = tmpName.startsWith("(");
     data.name = data.startParen ? tmpName.slice(1) : tmpName;
 
