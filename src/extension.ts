@@ -72,6 +72,8 @@ async function setupExtension(env: h.Env) {
     );
     env.context.subscriptions.push(editorChangedSubscription);
 
+    subscribeOnSave(env);
+
     const symbolSubscription = vscode.languages.registerDocumentSymbolProvider(
         c.languageName,
         { provideDocumentSymbols }
@@ -92,6 +94,24 @@ async function setupExtension(env: h.Env) {
     env.context.subscriptions.push(completionSubscription);
 
     registerCommands(env);
+}
+
+/**
+ * Check Chez Scheme source files on save.
+ * @param env The extension's environment.
+ */
+function subscribeOnSave(env: h.Env): void {
+    const onSaveSub = vscode.workspace.onDidSaveTextDocument((d) => {
+        if (d.languageId === c.languageName) {
+            const editorToSave = vscode.window.visibleTextEditors.find(
+                (ed) => ed.document === d
+            );
+            if (editorToSave) {
+                eR.loadFile(env, editorToSave);
+            }
+        }
+    });
+    env.context.subscriptions.push(onSaveSub);
 }
 
 /**

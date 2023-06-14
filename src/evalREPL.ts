@@ -26,14 +26,6 @@ const lineColumnRegex =
     /^\s*Exception.+\s+at\s+line\s+(?<line>\d+),\s+char\s+(?<col>\d+)\s+/mu;
 
 /**
- * Matches an exception of type "wrong number of arguments".
- * The function's name is saved in the group `name`.
- * The character's number is saved in the match group `char`.
- */
-const wrongNumArgRegex =
-    /^\s*Exception:\s+incorrect\s+number.+\s+arguments.+procedure\s+(?<name>\S+)\s+at\s+.+:(?<char>\d+)\s*>/mu;
-
-/**
  * Matches an exception of type "variable FOO not bound".
  * Saves the unbound identifier in the match group `name`.
  */
@@ -139,36 +131,31 @@ export async function loadFile(
     }
 }
 
-// eslint-disable-next-line max-statements, max-lines-per-function
+/**
+ * Return the `Range` of the expression in the source file's content `text` that
+ * caused the error written to `out.stderr`.
+ * Returns the first Character `0,0` if no such expression has been found.
+ * @param out The output of the REPL when loading the source file.
+ * @param text The contents of the source file.
+ * @returns The `Range` of the expression in the source file's content `text` that
+ * caused the error written to `out.stderr`.
+ */
+// eslint-disable-next-line max-lines-per-function, max-statements
 export function parseError(out: h.Output, text: string): vscode.Range {
-    const lineMatch = out.stderr?.match(lineColumnRegex);
     const unboundMatch = out.stderr?.match(notBoundRegex);
     const nonProcMatch = out.stderr?.match(applyNonProcRegex);
     const notEnvMatch = out.stderr?.match(notAnEnvRegex);
+    const lineMatch = out.stderr?.match(lineColumnRegex);
     if (lineMatch?.groups) {
-        const line = Number(lineMatch.groups.line) - 1;
-        const col = Number(lineMatch.groups.col) - 1;
-        return h.rangeFromPositions([line, col], [line, col]);
-    } else if (unboundMatch?.groups) {
+        return getLineAndColumn(lineMatch);
+    } else if (unboundMatch?.groups?.name) {
         const inTextRegex = new RegExp(
             `(${h.escapeRegexp(unboundMatch.groups.name)})`,
             "dsu"
         );
-        const inText = text.match(inTextRegex);
-        // eslint-disable-next-line max-depth
-        if (inText?.indices) {
-            const lineColS = h.getLineColFromCharIndex(
-                inText.indices[1][0],
-                text
-            );
-            const lineColE = h.getLineColFromCharIndex(
-                inText.indices[1][1],
-                text
-            );
-            return h.rangeFromPositions(
-                [lineColS.startLine, lineColS.startCol],
-                [lineColE.startLine, lineColE.startCol]
-            );
+        const hasRange = searchInText(text, inTextRegex);
+        if (hasRange) {
+            return hasRange;
         }
     } else if (notEnvMatch?.groups) {
         const notEnvFunc = notEnvMatch.groups.func;
@@ -177,40 +164,16 @@ export function parseError(out: h.Output, text: string): vscode.Range {
             `\\((${notEnvFunc}\\s+(?!.*${notEnvFunc}.*?\\s+${notEnvVal})(?:.+\\s+)?${notEnvVal})`,
             "dsu"
         );
-        const inText = text.match(inTextRegex);
-        // eslint-disable-next-line max-depth
-        if (inText?.indices) {
-            const lineColS = h.getLineColFromCharIndex(
-                inText.indices[1][0],
-                text
-            );
-            const lineColE = h.getLineColFromCharIndex(
-                inText.indices[1][1],
-                text
-            );
-            return h.rangeFromPositions(
-                [lineColS.startLine, lineColS.startCol],
-                [lineColE.startLine, lineColE.startCol]
-            );
+        const hasRange = searchInText(text, inTextRegex);
+        if (hasRange) {
+            return hasRange;
         }
-    } else if (nonProcMatch?.groups) {
+    } else if (nonProcMatch?.groups?.func) {
         const nonProcName = nonProcMatch.groups.func;
         const inTextRegex = new RegExp(`\\(\\s*(${nonProcName})`, "dsu");
-        const inText = text.match(inTextRegex);
-        // eslint-disable-next-line max-depth
-        if (inText?.indices) {
-            const lineColS = h.getLineColFromCharIndex(
-                inText.indices[1][0],
-                text
-            );
-            const lineColE = h.getLineColFromCharIndex(
-                inText.indices[1][1],
-                text
-            );
-            return h.rangeFromPositions(
-                [lineColS.startLine, lineColS.startCol],
-                [lineColE.startLine, lineColE.startCol]
-            );
+        const hasRange = searchInText(text, inTextRegex);
+        if (hasRange) {
+            return hasRange;
         }
     }
     if (out.stdout) {
@@ -222,25 +185,50 @@ export function parseError(out: h.Output, text: string): vscode.Range {
                 )})`,
                 "dsu"
             );
-            const inText = text.match(inTextRegex);
-            // eslint-disable-next-line max-depth
-            if (inText?.indices) {
-                const lineColS = h.getLineColFromCharIndex(
-                    inText.indices[1][0],
-                    text
-                );
-                const lineColE = h.getLineColFromCharIndex(
-                    inText.indices[1][1],
-                    text
-                );
-                return h.rangeFromPositions(
-                    [lineColS.startLine, lineColS.startCol],
-                    [lineColE.startLine, lineColE.startCol]
-                );
+            const hasRange = searchInText(text, inTextRegex);
+            if (hasRange) {
+                return hasRange;
             }
         }
     }
     return h.rangeFromPositions([0, 0], [0, 0]);
+}
+
+/**
+ * Return the line number and column of the match `lineMatch`.
+ * `lineMatch` must have match groups `line` and `col`.
+ * @param lineMatch The successfully matched regexp.
+ * @returns The line number and column of the match `lineMatch`.
+ */
+function getLineAndColumn(lineMatch: RegExpMatchArray) {
+    const line = Number(lineMatch.groups?.line) - 1;
+    const col = Number(lineMatch.groups?.col) - 1;
+    return h.rangeFromPositions([line, col], [line, col]);
+}
+
+/**
+ * Return the `Range` of the regex `inTextRegex` in `text` if it matches, or
+ * `undefined`.
+ * @param text The source code to search in.
+ * @param inTextRegex The regex to match.
+ * @returns The `Range` of the regex `inTextRegex` in `text` if it matches, or
+ * `undefined`.
+ */
+function searchInText(
+    text: string,
+    inTextRegex: RegExp
+): vscode.Range | undefined {
+    const inText = text.match(inTextRegex);
+    // eslint-disable-next-line max-depth
+    if (inText?.indices) {
+        const lineColS = h.getLineColFromCharIndex(inText.indices[1][0], text);
+        const lineColE = h.getLineColFromCharIndex(inText.indices[1][1], text);
+        return h.rangeFromPositions(
+            [lineColS.startLine, lineColS.startCol],
+            [lineColE.startLine, lineColE.startCol]
+        );
+    }
+    return undefined;
 }
 
 /**
