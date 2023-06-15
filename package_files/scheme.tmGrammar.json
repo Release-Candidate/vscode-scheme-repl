@@ -86,23 +86,50 @@
             "patterns": [
                 {
                     "name": "constant.numeric.integer.binary.scheme",
-                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;])((:?#e)?#(b|2[rR])(:?#e)?[+-]?[01]+([esfdl][+-]?[01]*)?)(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;&])((:?#[eE])?#([bB]|2[rR])(:?#[eE])?[+-]?[01]+([eEsSfFdDlL][+-]?[01]*)?)(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "constant.numeric.integer.octal.scheme",
-                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;])((:?#e)?#(o|8[rR])(:?#e)?[+-]?[0-7]+([esfdl][+-]?[0-7]*)?)(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;&])((:?#[eE])?#([oO]|8[rR])(:?#[eE])?[+-]?[0-7]+([eEsSfFdDlL][+-]?[0-7]*)?)(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "constant.numeric.integer.decimal.scheme",
-                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;])((:?#e)?#?(d|10[rR])?(:?#e)?[+-]?[0-9]+([esfdl][+-]?[0-9]*)?)(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;&])((:?#[eE])?#?([dD]|10[rR])?(:?#[eE])?[+-]?[0-9]+([eEsSfFdDlL][+-]?[0-9]*)?)(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "constant.numeric.integer.hexadecimal.scheme",
-                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;])((:?#e)?#(x|16[rR])(:?#e)?[+-]?[0-9a-fA-F]+)(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;&])((:?#[eE])?#([xX]|16[rR])(:?#[eE])?[+-]?[0-9a-fA-F]+)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "constant.numeric.integer.radix-n.scheme",
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;&])((:?#[eE])?#[0-9][0-6]?[rR](:?#[eE])?[+-]?[0-9a-zA-Z]+)(?=[\\s#(\\[{)\\]},\"'`;])"
                 }
             ]
         },
-        "ratio": {},
+        "ratio": {
+            "patterns": [
+                {
+                    "name": "constant.numeric.rational.binary.scheme",
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;&])((:?#[eE])?#([bB]|2[rR])(:?#[eE])?[+-]?[01]+/[01]+([eEsSfFdDlL][+-]?[01]*)?)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "constant.numeric.rational.octal.scheme",
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;&])((:?#[eE])?#([oO]|8[rR])[+-]?(:?#[eE])?[+-]?[0-7]+/[0-7]+([eEsSfFdDlL][+-]?[0-7]*)?)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "constant.numeric.rational.decimal.scheme",
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;&])((:?#[eE])?#?([dD]|10[rR])?(:?#[eE])?[+-]?[0-9]+/[0-9]+([eEsSfFdDlL][+-]?[0-9]*)?)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "constant.numeric.rational.hexadecimal.scheme",
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;&])((:?#[eE])?#([xX]|16[rR])(:?#[eE])?[+-]?[0-9a-fA-F]+/[0-9a-fA-F]+)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "constant.numeric.rational.radix-n.scheme",
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;&])((:?#[eE])?#[0-9][0-6]?[rR](:?#[eE])?[+-]?[0-9a-zA-Z]+/[0-9a-zA-Z]+)(?=[\\s#(\\[{)\\]},\"'`;])"
+                }
+            ]
+        },
         "float": {},
         "complex": {},
         "boolean": {
@@ -110,9 +137,42 @@
             "match": "#(?:[tT](?:[rR][uU][eE])?|(?:[fF](?:[aA][lL][sS][eE])?))(?=[\\s#(\\[{)\\]},\"'`;])"
         },
         "vector": {},
-        "gensym": {},
-        "box": {},
-        "quoted": {},
+        "gensym": {
+            "patterns": [
+                {
+                    "name": "constant.language.gensym.scheme",
+                    "match": "#\\{\\s*\\S+\\s+\\S+\\s*\\}"
+                },
+                {
+                    "name": "constant.language.gensym.pretty.scheme",
+                    "match": "#:\\w+(?=[\\s#(\\[{)\\]},\"'`;])"
+                }
+            ]
+        },
+        "box": {
+            "name": "storage.modifier.box.scheme",
+            "match": "#&"
+        },
+        "quoted": {
+            "patterns": [
+                {
+                    "name": "keyword.operator.quote.scheme",
+                    "match": "('|(?<=\\(\\s*)quote\\s+)"
+                },
+                {
+                    "name": "keyword.operator.quasiquote.scheme",
+                    "match": "(`|(?<=\\(\\s*)quasiquote\\s+)"
+                },
+                {
+                    "name": "keyword.operator.unquote.scheme",
+                    "match": "(,(?!@)|(?<=\\(\\s*)unquote\\s+)"
+                },
+                {
+                    "name": "keyword.operator.unquote-splicing.scheme",
+                    "match": "(,@|(?<=\\(\\s*)unquote-splicing\\s+)"
+                }
+            ]
+        },
         "comment": {
             "patterns": [
                 { "include": "#line_comment" },
@@ -220,7 +280,7 @@
         },
         "comment_directive": {
             "begin": "(^[ \\t]+)?(?=#!)",
-            "end": "(?!\\G)",
+            "end": "(?!\\G)(?=[\\s#(\\[{)\\]},\"'`;])",
             "beginCaptures": {
                 "1": {
                     "name": "punctuation.whitespace.directive.leading.scheme"
@@ -230,7 +290,7 @@
                 {
                     "name": "storage.other.comment-directive.scheme",
                     "begin": "#!",
-                    "end": "\\s"
+                    "end": "\\S(?=[\\s#(\\[{)\\]},\"'`;])"
                 }
             ]
         }

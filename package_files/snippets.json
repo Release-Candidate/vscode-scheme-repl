@@ -103,5 +103,10 @@
         "prefix": ["#\\tab"],
         "description": "Insert the special character #\\tab",
         "body": ["#\\tab $0"]
+    },
+    "Special Sequence #!eof": {
+        "prefix": ["#!eof"],
+        "description": "Insert the special object #!eof.",
+        "body": ["#!eof $0"]
     }
 }

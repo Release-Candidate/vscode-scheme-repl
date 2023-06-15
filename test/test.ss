@@ -15,6 +15,10 @@
 ; sdf
 (import (test test-lib))
 
+( quote 5)
+
+(quasiquote (1.0 2.0 3.5))
+
 (machine-type)
 
 #\a
@@ -26,10 +30,24 @@
 #FalSE
 
 #o0156364
-#x#e-ff
-#e#xff
+#X#e-ff
+#E#xff
 #e#b-10110e100
 #2R#e10110
+#e#20rG43358
+
+#B1101/101
+#o0156364/725
+#X#e-ff/f65
+#E#xff/10
+#e#b-10110/1010f100
+#2R#e10110
+#e#20rG43358
+-125/125
+
+
+
+#2r110.1010f100
 
 (waiter-prompt-string "λ>")
 
@@ -43,6 +61,9 @@
 (+ 5 6)
 
 `#{g0 bcsfg5eq4e9b3h9o-a}
+'#:g4566
+
+'#&1568
 
 ;; Problem: documentation parts missing. Because the second part of the
 ;; documentation has it's own link name.
@@ -67,10 +88,12 @@ y
 (define (hugo x)
   (+ x x))
 
-'(1 2 3 4)
-
+'(1, 2, 3 ,@ 4)
+'(unquote-splicing (1 2 3))
 
 (environment-symbols (interaction-environment))
 (get-identifiers "get-i")
 
 (define url-list-of-forms "https://cisco.github.io/ChezScheme/csug9.5/summary.html")
+
+#!eof
