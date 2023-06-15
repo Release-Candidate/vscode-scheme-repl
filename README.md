@@ -26,6 +26,7 @@
 
 ## Features and drawbacks
 
+- Syntax highlighting.
 - Hover with documentation of all Chez Scheme identifiers.
 - Autocompletion with documentation of all Chez Scheme and local identifiers.
 - Interactive REPL pane to the side of the editor, with commands to send code to the REPL (see [Commands](#commands)).
@@ -45,7 +46,6 @@
 
 #### Suggested Additional VS Code Extensions
 
-- Syntax highlighting: [chez-scheme](https://marketplace.visualstudio.com/items?itemName=abhi18av-vscode.chez-scheme-vscode)
 - Structural editing (Paredit): [Strict Paredit](https://marketplace.visualstudio.com/items?itemName=ailisp.strict-paredit)
 - To display errors inline in the source: [Error Lens](https://marketplace.visualstudio.com/items?itemName=usernamehw.errorlens)
 

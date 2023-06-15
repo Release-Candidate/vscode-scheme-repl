@@ -1,0 +1,238 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "scopeName": "source.scheme",
+    "name": "Scheme",
+    "fileTypes": [".ss", ".sps", ".scm", ".sch", ".sls"],
+    "patterns": [
+        {
+            "include": "#comment"
+        },
+        {
+            "include": "#expression"
+        }
+    ],
+    "repository": {
+        "expression": {
+            "patterns": [
+                { "include": "#s_exp" },
+                { "include": "#constant_data" }
+            ]
+        },
+        "s_exp": {
+            "patterns": []
+        },
+        "constant_data": {
+            "patterns": [
+                { "include": "#string" },
+                { "include": "#character" },
+                { "include": "#number" },
+                { "include": "#boolean" },
+                { "include": "#vector" },
+                { "include": "#gensym" },
+                { "include": "#box" },
+                { "include": "#quoted" }
+            ]
+        },
+        "string": {
+            "name": "string.quoted.double",
+            "begin": "(\")(?<!\\\\)",
+            "beginCaptures": {
+                "1": {
+                    "name": "punctuation.definition.string.begin.scheme"
+                }
+            },
+            "end": "(\")(?<!\\\\)",
+            "endCaptures": {
+                "1": {
+                    "name": "punctuation.definition.string.end.scheme"
+                }
+            },
+            "patterns": [
+                {
+                    "name": "constant.character.escape.scheme",
+                    "match": "\\\\."
+                }
+            ]
+        },
+        "character": {
+            "patterns": [
+                { "include": "#normal_character" },
+                { "include": "#hex_character" },
+                { "include": "#special_character" }
+            ]
+        },
+        "normal_character": {
+            "name": "constant.character.scheme",
+            "match": "#\\\\\\w(?:(?<=[012])\\d\\d)?(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "hex_character": {
+            "name": "constant.character.hexadecimal.scheme",
+            "match": "#\\\\x[0-9A-Fa-f]+(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "special_character": {
+            "name": "constant.character.named.scheme",
+            "match": "#\\\\(?:nul|bel|ls|nel|rubout|vt|vtab|alarm|backspace|delete|esc|linefeed|newline|page|return|space|tab)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "number": {
+            "name": "constant.numeric.scheme",
+            "patterns": [
+                { "include": "#integer" },
+                { "include": "#ratio" },
+                { "include": "#float" },
+                { "include": "#complex" }
+            ]
+        },
+        "integer": {
+            "patterns": [
+                {
+                    "name": "constant.numeric.integer.binary.scheme",
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;])((:?#e)?#(b|2[rR])(:?#e)?[+-]?[01]+([esfdl][+-]?[01]*)?)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "constant.numeric.integer.octal.scheme",
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;])((:?#e)?#(o|8[rR])(:?#e)?[+-]?[0-7]+([esfdl][+-]?[0-7]*)?)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "constant.numeric.integer.decimal.scheme",
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;])((:?#e)?#?(d|10[rR])?(:?#e)?[+-]?[0-9]+([esfdl][+-]?[0-9]*)?)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "constant.numeric.integer.hexadecimal.scheme",
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;])((:?#e)?#(x|16[rR])(:?#e)?[+-]?[0-9a-fA-F]+)(?=[\\s#(\\[{)\\]},\"'`;])"
+                }
+            ]
+        },
+        "ratio": {},
+        "float": {},
+        "complex": {},
+        "boolean": {
+            "name": "constant.other.boolean.scheme",
+            "match": "#(?:[tT](?:[rR][uU][eE])?|(?:[fF](?:[aA][lL][sS][eE])?))(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "vector": {},
+        "gensym": {},
+        "box": {},
+        "quoted": {},
+        "comment": {
+            "patterns": [
+                { "include": "#line_comment" },
+                { "include": "#block_comment" },
+                { "include": "#datum_comment" },
+                { "include": "#comment_directive" }
+            ]
+        },
+        "line_comment": {
+            "begin": "(^[ \\t]+)?(?=;)",
+            "end": "(?!\\G)",
+            "beginCaptures": {
+                "1": { "name": "punctuation.whitespace.comment.leading.scheme" }
+            },
+            "patterns": [
+                {
+                    "name": "comment.line.semicolon.scheme",
+                    "begin": ";(?!;)",
+                    "end": "\\n",
+                    "beginCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.comment.scheme"
+                        }
+                    }
+                },
+                {
+                    "name": "comment.line.two-semicolon.scheme",
+                    "begin": ";;(?!;)",
+                    "end": "\\n",
+                    "beginCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.comment.scheme"
+                        }
+                    }
+                },
+                {
+                    "name": "markup.other",
+                    "begin": ";;;(?!;)",
+                    "end": "\\n",
+                    "beginCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.comment.scheme"
+                        }
+                    }
+                },
+                {
+                    "name": "markup.heading",
+                    "begin": ";;;;(?!;)",
+                    "end": "\\n",
+                    "beginCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.comment.scheme"
+                        }
+                    }
+                },
+                {
+                    "name": "markup.bold",
+                    "begin": ";;;;;",
+                    "end": "\\n",
+                    "beginCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.comment.scheme"
+                        }
+                    }
+                }
+            ]
+        },
+        "block_comment": {
+            "begin": "(^[ \\t]+)?(?=#\\|)",
+            "end": "(?!\\G)",
+            "beginCaptures": {
+                "1": { "name": "punctuation.whitespace.comment.leading.scheme" }
+            },
+            "patterns": [
+                {
+                    "name": "comment.block.scheme",
+                    "begin": "#\\|",
+                    "end": "\\|#",
+                    "beginCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.comment.scheme"
+                        }
+                    }
+                }
+            ]
+        },
+        "datum_comment": {
+            "begin": "(^[ \\t]+)?(?=#;)",
+            "end": "(?!\\G)",
+            "beginCaptures": {
+                "1": { "name": "punctuation.whitespace.comment.leading.scheme" }
+            },
+            "patterns": [
+                {
+                    "name": "comment.datum.scheme",
+                    "begin": "#;",
+                    "end": "[\\])}]",
+                    "beginCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.comment.scheme"
+                        }
+                    }
+                }
+            ]
+        },
+        "comment_directive": {
+            "begin": "(^[ \\t]+)?(?=#!)",
+            "end": "(?!\\G)",
+            "beginCaptures": {
+                "1": {
+                    "name": "punctuation.whitespace.directive.leading.scheme"
+                }
+            },
+            "patterns": [
+                {
+                    "name": "storage.other.comment-directive.scheme",
+                    "begin": "#!",
+                    "end": "\\s"
+                }
+            ]
+        }
+    }
+}

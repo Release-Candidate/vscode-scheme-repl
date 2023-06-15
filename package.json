@@ -67,6 +67,23 @@
                 }
             }
         ],
+        "grammars": [
+            {
+                "language": "scheme",
+                "scopeName": "source.scheme",
+                "path": "./package_files/scheme.tmGrammar.json",
+                "embeddedLanguages": {
+                    "meta.embedded.block.scheme": "scheme"
+                }
+            },
+            {
+                "scopeName": "markdown.scheme.codeblock",
+                "path": "./package_files/scheme.markdown.tmGrammar.json",
+                "injectTo": [
+                    "text.html.markdown"
+                ]
+            }
+        ],
         "configurationDefaults": {
             "[scheme]": {
                 "editor.insertSpaces": true,

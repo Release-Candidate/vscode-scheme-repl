@@ -8,9 +8,28 @@
 ;; ==============================================================================
 #!chezscheme
 
+;;;;; Hi My name is
+;;;; Bla
+;;; Hallo
+;; fasdf
+; sdf
 (import (test test-lib))
 
 (machine-type)
+
+#\a
+#\alarm
+#\123
+#\xff454
+
+#trUE
+#FalSE
+
+#o0156364
+#x#e-ff
+#e#xff
+#e#b-10110e100
+#2R#e10110
 
 (waiter-prompt-string "λ>")
 
@@ -49,6 +68,7 @@ y
   (+ x x))
 
 '(1 2 3 4)
+
 
 (environment-symbols (interaction-environment))
 (get-identifiers "get-i")

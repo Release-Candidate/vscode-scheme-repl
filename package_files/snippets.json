@@ -1,12 +1,107 @@
 {
     "Disable Chez Extensions": {
         "prefix": ["#!r6rs"],
-        "description": "Insert #!r6rs marker to disable Chez Scheme extensions.",
+        "description": "Insert #!r6rs comment directive to disable Chez Scheme extensions.",
         "body": ["#!r6rs", "$0"]
     },
     "Enable Chez Extensions": {
         "prefix": ["#!chezscheme"],
-        "description": "Insert #!chezscheme marker to enable Chez Scheme extensions.",
+        "description": "Insert #!chezscheme comment directive to enable Chez Scheme extensions.",
         "body": ["#!chezscheme", "$0"]
+    },
+    "Ignore Case": {
+        "prefix": ["#!fold-case"],
+        "description": "Insert #!fold-case comment directive to ignore case for identifier names.",
+        "body": ["#!fold-case", "$0"]
+    },
+    "Compare Case Sensitive": {
+        "prefix": ["#!no-fold-case"],
+        "description": "Insert #!no-fold-case comment directive to re-enable case sensitive comparison of identifiers. This is the default.",
+        "body": ["#!no-fold-case", "$0"]
+    },
+    "Special Character #\\nul": {
+        "prefix": ["#\\nul"],
+        "description": "Insert the special character #\\nul",
+        "body": ["#\\nul $0"]
+    },
+    "Special Character #\\bel": {
+        "prefix": ["#\\bel"],
+        "description": "Insert the special character #\\bel",
+        "body": ["#\\bel $0"]
+    },
+    "Special Character #\\ls": {
+        "prefix": ["#\\ls"],
+        "description": "Insert the special character #\\ls",
+        "body": ["#\\ls $0"]
+    },
+    "Special Character #\\nel": {
+        "prefix": ["#\\nel"],
+        "description": "Insert the special character #\\nel",
+        "body": ["#\\nel $0"]
+    },
+    "Special Character #\\rubout": {
+        "prefix": ["#\\rubout"],
+        "description": "Insert the special character #\\rubout",
+        "body": ["#\\rubout $0"]
+    },
+    "Special Character #\\vt": {
+        "prefix": ["#\\vt"],
+        "description": "Insert the special character #\\vt",
+        "body": ["#\\vt $0"]
+    },
+    "Special Character #\\vtab": {
+        "prefix": ["#\\vtab"],
+        "description": "Insert the special character #\\vtab",
+        "body": ["#\\vtab $0"]
+    },
+    "Special Character #\\alarm": {
+        "prefix": ["#\\alarm"],
+        "description": "Insert the special character #\\alarm",
+        "body": ["#\\alarm $0"]
+    },
+    "Special Character #\\backspace": {
+        "prefix": ["#\\backspace"],
+        "description": "Insert the special character #\\backspace",
+        "body": ["#\\backspace $0"]
+    },
+    "Special Character #\\delete": {
+        "prefix": ["#\\delete"],
+        "description": "Insert the special character #\\delete",
+        "body": ["#\\delete $0"]
+    },
+    "Special Character #\\esc": {
+        "prefix": ["#\\esc"],
+        "description": "Insert the special character #\\esc",
+        "body": ["#\\esc $0"]
+    },
+    "Special Character #\\linefeed": {
+        "prefix": ["#\\linefeed"],
+        "description": "Insert the special character #\\linefeed",
+        "body": ["#\\linefeed $0"]
+    },
+    "Special Character #\\newline": {
+        "prefix": ["#\\newline"],
+        "description": "Insert the special character #\\newline",
+        "body": ["#\\newline $0"]
+    },
+    "Special Character #\\page": {
+        "prefix": ["#\\page"],
+        "description": "Insert the special character #\\page",
+        "body": ["#\\page $0"]
+    },
+    "Special Character #\\return": {
+        "prefix": ["#\\return"],
+        "description": "Insert the special character #\\return",
+        "body": ["#\\return $0"]
+    },
+    "Special Character #\\space": {
+        "prefix": ["#\\space"],
+        "description": "Insert the special character #\\space",
+        "body": ["#\\space $0"]
+    },
+    "Special Character #\\tab": {
+        "prefix": ["#\\tab"],
+        "description": "Insert the special character #\\tab",
+        "body": ["#\\tab $0"]
     }
 }
