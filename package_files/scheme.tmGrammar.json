@@ -151,6 +151,26 @@
                 {
                     "name": "constant.numeric.float.radix-n.scheme",
                     "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;&])((?:#[iI]|(?=[^()\\[\\]{},;\\s'`&]*(?:\\.|#[iI])))#[0-9][0-6]?[rR](?:#[iI])?[+-]?(?:[0-9a-zA-Z]+|(?=\\.[0-9a-zA-Z]+))\\.?[0-9a-zA-Z]*([eEsSfFdDlL][+-]?[0-9a-zA-Z]*)?)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "constant.numeric.float.binary.rational.scheme",
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;&])((?:#[iI]|(?=#([bB]|2[rR])#[iI]))#([bB]|2[rR])(?:#[iI])?[+-]?[01]+/[01]+([eEsSfFdDlL][+-]?[01]*)?)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "constant.numeric.float.octal.rational.scheme",
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;&])((?:#[iI]|(?=#([oO]|8[rR])#[iI]))#([oO]|8[rR])[+-]?(?:#[iI])?[+-]?[0-7]+/[0-7]+([eEsSfFdDlL][+-]?[0-7]*)?)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "constant.numeric.float.decimal.rational.scheme",
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;&])((?:#[iI]|(?=#?([dD]|10[rR])?#[iI]))#?([dD]|10[rR])?(?:#[iI])?[+-]?[0-9]+/[0-9]+([eEsSfFdDlL][+-]?[0-9]*)?)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "constant.numeric.float.hexadecimal.rational.scheme",
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;&])((?:#[iI]|(?=#([xX]|16[rR])#[iI]))#([xX]|16[rR])(?:#[iI])?[+-]?[0-9a-fA-F]+/[0-9a-fA-F]+)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "constant.numeric.float.radix-n.rational.scheme",
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;&])((?:#[iI]|(?=#[0-9][0-6]?[rR]#[iI]))#[0-9][0-6]?[rR](?:#[iI])?[+-]?[0-9a-zA-Z]+/[0-9a-zA-Z]+)(?=[\\s#(\\[{)\\]},\"'`;])"
                 }
             ]
         },
