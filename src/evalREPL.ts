@@ -33,14 +33,6 @@ const notBoundRegex =
     /^\s*Exception:\s+variable\s+(?<name>\S+)\s+is\s+not\s+bound/mu;
 
 /**
- * Matches an exception of type "non-procedure called".
- * The name of the identifier, which isn't the name of a function is saved in
- * the match group `func`.
- */
-const applyNonProcRegex =
-    /^\s*Exception:\s+.+apply\s+non-procedure\s+(?<func>.*)/mu;
-
-/**
  * Matches an exception of type "not an environment".
  * The function's name which's argument should be an environment is saved in the
  * match group `func`.

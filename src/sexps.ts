@@ -277,7 +277,7 @@ function endOfSexp(data: {
     } else if (vecMatch && data.delim === "Paren") {
         return endOfSubSexp({
             s: data.s,
-            length: vecMatch[1].length,
+            length: vecMatch[1].length + 1,
             level: data.level,
             delimStack: data.delimStack,
             delimString: `${vecMatch[1]}(`,
