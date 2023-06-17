@@ -143,7 +143,6 @@ export async function loadFile(
 // eslint-disable-next-line max-lines-per-function, max-statements
 export function parseError(out: h.Output, text: string): vscode.Range {
     const unboundMatch = out.stderr?.match(notBoundRegex);
-    const nonProcMatch = out.stderr?.match(applyNonProcRegex);
     const notEnvMatch = out.stderr?.match(notAnEnvRegex);
     const lineMatch = out.stderr?.match(lineColumnRegex);
     if (lineMatch?.groups) {
@@ -164,13 +163,6 @@ export function parseError(out: h.Output, text: string): vscode.Range {
             `\\((${notEnvFunc}\\s+(?!.*${notEnvFunc}.*?\\s+${notEnvVal})(?:.+\\s+)?${notEnvVal})`,
             "dsu"
         );
-        const hasRange = searchInText(text, inTextRegex);
-        if (hasRange) {
-            return hasRange;
-        }
-    } else if (nonProcMatch?.groups?.func) {
-        const nonProcName = nonProcMatch.groups.func;
-        const inTextRegex = new RegExp(`\\(\\s*(${nonProcName})`, "dsu");
         const hasRange = searchInText(text, inTextRegex);
         if (hasRange) {
             return hasRange;
