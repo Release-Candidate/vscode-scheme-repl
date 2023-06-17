@@ -29,13 +29,36 @@
 #trUE
 #FalSE
 
+
++inf.0
+-inF.0
++NAN.0
+-nan.0
++nan.0i
+1-nan.0i
+3+inf.0i
+3-INF.0i
 #o0156364
 #X#e-ff
 #E#xff
-#e#b-10110e100
+#b-10110e100
+#b#e-10110e100
 #2R#e10110
 #e#20rG43358
-
+#B1101/101
+#o0156364/725
+#X#e-ff/f65
+#E#xff/10
+#e#b-10110/1010f100
+#2R#e10110
+#e#20rG43358/6456A
+-125/125
+#o0156364.
+#E#xff.
+#e#b-10110.e100
+#2R#e10110.
+#e#20rG43358.
+#e1.
 #B1101/101
 #o0156364/725
 #X#e-ff/f65
@@ -58,6 +81,7 @@
 #10r.1555e15
 #i2
 #d#i2
+#X-ff.
 #i#20rG43358
 #20r#iG43358
 #20rG433.58
@@ -72,14 +96,28 @@
 #i-125/125
 #i#20rG43358/6456A
 
+3+i
+
+#;
+
+(2 (1 hugo sfd #{gdf 456}) "adsds")
+
 (waiter-prompt-string "λ>")
+'[1 ("asd") "as\"d"  asdasd () ]
 
 ;; Code formatting of documentation
 ;;(with-output-to-string thunk)
 
 #vu8(255 0 255)
 
-`#10vfx(1 2 3)
+#5vu8(1 2 3 4)
+
+'#5("1" #(1 2 3 5) "a" (1 2) ;sdfdsf
+  ; fdfdsf
+ 5)
+
+#10vfx(1 2 3)
+#vfx(5 6 78 7)
 
 (+ 5 6)
 

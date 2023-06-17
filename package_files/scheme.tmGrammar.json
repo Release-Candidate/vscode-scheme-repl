@@ -12,14 +12,61 @@
         }
     ],
     "repository": {
+        "comment": {
+            "patterns": [
+                { "include": "#line_comment" },
+                { "include": "#block_comment" },
+                { "include": "#datum_comment" },
+                { "include": "#comment_directive" }
+            ]
+        },
         "expression": {
             "patterns": [
-                { "include": "#s_exp" },
+                { "include": "#list" },
                 { "include": "#constant_data" }
             ]
         },
-        "s_exp": {
-            "patterns": []
+        "list": {
+            "patterns": [
+                {
+                    "name": "meta.list.parens.scheme",
+                    "begin": "\\(",
+                    "beginCaptures": {
+                        "0": { "name": "meta.brace.round.start.scheme" }
+                    },
+                    "end": "\\)",
+                    "endCaptures": {
+                        "0": { "name": "meta.brace.round.end.scheme" }
+                    },
+                    "patterns": [
+                        { "include": "list" },
+                        { "include": "$self" },
+                        { "include": "comment" },
+                        { "include": "constant_data" },
+                        { "include": "nothing" },
+                        { "include": "delimiter" }
+                    ]
+                },
+                {
+                    "name": "meta.list.bracket.scheme",
+                    "begin": "\\[",
+                    "beginCaptures": {
+                        "0": { "name": "meta.brace.square.start.scheme" }
+                    },
+                    "end": "\\]",
+                    "endCaptures": {
+                        "0": { "name": "meta.brace.square.end.scheme" }
+                    },
+                    "patterns": [
+                        { "include": "list" },
+                        { "include": "$self" },
+                        { "include": "comment" },
+                        { "include": "constant_data" },
+                        { "include": "nothing" },
+                        { "include": "delimiter" }
+                    ]
+                }
+            ]
         },
         "constant_data": {
             "patterns": [
@@ -32,6 +79,11 @@
                 { "include": "#box" },
                 { "include": "#quoted" }
             ]
+        },
+        "nothing": { "name": "punctuation.empty.scheme", "match": "" },
+        "delimiter": {
+            "name": "punctuation.delimiter.scheme",
+            "match": "[\\s#,\"'`;&]"
         },
         "string": {
             "name": "string.quoted.double",
@@ -94,7 +146,7 @@
                 },
                 {
                     "name": "constant.numeric.integer.decimal.scheme",
-                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;&])((?:#[eE])?#?([dD]|10[rR])?(?:#[eE])?[+-]?[0-9]+([eEsSfFdDlL][+-]?[0-9]*)?)(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;&])((?:#[eE])?(#[dD]|10[rR])?(?:#[eE])?[+-]?[0-9]+([eEsSfFdDlL][+-]?[0-9]*)?)(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "constant.numeric.integer.hexadecimal.scheme",
@@ -118,7 +170,7 @@
                 },
                 {
                     "name": "constant.numeric.rational.decimal.scheme",
-                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;&])((?:#[eE])?#?([dD]|10[rR])?(?:#[eE])?[+-]?[0-9]+/[0-9]+([eEsSfFdDlL][+-]?[0-9]*)?)(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;&])((?:#[eE])?(#[dD]|10[rR])?(?:#[eE])?[+-]?[0-9]+/[0-9]+([eEsSfFdDlL][+-]?[0-9]*)?)(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "constant.numeric.rational.hexadecimal.scheme",
@@ -133,6 +185,14 @@
         "float": {
             "patterns": [
                 {
+                    "name": "constant.numeric.float.nan",
+                    "match": "[+-][nN][aA][nN]\\.0"
+                },
+                {
+                    "name": "constant.numeric.float.inf",
+                    "match": "[+-][iI][nN][fF]\\.0"
+                },
+                {
                     "name": "constant.numeric.float.binary.scheme",
                     "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;&])((?:#[iI]|(?=[^()\\[\\]{},;\\s'`&]*(?:\\.|#[iI])))#([bB]|2[rR])(?:#[iI])?[+-]?(?:[01]+|(?=\\.[01]+))\\.?[01]*([eEsSfFdDlL][+-]?[01]*)?)(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
@@ -142,7 +202,7 @@
                 },
                 {
                     "name": "constant.numeric.float.decimal.scheme",
-                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;&])((?:#[iI]|(?=[^()\\[\\]{},;\\s'`&]*(?:\\.|#[iI])))#?([dD]|10[rR])?(?:#[iI])?[+-]?(?:[0-9]+|(?=\\.[0-9]+))\\.?[0-9]*([eEsSfFdDlL][+-]?[0-9]*)?)(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;&])((?:#[iI]|(?=[^()\\[\\]{},;\\s'`&]*(?:\\.|#[iI])))(#[dD]|10[rR])?(?:#[iI])?[+-]?(?:[0-9]+|(?=\\.[0-9]+))\\.?[0-9]*([eEsSfFdDlL][+-]?[0-9]*)?)(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "constant.numeric.float.hexadecimal.scheme",
@@ -162,7 +222,7 @@
                 },
                 {
                     "name": "constant.numeric.float.decimal.rational.scheme",
-                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;&])((?:#[iI]|(?=#?([dD]|10[rR])?#[iI]))#?([dD]|10[rR])?(?:#[iI])?[+-]?[0-9]+/[0-9]+([eEsSfFdDlL][+-]?[0-9]*)?)(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;&])((?:#[iI]|(?=#?([dD]|10[rR])?#[iI]))(#[dD]|10[rR])?(?:#[iI])?[+-]?[0-9]+/[0-9]+([eEsSfFdDlL][+-]?[0-9]*)?)(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "constant.numeric.float.hexadecimal.rational.scheme",
@@ -179,12 +239,41 @@
             "name": "constant.other.boolean.scheme",
             "match": "#(?:[tT](?:[rR][uU][eE])?|(?:[fF](?:[aA][lL][sS][eE])?))(?=[\\s#(\\[{)\\]},\"'`;])"
         },
-        "vector": {},
+        "vector": {
+            "patterns": [
+                {
+                    "name": "entity.name.type.vector.scheme",
+                    "begin": "#(\\d+)?\\(",
+                    "end": "\\)",
+                    "patterns": [{ "include": "$self" }, { "include": "list" }]
+                },
+                {
+                    "name": "entity.name.type.bytevector.scheme",
+                    "begin": "#(\\d+)?vu8\\(",
+                    "end": "\\)",
+                    "patterns": [{ "include": "$self" }]
+                },
+                {
+                    "name": "entity.name.type.fxvector.scheme",
+                    "begin": "#(\\d+)?vfx\\(",
+                    "end": "\\)",
+                    "patterns": [{ "include": "$self" }]
+                }
+            ]
+        },
         "gensym": {
             "patterns": [
                 {
                     "name": "constant.language.gensym.scheme",
-                    "match": "#\\{\\s*\\S+\\s+\\S+\\s*\\}"
+                    "match": "#(\\{)\\s*\\S+\\s+\\S+\\s*(\\})",
+                    "captures": {
+                        "1": {
+                            "name": "meta.brace.curly.start.scheme"
+                        },
+                        "2": {
+                            "name": "meta.brace.curly.end.scheme"
+                        }
+                    }
                 },
                 {
                     "name": "constant.language.gensym.pretty.scheme",
@@ -216,16 +305,9 @@
                 }
             ]
         },
-        "comment": {
-            "patterns": [
-                { "include": "#line_comment" },
-                { "include": "#block_comment" },
-                { "include": "#datum_comment" },
-                { "include": "#comment_directive" }
-            ]
-        },
+
         "line_comment": {
-            "begin": "(^[ \\t]+)?(?=;)",
+            "begin": "(^[ \\t]+)?(?=;+)",
             "end": "(?!\\G)",
             "beginCaptures": {
                 "1": { "name": "punctuation.whitespace.comment.leading.scheme" }
@@ -312,7 +394,7 @@
                 {
                     "name": "comment.datum.scheme",
                     "begin": "#;",
-                    "end": "[\\])}]",
+                    "end": "[)\\]]",
                     "beginCaptures": {
                         "0": {
                             "name": "punctuation.definition.comment.scheme"

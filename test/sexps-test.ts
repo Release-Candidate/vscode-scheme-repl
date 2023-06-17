@@ -199,6 +199,17 @@ mocha.describe("Sexp parsing functions", () => {
                 "Vector 'sdfgdgf #10(asdf fdsa 156)' -> '#10(asdf fdsa 156)' "
             );
         });
+        mocha.it('Vector 2 \'sdfgdgf #5("1" #(1 2 3 5) "a" (1 2) 5)\'', () => {
+            chai.assert.deepEqual(
+                s.getSexpToLeft('sdfgdgf #5("1" #(1 2 3 5) "a" (1 2) 5)'),
+                {
+                    sexp: '#5("1" #(1 2 3 5) "a" (1 2) 5)',
+                    startCol: 8,
+                    startLine: 0,
+                },
+                'Vector 2 \'sdfgdgf #5("1" #(1 2 3 5) "a" (1 2) 5)\' -> \'#5("1" #(1 2 3 5) "a" (1 2) 5)\' '
+            );
+        });
         mocha.it("Bytevector 'sdfgdgf #vu8(255 0 255)'", () => {
             chai.assert.deepEqual(
                 s.getSexpToLeft("sdfgdgf #vu8(255 0 255)"),
