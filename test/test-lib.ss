@@ -9,8 +9,8 @@
 (library  (test test-lib)
   (export get-identifiers)
   (import (chezscheme))
-  (define (get-identifiers s)
 
+  (define (get-identifiers s)
     (filter
       (lambda (x)
         (cond

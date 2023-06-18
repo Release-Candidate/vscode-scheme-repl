@@ -30,10 +30,10 @@
 #FalSE
 
 
-+inf.0
+(finite? +inf.0)
 -inF.0
 +NAN.0
--nan.0
+(nan? -nan.0)
 +nan.0i
 1-nan.0i
 3+inf.0i
@@ -102,8 +102,9 @@
 
 (2 (1 hugo sfd #{gdf 456}) "adsds")
 
-(waiter-prompt-string "λ>")
+[waiter-prompt-string "λ>"]
 '[1 ("asd" ) "as\"d"  asdasd () ]
+
 
 ;; Code formatting of documentation
 ;;(with-output-to-string thunk)
@@ -127,13 +128,13 @@
 #10vfx(1 2 3)
 #vfx(5 6 78 7 )
 
-
+(command-line-arguments)
 
 (+ 5 6)
 
 `#{g0 bcsfg5eq4e9b3h9o-a}
 '#:g4566
-
+(eval '(+ 1 2))
 '#&1568
 
 ;; Problem: documentation parts missing. Because the second part of the
@@ -143,7 +144,13 @@
 (define (f x)
   (* 8 x))
 
+(apply + 5 '(1 2))
+
 (f 6)
+
+(<= 5 6)
+(= 5 )
+(< 5 6)
 
 ( vector(f 9))
 
@@ -163,6 +170,8 @@ y
    y))
 
 (hugo 6)
+
+'(1 . (2 . 3))
 
 '(1, 2, 3 ,@ 4)
 '(unquote-splicing (1 2 3))

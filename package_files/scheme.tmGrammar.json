@@ -108,12 +108,22 @@
             "name": "keyword.control.export.scheme",
             "match": "(?<=[\\[(]\\s*)export(?=\\s+)"
         },
+        "macro": {
+            "patterns": [{ "include": "#macro_syntax" }]
+        },
         "function": {
             "patterns": [
                 { "include": "#type_function" },
                 { "include": "#define" },
                 { "include": "#let" },
-                { "include": "#set" }
+                { "include": "#set" },
+                { "include": "#parameter" },
+                { "include": "#operator" },
+                { "include": "#predicate" },
+                { "include": "#conditional" },
+                { "include": "#control" },
+                { "include": "#debug" },
+                { "include": "#other_function" }
             ]
         },
         "nothing": { "name": "punctuation.empty.scheme", "match": "" },
@@ -138,11 +148,23 @@
                 {
                     "name": "entity.name.type.fxvector.scheme",
                     "match": "(?<=[(\\[]\\s*)fxvector(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.list.scheme",
+                    "match": "(?<=[(\\[]\\s*)list(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.exact.scheme",
+                    "match": "(?<=[(\\[]\\s*)exact(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.inexact.scheme",
+                    "match": "(?<=[(\\[]\\s*)inexact(?=[\\s#(\\[{)\\]},\"'`;])"
                 }
             ]
         },
         "define": {
-            "name": "keyword.operator.define.scheme",
+            "name": "entity.name.type.define.scheme",
             "match": "(?<=[(\\[]\\s*)define(?=[\\s#(\\[{)\\]},\"'`;])"
         },
         "let": {
@@ -177,6 +199,308 @@
                 }
             ]
         },
+        "parameter": {
+            "patterns": [
+                {
+                    "name": "variable.parameter.global.scheme",
+                    "match": "(?<=[(\\[]\\s*)(?:cd|collect-generation-radix|collect-maximum-generation|collect-notify|collect-request-handler|collect-trip-bytes|command-line|command-line-arguments|console-input-port|console-output-port|current-directory|debug-on-exception|ee-auto-indent|ee-auto-paren-balance|ee-common-identifiers|ee-default-repeat|ee-flash-parens|ee-history-limit|ee-noisy|ee-paren-flash-delay|ee-standard-indent|enable-object-counts|heap-reserve-ratio|release-minimum-generation|scheme-program|scheme-script|scheme-start|source-directories|suppress-greeting)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "variable.parameter.thread.scheme",
+                    "match": "(?<=[(\\[]\\s*)(?:abort-handler|base-exception-handler|break-handler|case-sensitive|commonization-level|compile-file-message|compile-imported-libraries|compile-interpret-simple|compile-library-handler|compile-profile|compile-program-handler|compress-format|compress-level|console-error-port|cp0-effort-limit|cp0-outer-unroll-limit|cp0-score-limit|current-error-port|current-eval|current-exception-state|current-expand|current-input-port|current-locate-source-object-source|current-make-source-object|current-output-port|current-transcoder|custom-port-buffer-size|debug-condition|debug-level|default-record-equal-procedure|default-record-hash-procedure|enable-cross-library-optimization|eval-syntax-expanders-when|exit-handler|expand-output|expand/optimize-output|fasl-compressed|file-buffer-size|generate-allocation-counts|generate-covin-files|generate-inspector-information|generate-instruction-counts|generate-interrupt-trap|generate-procedure-source-information|generate-profile-forms|generate-wpo-files|gensym-count|gensym-prefix|import-notify|interaction-environment|internal-defines-as-letrec*|keyboard-interrupt-handler|library-directories|library-extensions|library-search-handler|optimize-level|pretty-initial-indent|pretty-line-length|pretty-maximum-lines|pretty-one-line-limit|pretty-standard-indent|print-brackets|print-char-name|print-extended-identifiers|print-gensym|print-graph|print-length|print-level|print-precision|print-radix|print-record|print-unicode|print-vector-length|profile-line-number-color|profile-palette|random-seed|require-nongenerative-clause|reset-handler|run-cp0|self-evaluating-vectors|subset-mode|timer-interrupt-handler|trace-output-port|trace-print|undefined-variable-warnings|waiter-prompt-and-read|waiter-prompt-string|waiter-write)(?=[\\s#(\\[{)\\]},\"'`;])"
+                }
+            ]
+        },
+        "operator": {
+            "patterns": [
+                {
+                    "name": "keyword.operator.arithmetic.scheme",
+                    "match": "(?<=[\\[(]\\s*)[+*/-]|expt(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.arithmetic.scheme",
+                    "match": "(?<=[\\[(]\\s*)(quotient|remainder|modulo)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.arithmetic.scheme",
+                    "match": "(?<=[\\[(]\\s*)(div|mod|div-and-mod)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.arithmetic.scheme",
+                    "match": "(?<=[\\[(]\\s*)(div0|mod0|div0-and-mod0)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.arithmetic.scheme",
+                    "match": "(?<=[\\[(]\\s*)(truncate|floor|ceiling|round)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.arithmetic.scheme",
+                    "match": "(?<=[\\[(]\\s*)(abs|max|min)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.arithmetic.scheme",
+                    "match": "(?<=[\\[(]\\s*)(gcd|lcm)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.arithmetic.scheme",
+                    "match": "(?<=[\\[(]\\s*)(rationalize|numerator|denominator)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.arithmetic.scheme",
+                    "match": "(?<=[\\[(]\\s*)(real-part|imag-part|make-rectangular|make-polar|angle|magnitude)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.arithmetic.scheme",
+                    "match": "(?<=[\\[(]\\s*)(sqrt|exact-integer-sqrt|exp|log)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.arithmetic.scheme",
+                    "match": "(?<=[\\[(]\\s*)(sin|cos|tan|asin|acos|atan)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.arithmetic.scheme",
+                    "match": "(?<=[\\[(]\\s*)(bitwise-not|bitwise-and|bitwise-ior|bitwise-xor|bitwise-if|bitwise-bit-count|bitwise-length|bitwise-first-bit-set|bitwise-copy-bit|bitwise-bit-field|bitwise-copy-bit-field|bitwise-arithmetic-shift-right|bitwise-arithmetic-shift-left|bitwise-arithmetic-shift|bitwise-rotate-bit-field|bitwise-reverse-bit-field)(?=[\\s#(\\[{)\\]},\"'`;])"
+                }
+            ]
+        },
+        "predicate": {
+            "patterns": [
+                {
+                    "name": "keyword.operator.eq.scheme",
+                    "match": "(?<=[\\[(]\\s*)eq\\?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.eqv.scheme",
+                    "match": "(?<=[\\[(]\\s*)eqv\\?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.equal.scheme",
+                    "match": "(?<=[\\[(]\\s*)equal\\?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.eq.scheme",
+                    "match": "(?<=[\\[(]\\s*)=(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.lt.scheme",
+                    "match": "(?<=[\\[(]\\s*)<(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.gt.scheme",
+                    "match": "(?<=[\\[(]\\s*)>(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.lte.scheme",
+                    "match": "(?<=[\\[(]\\s*)<=(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.gte.scheme",
+                    "match": "(?<=[\\[(]\\s*)>=(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.positive.scheme",
+                    "match": "(?<=[\\[(]\\s*)positive\\?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.negative.scheme",
+                    "match": "(?<=[\\[(]\\s*)negative\\?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.zero.scheme",
+                    "match": "(?<=[\\[(]\\s*)zero\\?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.even.scheme",
+                    "match": "(?<=[\\[(]\\s*)even\\?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.odd.scheme",
+                    "match": "(?<=[\\[(]\\s*)odd\\?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.finite.scheme",
+                    "match": "(?<=[\\[(]\\s*)finite\\?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.infinite.scheme",
+                    "match": "(?<=[\\[(]\\s*)infinite\\?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.nan.scheme",
+                    "match": "(?<=[\\[(]\\s*)nan\\?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.bitwise-bit-set.scheme",
+                    "match": "(?<=[\\[(]\\s*)bitwise-bit-set\\?(?=[\\s#(\\[{)\\]},\"'`;])"
+                }
+            ]
+        },
+        "conditional": {
+            "patterns": [
+                {
+                    "name": "keyword.control.conditional.if.scheme",
+                    "match": "(?<=[\\[(]\\s*)if(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.conditional.not.scheme",
+                    "match": "(?<=[\\[(]\\s*)not(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.conditional.and.scheme",
+                    "match": "(?<=[\\[(]\\s*)and(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.conditional.or.scheme",
+                    "match": "(?<=[\\[(]\\s*)or(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.conditional.cond.scheme",
+                    "match": "(?<=[\\[(]\\s*)cond(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.conditional.else.scheme",
+                    "match": "(?<=[\\[(]\\s*)(?:else|=>)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.conditional.case.scheme",
+                    "match": "(?<=[\\[(]\\s*)case(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.conditional.when.scheme",
+                    "match": "(?<=[\\[(]\\s*)when(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.conditional.unless.scheme",
+                    "match": "(?<=[\\[(]\\s*)unless(?=[\\s#(\\[{)\\]},\"'`;])"
+                }
+            ]
+        },
+        "control": {
+            "patterns": [
+                {
+                    "name": "keyword.control.eval.scheme",
+                    "match": "(?<=[\\[(]\\s*)eval(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.apply.scheme",
+                    "match": "(?<=[\\[(]\\s*)apply(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.begin.scheme",
+                    "match": "(?<=[\\[(]\\s*)begin(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.do.scheme",
+                    "match": "(?<=[\\[(]\\s*)do(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.map.scheme",
+                    "match": "(?<=[\\[(]\\s*)map(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.filter.scheme",
+                    "match": "(?<=[\\[(]\\s*)filter(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.for-each.scheme",
+                    "match": "(?<=[\\[(]\\s*)for-each(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.exists.scheme",
+                    "match": "(?<=[\\[(]\\s*)exists(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.for-all.scheme",
+                    "match": "(?<=[\\[(]\\s*)for-all(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.fold-left.scheme",
+                    "match": "(?<=[\\[(]\\s*)fold-left(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.fold-right.scheme",
+                    "match": "(?<=[\\[(]\\s*)fold-right(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.vector-map.scheme",
+                    "match": "(?<=[\\[(]\\s*)vector-map(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.vector-for-each.scheme",
+                    "match": "(?<=[\\[(]\\s*)vector-for-each(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.string-for-each.scheme",
+                    "match": "(?<=[\\[(]\\s*)string-for-each(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.delay.scheme",
+                    "match": "(?<=[\\[(]\\s*)delay(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.force.scheme",
+                    "match": "(?<=[\\[(]\\s*)force(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.delay.scheme",
+                    "match": "(?<=[\\[(]\\s*)delay(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.values.scheme",
+                    "match": "(?<=[\\[(]\\s*)values(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.call-with-values.scheme",
+                    "match": "(?<=[\\[(]\\s*)call-with-values(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.eval.scheme",
+                    "match": "(?<=[\\[(]\\s*)eval(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.environment.scheme",
+                    "match": "(?<=[\\[(]\\s*)environment(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.null-environment.scheme",
+                    "match": "(?<=[\\[(]\\s*)null-environment(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+
+                {
+                    "name": "keyword.control.scheme-report-environment.scheme",
+                    "match": "(?<=[\\[(]\\s*)scheme-report-environment(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.call/cc.scheme",
+                    "match": "(?<=[\\[(]\\s*)call/cc(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.call/1cc.scheme",
+                    "match": "(?<=[\\[(]\\s*)call/1cc(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.call-with-current-continuation.scheme",
+                    "match": "(?<=[\\[(]\\s*)call-with-current-continuation(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.control.dynamic-wind.scheme",
+                    "match": "(?<=[\\[(]\\s*)dynamic-wind(?=[\\s#(\\[{)\\]},\"'`;])"
+                }
+            ]
+        },
+        "debug": {
+            "patterns": [
+                {
+                    "name": "markup.bold",
+                    "match": "(?<=[\\[(]\\s*)break(?=[\\s#(\\[{)\\]},\"'`;])"
+                }
+            ]
+        },
+        "other_function": {
+            "name": "entity.name.function",
+            "match": "(?<=[\\[(]\\s*)[^\\s#(\\[{)\\]},\"'`;]+(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "macro_syntax": {},
         "string": {
             "name": "string.quoted.double",
             "begin": "(\")(?<!\\\\)",
