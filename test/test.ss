@@ -103,21 +103,31 @@
 (2 (1 hugo sfd #{gdf 456}) "adsds")
 
 (waiter-prompt-string "λ>")
-'[1 ("asd") "as\"d"  asdasd () ]
+'[1 ("asd" ) "as\"d"  asdasd () ]
 
 ;; Code formatting of documentation
 ;;(with-output-to-string thunk)
 
 #vu8(255 0 255)
 
-#5vu8(1 2 3 4)
+#5vu8(1 2 3 4 )
+
+(fxvector`1 2 3)
+
+(bytevector'254 0 255)
+
+#%+
+#%vector
+#%car
 
 '#5("1" #(1 2 3 5) "a" (1 2) ;sdfdsf
   ; fdfdsf
  5)
 
 #10vfx(1 2 3)
-#vfx(5 6 78 7)
+#vfx(5 6 78 7 )
+
+
 
 (+ 5 6)
 
@@ -135,6 +145,8 @@
 
 (f 6)
 
+( vector(f 9))
+
 (define-syntax incr!
   (syntax-rules ()
     ((incr! x)
@@ -147,7 +159,10 @@
 y
 
 (define (hugo x)
-  (+ x x))
+  (let ([y (+ x x)])
+   y))
+
+(hugo 6)
 
 '(1, 2, 3 ,@ 4)
 '(unquote-splicing (1 2 3))

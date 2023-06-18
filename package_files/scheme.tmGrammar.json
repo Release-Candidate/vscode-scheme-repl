@@ -7,6 +7,7 @@
         {
             "include": "#comment"
         },
+        { "include": "#library_definition" },
         {
             "include": "#expression"
         }
@@ -30,7 +31,7 @@
             "patterns": [
                 {
                     "name": "meta.list.parens.scheme",
-                    "begin": "\\(",
+                    "begin": "\\((?!\\s*library\\s+)",
                     "beginCaptures": {
                         "0": { "name": "meta.brace.round.start.scheme" }
                     },
@@ -39,17 +40,16 @@
                         "0": { "name": "meta.brace.round.end.scheme" }
                     },
                     "patterns": [
-                        { "include": "list" },
                         { "include": "$self" },
-                        { "include": "comment" },
-                        { "include": "constant_data" },
-                        { "include": "nothing" },
-                        { "include": "delimiter" }
+                        { "include": "#library_definition" },
+                        { "include": "#import" },
+                        { "include": "#export" },
+                        { "include": "#function" }
                     ]
                 },
                 {
                     "name": "meta.list.bracket.scheme",
-                    "begin": "\\[",
+                    "begin": "\\[(?!\\s*library\\s+)",
                     "beginCaptures": {
                         "0": { "name": "meta.brace.square.start.scheme" }
                     },
@@ -58,12 +58,11 @@
                         "0": { "name": "meta.brace.square.end.scheme" }
                     },
                     "patterns": [
-                        { "include": "list" },
                         { "include": "$self" },
-                        { "include": "comment" },
-                        { "include": "constant_data" },
-                        { "include": "nothing" },
-                        { "include": "delimiter" }
+                        { "include": "#library_definition" },
+                        { "include": "#import" },
+                        { "include": "#export" },
+                        { "include": "#function" }
                     ]
                 }
             ]
@@ -77,13 +76,106 @@
                 { "include": "#vector" },
                 { "include": "#gensym" },
                 { "include": "#box" },
+                { "include": "#primitive" },
                 { "include": "#quoted" }
+            ]
+        },
+        "library_definition": {
+            "name": "meta.library.scheme",
+            "begin": "^\\s*([\\[(])\\s*(library)\\s+([\\[(].+?[\\])])?",
+            "end": "([\\])])",
+            "beginCaptures": {
+                "1": { "name": "meta.brace.round.start.import.scheme" },
+                "2": {
+                    "name": "keyword.control.library.scheme"
+                },
+                "3": {
+                    "name": "entity.name.type.library.scheme"
+                }
+            },
+            "endCaptures": {
+                "1": {
+                    "name": "meta.brace.round.end.import.scheme"
+                }
+            },
+            "patterns": [{ "include": "#list" }]
+        },
+        "import": {
+            "name": "keyword.control.import.scheme",
+            "match": "(?<=[\\[(]\\s*)import(?:-only)?(?=\\s+)"
+        },
+        "export": {
+            "name": "keyword.control.export.scheme",
+            "match": "(?<=[\\[(]\\s*)export(?=\\s+)"
+        },
+        "function": {
+            "patterns": [
+                { "include": "#type_function" },
+                { "include": "#define" },
+                { "include": "#let" },
+                { "include": "#set" }
             ]
         },
         "nothing": { "name": "punctuation.empty.scheme", "match": "" },
         "delimiter": {
             "name": "punctuation.delimiter.scheme",
             "match": "[\\s#,\"'`;&]"
+        },
+        "type_function": {
+            "patterns": [
+                {
+                    "name": "entity.name.type.lambda.scheme",
+                    "match": "(?<=[(\\[]\\s*|#%)(?:case-)?lambda(?=\\s+)"
+                },
+                {
+                    "name": "entity.name.type.vector.scheme",
+                    "match": "(?<=(?:[(\\[]\\s*)|(?:#%))vector(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.bytevector.scheme",
+                    "match": "(?<=[(\\[]\\s*)bytevector(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.fxvector.scheme",
+                    "match": "(?<=[(\\[]\\s*)fxvector(?=[\\s#(\\[{)\\]},\"'`;])"
+                }
+            ]
+        },
+        "define": {
+            "name": "keyword.operator.define.scheme",
+            "match": "(?<=[(\\[]\\s*)define(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "let": {
+            "patterns": [
+                {
+                    "name": "keyword.operator.let.scheme",
+                    "match": "(?<=[(\\[]\\s*)let(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.let-star.scheme",
+                    "match": "(?<=[(\\[]\\s*)let\\*(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.letrec.scheme",
+                    "match": "(?<=[(\\[]\\s*)letrec(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.letrec-star.scheme",
+                    "match": "(?<=[(\\[]\\s*)letrec\\*(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.let-values.scheme",
+                    "match": "(?<=[(\\[]\\s*)let\\*?-values(?=[\\s#(\\[{)\\]},\"'`;])"
+                }
+            ]
+        },
+        "set": {
+            "patterns": [
+                {
+                    "name": "storage",
+                    "match": "(?<=[(\\[]\\s*)set!(?=[\\s#(\\[{)\\]},\"'`;])"
+                }
+            ]
         },
         "string": {
             "name": "string.quoted.double",
@@ -245,7 +337,7 @@
                     "name": "entity.name.type.vector.scheme",
                     "begin": "#(\\d+)?\\(",
                     "end": "\\)",
-                    "patterns": [{ "include": "$self" }, { "include": "list" }]
+                    "patterns": [{ "include": "$self" }]
                 },
                 {
                     "name": "entity.name.type.bytevector.scheme",
@@ -284,6 +376,15 @@
         "box": {
             "name": "storage.modifier.box.scheme",
             "match": "#&"
+        },
+        "primitive": {
+            "name": "storage.modifier.primitive.scheme",
+            "match": "#%([^\\s#(\\[{)\\]},\"'`;]+)",
+            "captures": {
+                "1": {
+                    "patterns": [{ "include": "#function" }]
+                }
+            }
         },
         "quoted": {
             "patterns": [
