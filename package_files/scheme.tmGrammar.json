@@ -8,6 +8,7 @@
             "include": "#comment"
         },
         { "include": "#library_definition" },
+        { "include": "#macro" },
         {
             "include": "#expression"
         }
@@ -73,6 +74,7 @@
                 { "include": "#character" },
                 { "include": "#number" },
                 { "include": "#boolean" },
+                { "include": "#record" },
                 { "include": "#vector" },
                 { "include": "#gensym" },
                 { "include": "#box" },
@@ -172,8 +174,44 @@
             ]
         },
         "define": {
-            "name": "entity.name.type.define.scheme",
-            "match": "(?<=[(\\[]\\s*)define(?=[\\s#(\\[{)\\]},\"'`;])"
+            "patterns": [
+                {
+                    "name": "entity.name.type.define.scheme",
+                    "match": "(?<=[(\\[]\\s*)define(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.record.scheme",
+                    "match": "(?<=[(\\[]\\s*)define-record(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.structure.scheme",
+                    "match": "(?<=[(\\[]\\s*)define-structure(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.foreign-type.scheme",
+                    "match": "(?<=[(\\[]\\s*)define-ftype(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.enum.scheme",
+                    "match": "(?<=[(\\[]\\s*)define-enumeration(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.values.scheme",
+                    "match": "(?<=[(\\[]\\s*)define-values(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.predicate.scheme",
+                    "match": "(?<=[(\\[]\\s*)define-condition-type(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.define-property.scheme",
+                    "match": "(?<=[(\\[]\\s*)define-property(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.define-top-level-value.scheme",
+                    "match": "(?<=[(\\[]\\s*)define-top-level-value(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                }
+            ]
         },
         "let": {
             "patterns": [
@@ -547,18 +585,105 @@
         "debug": {
             "patterns": [
                 {
-                    "name": "markup.bold",
+                    "name": "markup.bold.scheme",
                     "match": "(?<=[\\[(]\\s*)break(?=[\\s#(\\[{)\\]},\"'`;])"
                 }
             ]
         },
         "other_function": {
-            "name": "entity.name.function",
+            "name": "entity.name.function.scheme",
             "match": "(?<!let(?:\\*?(?:rec|-values)?\\s*?)\\s+[\\[(]+\\s*)(?<=[\\[(]+\\s*)[^\\s#(\\[{)\\]},\"'`;]+(?=[\\s#(\\[{)\\]},\"'`;])"
         },
-        "macro_syntax": {},
+        "macro_syntax": {
+            "patterns": [
+                {
+                    "name": "entity.name.type.define-macro.scheme",
+                    "match": "(?<=[(\\[]\\s*)define-syntax(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.syntax-rules.scheme",
+                    "match": "(?<=[(\\[]\\s*)syntax-rules(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.let-syntax.scheme",
+                    "match": "(?<=[(\\[]\\s*)let(?:rec)?-syntax(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.identifier-syntax.scheme",
+                    "match": "(?<=[(\\[]\\s*)identifier-syntax(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.syntax-case.scheme",
+                    "match": "(?<=[(\\[]\\s*)syntax-case(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.syntax.scheme",
+                    "match": "(?<=[(\\[]\\s*)syntax(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.with-syntax.scheme",
+                    "match": "(?<=[(\\[]\\s*)with-syntax(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.quasisyntax.scheme",
+                    "match": "(?<=[(\\[]\\s*)quasisyntax(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.unsyntax.scheme",
+                    "match": "(?<=[(\\[]\\s*)unsyntax(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.unsyntax-splicing.scheme",
+                    "match": "(?<=[(\\[]\\s*)unsyntax-splicing(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.make-variable-transformer.scheme",
+                    "match": "(?<=[(\\[]\\s*)make-variable-transformer(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.syntax->datum.scheme",
+                    "match": "(?<=[(\\[]\\s*)syntax->datum(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.datum->syntax.scheme",
+                    "match": "(?<=[(\\[]\\s*)datum->syntax(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.syntax-object->datum.scheme",
+                    "match": "(?<=[(\\[]\\s*)syntax-object->datum(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.datum->syntax-object.scheme",
+                    "match": "(?<=[(\\[]\\s*)datum->syntax-object(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.generate-temporaries.scheme",
+                    "match": "(?<=[(\\[]\\s*)generate-temporaries(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.extend-syntax.scheme",
+                    "match": "(?<=[(\\[]\\s*)extend-syntax(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.syntax.scheme",
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;])#'"
+                },
+                {
+                    "name": "entity.name.type.quasisyntax.scheme",
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;])#`"
+                },
+                {
+                    "name": "entity.name.type.unsyntax.scheme",
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;])#,(?!@)"
+                },
+                {
+                    "name": "entity.name.type.unsyntax-splicing.scheme",
+                    "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;])#,@"
+                }
+            ]
+        },
         "string": {
-            "name": "string.quoted.double",
+            "name": "string.quoted.double.scheme",
             "begin": "(\")(?<!\\\\)",
             "beginCaptures": {
                 "1": {
@@ -746,6 +871,16 @@
         "boolean": {
             "name": "constant.other.boolean.scheme",
             "match": "#(?:[tT](?:[rR][uU][eE])?|(?:[fF](?:[aA][lL][sS][eE])?))(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "record": {
+            "patterns": [
+                {
+                    "name": "entity.name.type.record.scheme",
+                    "begin": "#\\[",
+                    "end": "\\]",
+                    "patterns": [{ "include": "$self" }]
+                }
+            ]
         },
         "vector": {
             "patterns": [

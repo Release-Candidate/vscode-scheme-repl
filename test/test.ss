@@ -121,7 +121,24 @@
 
 (fxvector`1 2 3)
 
+(get-identifiers "define-")
 
+(define-values (x2 y2) (values 5 6))
+
+`(,x2 ,y2)
+
+(define-record test-record (color animal))
+(make-test-record 'red 'cat)
+
+(define-enumeration weekdays
+  (monday tuesday wednesday thursday friday sathurday sunday)
+  day)
+(weekdays sunday)
+(day monday tuesday)
+
+(define-structure (test-struct foo bar baz ))
+
+(make-test-struct 'f 'b 'b)
 
 (bytevector'254 0 255)
 
@@ -200,5 +217,3 @@ y
 (get-identifiers "get-i")
 
 (define url-list-of-forms "https://cisco.github.io/ChezScheme/csug9.5/summary.html")
-
-#!eof
