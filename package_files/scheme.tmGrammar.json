@@ -138,8 +138,16 @@
                     "match": "(?<=[(\\[]\\s*|#%)(?:case-)?lambda(?=\\s+)"
                 },
                 {
+                    "name": "entity.name.type.string.scheme",
+                    "match": "(?<=[(\\[]\\s*)string(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
                     "name": "entity.name.type.vector.scheme",
                     "match": "(?<=(?:[(\\[]\\s*)|(?:#%))vector(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.define-record.scheme",
+                    "match": "(?<=[(\\[]\\s*)define-record(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.bytevector.scheme",
@@ -219,6 +227,10 @@
                 },
                 {
                     "name": "keyword.operator.arithmetic.scheme",
+                    "match": "(?<=[\\[(]\\s*)(?:-1\\+|1\\+|add1|sub1|1-)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.arithmetic.scheme",
                     "match": "(?<=[\\[(]\\s*)(quotient|remainder|modulo)(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
@@ -260,6 +272,26 @@
                 {
                     "name": "keyword.operator.arithmetic.scheme",
                     "match": "(?<=[\\[(]\\s*)(bitwise-not|bitwise-and|bitwise-ior|bitwise-xor|bitwise-if|bitwise-bit-count|bitwise-length|bitwise-first-bit-set|bitwise-copy-bit|bitwise-bit-field|bitwise-copy-bit-field|bitwise-arithmetic-shift-right|bitwise-arithmetic-shift-left|bitwise-arithmetic-shift|bitwise-rotate-bit-field|bitwise-reverse-bit-field)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.arithmetic.scheme",
+                    "match": "(?<=[\\[(]\\s*)(f[xl][/*+-])(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.arithmetic.scheme",
+                    "match": "(?<=[\\[(]\\s*)(f[xl](?:min|max|div|mod|modulo|div-and-mod|div0|mod0|div0-and-mod0|[+*-]/carry|not|and|ior|xor|if))(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.arithmetic.scheme",
+                    "match": "(?<=[\\[(]\\s*)(fx(?:bit-count|length|first-bit-set|bit-set\\?|copy-bit|bit-field|copy-bit-field|arithmetic-shift-right|arithmetic-shift-left|arithmetic-shift|rotate-bit-field|reverse-bit-field))(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.arithmetic.scheme",
+                    "match": "(?<=[\\[(]\\s*)(fl(?:round|truncate|floor|ceiling|numerator|denominator))(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.arithmetic.scheme",
+                    "match": "(?<=[\\[(]\\s*)(fl(?:abs|exp|log|sin|cos|tan|asin|acos|atan|sqrt|expt))(?=[\\s#(\\[{)\\]},\"'`;])"
                 }
             ]
         },
@@ -332,6 +364,30 @@
                 {
                     "name": "keyword.operator.bitwise-bit-set.scheme",
                     "match": "(?<=[\\[(]\\s*)bitwise-bit-set\\?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.numeric-is.scheme",
+                    "match": "(?<=[\\[(]\\s*)(f[xl](?:zero|positive|negative|even|odd)\\?)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.float-is.scheme",
+                    "match": "(?<=[\\[(]\\s*)(fl(?:integer|finite|infinite|nan)\\?)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.numeric-compare.scheme",
+                    "match": "(?<=[\\[(]\\s*)(f[xl][<>]?=?\\??)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.char-compare.scheme",
+                    "match": "(?<=[\\[(]\\s*)(char(?:-ci)?[<>]?=?\\?)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.char-compare.scheme",
+                    "match": "(?<=[\\[(]\\s*)(char(?:-lower-case|-title-case|-upper-case)\\?)(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.string-compare.scheme",
+                    "match": "(?<=[\\[(]\\s*)(string(?:-ci)?[<>]?=?\\?)(?=[\\s#(\\[{)\\]},\"'`;])"
                 }
             ]
         },

@@ -20,6 +20,8 @@
   - [Commands](#commands)
   - [Supported Source File Extensions](#supported-source-file-extensions)
 - [Configuration](#configuration)
+- [VS Code Scheme specific configuration](#vs-code-scheme-specific-configuration)
+  - [My Configuration as seen in the Images](#my-configuration-as-seen-in-the-images)
 - [Changes](#changes)
 - [Contributing](#contributing)
 - [License](#license)
@@ -87,6 +89,49 @@ The following list of extensions is recognized as a Chez Scheme source file:
 
 - `chezScheme.schemePath` - Path to the Chez Scheme executable `scheme`. Can be either an absolute path or relative to the workspace root. Default: `scheme`, which works if `scheme` is in your `PATH`.
 - `chezScheme.waiterPrompt` - The string to display as an interactive REPL prompt. Default: `λ>`.
+
+## VS Code Scheme specific configuration
+
+The extension adds the following Scheme specific configuration, which you can change in the settings file:
+
+```json
+ "[scheme]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.indentSize": 2,
+    "editor.wordSeparators": "`()[];'\","
+  }
+```
+
+You could also dim the bracket pair colors, but sadly only global for all file types and languages:
+
+```json
+"workbench.colorCustomizations": {
+        "editorBracketHighlight.foreground1": "#0095ff6a",
+        "editorBracketHighlight.foreground2": "#cc00ff71",
+        "editorBracketHighlight.foreground3": "#32833877",
+        "editorBracketHighlight.foreground4": "#ff003768",
+        "editorBracketHighlight.foreground5": "#6066078e",
+        "editorBracketHighlight.foreground6": "#ff99008f",
+        "editorBracketHighlight.unexpectedBracket.foreground": "#ff0000",
+    },
+```
+
+### My Configuration as seen in the Images
+
+- Color theme: [Bluloco Light Theme Italic](https://github.com/uloco/theme-bluloco-light)
+- Inline error messages: [Error Lens](https://github.com/usernamehw/vscode-error-lens)
+- Colorized brackets: enable `Editor › Bracket Pair Colorization: Enabled`.
+
+```json
+ "editor.bracketPairColorization.enabled": true,
+```
+
+- Do not change bracket color if the bracket type changes: enable `Editor › Bracket Pair Colorization: Independent Color Pool Per Bracket Type`.
+
+```json
+"editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+```
 
 ## Changes
 

@@ -104,8 +104,6 @@
 
 4566@56/456
 
-
-
 #;
 
 (2 (1 hugo sfd #{gdf 456}) "adsds")
@@ -123,11 +121,14 @@
 
 (fxvector`1 2 3)
 
+
+
 (bytevector'254 0 255)
 
 #%+
 #%vector
 #%car
+#%string
 
 '#5("1" #(1 2 3 5) "a" (1 2) ;sdfdsf
   ; fdfdsf
@@ -172,6 +173,17 @@
 (incr! y)
 
 y
+
+(1+ 5)
+
+(fxeven? 5)
+
+(flnan? 5.0)
+
+(char<? #\a #\b)
+
+
+(string<=? (string #\a #\a #\a) "bbb")
 
 (define (hugo x)
   (let ([y (+ x x)])
