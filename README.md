@@ -35,6 +35,7 @@
 
 ### Drawbacks
 
+- Syntax highlighting of complex numbers is done in a simple way and does not recognize complex numbers with `NAN`s or `INF`s.
 - The REPL pane is left empty on restart of VS Code and has to be manually closed. I do not know of a way to automatically close that on exit.
 
 ## Getting started
