@@ -77,6 +77,7 @@
                 { "include": "#gensym" },
                 { "include": "#box" },
                 { "include": "#primitive" },
+                { "include": "#condition" },
                 { "include": "#quoted" }
             ]
         },
@@ -118,11 +119,11 @@
         },
         "module_names": {
             "name": "entity.name.type.module.scheme",
-            "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;])(scheme|r5rs|r5rs-syntax|ieee|\\$system)(?=[\\s#(\\[{)\\]},\"'`;])"
+            "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;])(scheme|r5rs|r5rs-syntax|ieee|expression-editor|\\$system)(?=[\\s#(\\[{)\\]},\"'`;])"
         },
         "library_names": {
             "name": "entity.name.type.library-name.scheme",
-            "match": "(?<=[\\[(]\\s*)((?:chezscheme(?:\\s+csv7)?)|(?:rnrs(?:\\s+(?:base))?(?:\\s+\\(\\s*6\\s*\\))?))(?=[\\s#(\\[{)\\]},\"'`;])"
+            "match": "(?<=[\\[(]\\s*)((?:chezscheme(?:\\s+csv7)?)|(?:rnrs(?:\\s+(?:base|arithmetic bitwise|arithmetic fixnums|arithmetic flonums|bytevectors|conditions|control|enums|eval|exceptions|files|hashtables|io ports|io simple|lists|mutable-pairs|mutable-strings|programs|r5rs|records procedural|records syntactic|records inspection|sorting|syntax-case|unicode))?(?:\\s+\\(\\s*6\\s*\\))?))(?=[\\s#(\\[{)\\]},\"'`;])"
         },
         "macro": {
             "patterns": [{ "include": "#macro_syntax" }]
@@ -160,7 +161,7 @@
             "patterns": [
                 {
                     "name": "entity.name.type.lambda.scheme",
-                    "match": "(?<=[(\\[]\\s*|#%)(?:case-)?lambda(?=\\s+)"
+                    "match": "(?<=[(\\[]\\s*|#[23]?%)(?:case-)?lambda(?=\\s+)"
                 },
                 {
                     "name": "entity.name.type.string.scheme",
@@ -168,7 +169,7 @@
                 },
                 {
                     "name": "entity.name.type.vector.scheme",
-                    "match": "(?<=(?:[(\\[]\\s*)|(?:#%))vector(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=(?:[(\\[]\\s*)|(?:#[23]?%))vector(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.define-record.scheme",
@@ -1005,12 +1006,16 @@
         },
         "primitive": {
             "name": "storage.modifier.primitive.scheme",
-            "match": "#%([^\\s#(\\[{)\\]},\"'`;]+)",
+            "match": "#[23]?%([^\\s#(\\[{)\\]},\"'`;]+)",
             "captures": {
                 "1": {
                     "patterns": [{ "include": "#function" }]
                 }
             }
+        },
+        "condition": {
+            "name": "storage.modifier.condition.scheme",
+            "match": "(?<!#)&(?:assertion|condition|continuation|error|format|i/o|i/o-decoding|i/o-encoding|i/o-file-already-exists|i/o-file-does-not-exist|i/o-file-is-read-only|i/o-file-protection|i/o-filename|i/o-invalid-position|i/o-port|i/o-read|i/o-write|implementation-restriction|irritants|lexical|message|no-infinities|no-nans|non-continuable|serious|source|syntax|undefined|violation|warning|who)(?=[\\s#(\\[{)\\]},\"'`;])"
         },
         "quoted": {
             "patterns": [

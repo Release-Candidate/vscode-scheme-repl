@@ -142,7 +142,7 @@
 (bytevector'254 0 255)
 
 #%+
-#%vector
+#2%vector
 #%car
 #%string
 
@@ -161,6 +161,7 @@
 '#:g4566
 (eval '(+ 1 2))
 '#&1568
+
 
 ;; Problem: documentation parts missing. Because the second part of the
 ;; documentation has it's own link name.
