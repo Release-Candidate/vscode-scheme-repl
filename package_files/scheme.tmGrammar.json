@@ -43,8 +43,7 @@
                     "patterns": [
                         { "include": "$self" },
                         { "include": "#library_definition" },
-                        { "include": "#import" },
-                        { "include": "#export" },
+                        { "include": "#library_module_related" },
                         { "include": "#function" }
                     ]
                 },
@@ -61,8 +60,7 @@
                     "patterns": [
                         { "include": "$self" },
                         { "include": "#library_definition" },
-                        { "include": "#import" },
-                        { "include": "#export" },
+                        { "include": "#library_module_related" },
                         { "include": "#function" }
                     ]
                 }
@@ -110,6 +108,14 @@
             "name": "keyword.control.export.scheme",
             "match": "(?<=[\\[(]\\s*)export(?=\\s+)"
         },
+        "import_keywords": {
+            "name": "keyword.control.import.aux-keyword.scheme",
+            "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;])(only|except|add-prefix|drop-prefix|rename|alias)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "module_names": {
+            "name": "entity.name.type.module.scheme",
+            "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;])(scheme|r5rs|r5rs-syntax|ieee|\\$system)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
         "macro": {
             "patterns": [{ "include": "#macro_syntax" }]
         },
@@ -126,6 +132,14 @@
                 { "include": "#control" },
                 { "include": "#debug" },
                 { "include": "#other_function" }
+            ]
+        },
+        "library_module_related": {
+            "patterns": [
+                { "include": "#import" },
+                { "include": "#export" },
+                { "include": "#import_keywords" },
+                { "include": "#module_names" }
             ]
         },
         "nothing": { "name": "punctuation.empty.scheme", "match": "" },
@@ -472,6 +486,10 @@
         "control": {
             "patterns": [
                 {
+                    "name": "keyword.control.module.scheme",
+                    "match": "(?<=[\\[(]\\s*)module(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
                     "name": "keyword.control.eval.scheme",
                     "match": "(?<=[\\[(]\\s*)eval(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
@@ -637,12 +655,56 @@
                     "match": "(?<=[(\\[]\\s*)unsyntax-splicing(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
+                    "name": "entity.name.type.meta.scheme",
+                    "match": "(?<=[(\\[]\\s*)meta(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.meta-cond.scheme",
+                    "match": "(?<=[(\\[]\\s*)meta-cond(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
                     "name": "entity.name.type.make-variable-transformer.scheme",
                     "match": "(?<=[(\\[]\\s*)make-variable-transformer(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.syntax->datum.scheme",
                     "match": "(?<=[(\\[]\\s*)syntax->datum(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.syntax->list.scheme",
+                    "match": "(?<=[(\\[]\\s*)syntax->list(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.syntax->vector.scheme",
+                    "match": "(?<=[(\\[]\\s*)syntax->vector(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.datum.scheme",
+                    "match": "(?<=[(\\[]\\s*)datum(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.syntax-error.scheme",
+                    "match": "(?<=[(\\[]\\s*)syntax-error(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.make-compile-time-value.scheme",
+                    "match": "(?<=[(\\[]\\s*)make-compile-time-value(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.compile-time-value?.scheme",
+                    "match": "(?<=[(\\[]\\s*)compile-time-value\\?(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.compile-time-value-value.scheme",
+                    "match": "(?<=[(\\[]\\s*)compile-time-value-value(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.include.scheme",
+                    "match": "(?<=[(\\[]\\s*)include(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.with-implicit.scheme",
+                    "match": "(?<=[(\\[]\\s*)with-implicit(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.datum->syntax.scheme",
@@ -663,6 +725,10 @@
                 {
                     "name": "entity.name.type.extend-syntax.scheme",
                     "match": "(?<=[(\\[]\\s*)extend-syntax(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.fluid-let-syntax.scheme",
+                    "match": "(?<=[(\\[]\\s*)fluid-let-syntax(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.syntax.scheme",
