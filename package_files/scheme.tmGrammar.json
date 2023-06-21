@@ -1005,13 +1005,26 @@
             "match": "#&"
         },
         "primitive": {
-            "name": "storage.modifier.primitive.scheme",
-            "match": "#[23]?%([^\\s#(\\[{)\\]},\"'`;]+)",
-            "captures": {
-                "1": {
-                    "patterns": [{ "include": "#function" }]
+            "patterns": [
+                {
+                    "name": "storage.modifier.primitive.scheme",
+                    "match": "#[23]?%([^\\s#(\\[{)\\]},\"'`;]+)",
+                    "captures": {
+                        "1": {
+                            "patterns": [{ "include": "#function" }]
+                        }
+                    }
+                },
+                {
+                    "name": "storage.modifier.primitive.scheme",
+                    "match": "(?<=[(\\[]\\s*)\\$primitive(?:\\s+[23])?(?=[\\s#(\\[{)\\]},\"'`;])",
+                    "captures": {
+                        "1": {
+                            "patterns": [{ "include": "#function" }]
+                        }
+                    }
                 }
-            }
+            ]
         },
         "condition": {
             "name": "storage.modifier.condition.scheme",
