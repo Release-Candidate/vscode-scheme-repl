@@ -98,7 +98,11 @@
                     "name": "meta.brace.round.end.import.scheme"
                 }
             },
-            "patterns": [{ "include": "#list" }]
+            "patterns": [
+                { "include": "#list" },
+                { "include": "#comment" },
+                { "include": "#macro" }
+            ]
         },
         "import": {
             "name": "keyword.control.import.scheme",
@@ -115,6 +119,10 @@
         "module_names": {
             "name": "entity.name.type.module.scheme",
             "match": "(?<=^|[\\s#(\\[{)\\]},\"'`;])(scheme|r5rs|r5rs-syntax|ieee|\\$system)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "library_names": {
+            "name": "entity.name.type.library-name.scheme",
+            "match": "(?<=[\\[(]\\s*)((?:chezscheme(?:\\s+csv7)?)|(?:rnrs(?:\\s+(?:base))?(?:\\s+\\(\\s*6\\s*\\))?))(?=[\\s#(\\[{)\\]},\"'`;])"
         },
         "macro": {
             "patterns": [{ "include": "#macro_syntax" }]
@@ -139,7 +147,8 @@
                 { "include": "#import" },
                 { "include": "#export" },
                 { "include": "#import_keywords" },
-                { "include": "#module_names" }
+                { "include": "#module_names" },
+                { "include": "#library_names" }
             ]
         },
         "nothing": { "name": "punctuation.empty.scheme", "match": "" },

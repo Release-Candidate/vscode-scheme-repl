@@ -13,7 +13,7 @@
 ;;; Hallo
 ;; fasdf
 ; sdf
-(import (test test-lib))
+(import (chezscheme) (test test-lib))
 ( quote 5)
 
 (quasiquote (1.0 2.0 3.5))

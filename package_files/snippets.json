@@ -108,5 +108,145 @@
         "prefix": ["#!eof"],
         "description": "Insert the special object #!eof.",
         "body": ["#!eof $0"]
+    },
+    "Library: chezscheme": {
+        "prefix": ["chezscheme"],
+        "description": "Insert the library name 'chezscheme'.",
+        "body": ["chezscheme$0"]
+    },
+    "Library: chezscheme csv7": {
+        "prefix": ["chezscheme csv7"],
+        "description": "Insert the library name 'chezscheme csv7'.",
+        "body": ["chezscheme csv7$0"]
+    },
+    "Library: rnrs": {
+        "prefix": ["rnrs"],
+        "description": "Insert the library name 'rnrs'.",
+        "body": ["rnrs$0"]
+    },
+    "Library: rnrs base (6)": {
+        "prefix": ["rnrs base (6)"],
+        "description": "Insert the library name 'rnrs base (6)'.",
+        "body": ["rnrs base (6)$0"]
+    },
+    "Library: rnrs arithmetic bitwise (6)": {
+        "prefix": ["rnrs arithmetic bitwise (6)"],
+        "description": "Insert the library name 'rnrs arithmetic bitwise (6)'.",
+        "body": ["rnrs arithmetic bitwise (6)$0"]
+    },
+    "Library: rnrs arithmetic fixnums (6)": {
+        "prefix": ["rnrs arithmetic fixnums (6)"],
+        "description": "Insert the library name 'rnrs arithmetic fixnums (6)'.",
+        "body": ["rnrs arithmetic fixnums (6)$0"]
+    },
+    "Library: rnrs arithmetic flonums (6)": {
+        "prefix": ["rnrs arithmetic flonums (6)"],
+        "description": "Insert the library name 'rnrs arithmetic flonums (6)'.",
+        "body": ["rnrs arithmetic flonums (6)$0"]
+    },
+    "Library: rnrs bytevectors (6)": {
+        "prefix": ["rnrs bytevectors (6)"],
+        "description": "Insert the library name 'rnrs bytevectors (6)'.",
+        "body": ["rnrs bytevectors (6)$0"]
+    },
+    "Library: rnrs conditions (6)": {
+        "prefix": ["rnrs conditions (6)"],
+        "description": "Insert the library name 'rnrs conditions (6)'.",
+        "body": ["rnrs conditions (6)$0"]
+    },
+    "Library: rnrs control (6)": {
+        "prefix": ["rnrs control (6)"],
+        "description": "Insert the library name 'rnrs control (6)'.",
+        "body": ["rnrs control (6)$0"]
+    },
+    "Library: rnrs enums (6)": {
+        "prefix": ["rnrs enums (6)"],
+        "description": "Insert the library name 'rnrs enums (6)'.",
+        "body": ["rnrs enums (6)$0"]
+    },
+    "Library: rnrs eval (6)": {
+        "prefix": ["rnrs eval (6)"],
+        "description": "Insert the library name 'rnrs eval (6)'.",
+        "body": ["rnrs eval (6)$0"]
+    },
+    "Library: rnrs exceptions (6)": {
+        "prefix": ["rnrs exceptions (6)"],
+        "description": "Insert the library name 'rnrs exceptions (6)'.",
+        "body": ["rnrs exceptions (6)$0"]
+    },
+    "Library: rnrs files (6)": {
+        "prefix": ["rnrs files (6)"],
+        "description": "Insert the library name 'rnrs files (6)'.",
+        "body": ["rnrs files (6)$0"]
+    },
+    "Library: rnrs hashtables (6)": {
+        "prefix": ["rnrs hashtables (6)"],
+        "description": "Insert the library name 'rnrs hashtables (6)'.",
+        "body": ["rnrs hashtables (6)$0"]
+    },
+    "Library: rnrs io ports (6)": {
+        "prefix": ["rnrs io ports (6)"],
+        "description": "Insert the library name 'rnrs io ports (6)'.",
+        "body": ["rnrs io ports (6)$0"]
+    },
+    "Library: rnrs io simple (6)": {
+        "prefix": ["rnrs io simple (6)"],
+        "description": "Insert the library name 'rnrs io simple (6)'.",
+        "body": ["rnrs io simple (6)$0"]
+    },
+    "Library: rnrs lists (6)": {
+        "prefix": ["rnrs lists (6)"],
+        "description": "Insert the library name 'rnrs lists (6)'.",
+        "body": ["rnrs lists (6)$0"]
+    },
+    "Library: rnrs mutable-pairs (6)": {
+        "prefix": ["rnrs mutable-pairs (6)"],
+        "description": "Insert the library name 'rnrs mutable-pairs (6)'.",
+        "body": ["rnrs mutable-pairs (6)$0"]
+    },
+    "Library: rnrs mutable-strings (6)": {
+        "prefix": ["rnrs mutable-strings (6)"],
+        "description": "Insert the library name 'rnrs mutable-strings (6)'.",
+        "body": ["rnrs mutable-strings (6)$0"]
+    },
+    "Library: rnrs programs (6)": {
+        "prefix": ["rnrs programs (6)"],
+        "description": "Insert the library name 'rnrs programs (6)'.",
+        "body": ["rnrs programs (6)$0"]
+    },
+    "Library: rnrs r5rs (6)": {
+        "prefix": ["rnrs r5rs (6)"],
+        "description": "Insert the library name 'rnrs r5rs (6)'.",
+        "body": ["rnrs r5rs (6)$0"]
+    },
+    "Library: rnrs records procedural (6)": {
+        "prefix": ["rnrs records procedural (6)"],
+        "description": "Insert the library name 'rnrs records procedural (6)'.",
+        "body": ["rnrs records procedural (6)$0"]
+    },
+    "Library: rnrs records syntactic (6)": {
+        "prefix": ["rnrs records syntactic (6)"],
+        "description": "Insert the library name 'rnrs records syntactic (6)'.",
+        "body": ["rnrs records syntactic (6)$0"]
+    },
+    "Library: rnrs records inspection (6)": {
+        "prefix": ["rnrs records inspection (6)"],
+        "description": "Insert the library name 'rnrs records inspection (6)'.",
+        "body": ["rnrs records inspection (6)$0"]
+    },
+    "Library: rnrs sorting (6)": {
+        "prefix": ["rnrs sorting (6)"],
+        "description": "Insert the library name 'rnrs sorting (6)'.",
+        "body": ["rnrs sorting (6)$0"]
+    },
+    "Library: rnrs syntax-case (6)": {
+        "prefix": ["rnrs syntax-case (6)"],
+        "description": "Insert the library name 'rnrs syntax-case (6)'.",
+        "body": ["rnrs syntax-case (6)$0"]
+    },
+    "Library: rnrs unicode (6)": {
+        "prefix": ["rnrs unicode (6)"],
+        "description": "Insert the library name 'rnrs unicode (6)'.",
+        "body": ["rnrs unicode (6)$0"]
     }
 }
