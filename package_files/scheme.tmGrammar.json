@@ -140,6 +140,7 @@
                 { "include": "#conditional" },
                 { "include": "#control" },
                 { "include": "#debug" },
+                { "include": "#syntax_other" },
                 { "include": "#other_function" }
             ]
         },
@@ -209,31 +210,31 @@
                 },
                 {
                     "name": "entity.name.type.structure.scheme",
-                    "match": "(?<=[(\\[]\\s*)define-structure(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)define-structure(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.foreign-type.scheme",
-                    "match": "(?<=[(\\[]\\s*)define-ftype(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)define-ftype(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.enum.scheme",
-                    "match": "(?<=[(\\[]\\s*)define-enumeration(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)define-enumeration(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.values.scheme",
-                    "match": "(?<=[(\\[]\\s*)define-values(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)define-values(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.predicate.scheme",
-                    "match": "(?<=[(\\[]\\s*)define-condition-type(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)define-condition-type(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.define-property.scheme",
-                    "match": "(?<=[(\\[]\\s*)define-property(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)define-property(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.define-top-level-value.scheme",
-                    "match": "(?<=[(\\[]\\s*)define-top-level-value(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)define-top-level-value(?=[\\s#(\\[{)\\]},\"'`;])"
                 }
             ]
         },
@@ -617,6 +618,10 @@
                     "match": "(?<=[\\[(]\\s*)break(?=[\\s#(\\[{)\\]},\"'`;])"
                 }
             ]
+        },
+        "syntax_other": {
+            "name": "keyword.other.syntax.scheme",
+            "match": "(?<=[\\[(]\\s*)(annotation-option-set|assert|buffer-mode|buffer-mode?|constant|constructor|critical-section|drop-prefix|endianness|eol-style|error-handling-mode|eval-when|exclusive-cond|fasl-strip-options|fields|file-options|fluid-let|foreign-callable|foreign-procedure|ftype-&ref|ftype-guardian|ftype-init-lock!|ftype-lock!|ftype-locked-decr!|ftype-locked-incr!|ftype-pointer-null?|ftype-pointer=?|ftype-pointer?|ftype-ref|ftype-set!|ftype-sizeof|ftype-spin-lock!|ftype-unlock!|guard|immutable|implicit-exports|indirect-export|library-requirements-options|make-ftype-pointer|mutable|nongenerative|opaque|parameterize|parent|parent-rtd|pariah|predicate|prefix|profile|protocol|rec|record-case|record-constructor-descriptor|record-type-descriptor|sealed|time|top-level-program|trace|trace-case-lambda|trace-define|trace-define-syntax|trace-do|trace-lambda|trace-let|type-descriptor|untrace|variable|with|with-interrupts-disabled|with-mutex)(?=[\\s#(\\[{)\\]},\"'`;])"
         },
         "other_function": {
             "name": "entity.name.function.scheme",
