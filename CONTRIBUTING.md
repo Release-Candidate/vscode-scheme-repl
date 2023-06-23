@@ -2,6 +2,7 @@
 
 - [What does the extension do?](#what-does-the-extension-do)
 - [Setup](#setup)
+- [Extension Configuration Files](#extension-configuration-files)
 - [Sources](#sources)
 - [Build commands](#build-commands)
   - [Internal targets](#internal-targets)
@@ -14,6 +15,14 @@
 - Clone the GitHub repository [vscode-scheme-repl](https://github.com/Release-Candidate/vscode-scheme-repl)
 - run `yarn install` to install all dependencies and development dependencies. You need the development dependencies to build and package the extension.
 - run `yarn --ignore-engines package` - this generates the extension package `vscode-scheme-repl-VERSION.vsix` which you can install to VS Code
+
+## Extension Configuration Files
+
+- [./package.json](./package.json) - The main extension configuration, contains VS Code commands, keybindings, configuration items, menu items, ...
+- [./package_files/language-configuration.json](./package_files/language-configuration.json) - Set basic Scheme configuration, like opening/closing parens, word boundaries and when to indent if `enter` has been pressed.
+- [./package_files/snippets.json](./package_files/snippets.json) - Snippets.
+- [./package_files/scheme.tmGrammar.json](./package_files/scheme.tmGrammar.json) - The syntax highlighting, a TextMate grammar.
+- [./package_files/scheme.markdown.tmGrammar.json](./package_files/scheme.markdown.tmGrammar.json) - Configuration file to get syntax highlighting in markdown Scheme code blocks.
 
 ## Sources
 

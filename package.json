@@ -95,7 +95,8 @@
         "commands": [
             {
                 "command": "chezScheme.startREPL",
-                "title": "Chez Scheme REPL: Start REPL"
+                "title": "Chez Scheme REPL: Start REPL",
+                "shortTitle": "Start Chez REPL"
             },
             {
                 "command": "chezScheme.sendFileToREPL",
@@ -130,6 +131,83 @@
                 "title": "Chez Scheme REPL: Check the current file for errors."
             }
         ],
+        "keybindings": [
+            {
+                "command": "chezScheme.evalLastSexp",
+                "key": "ctrl+enter",
+                "mac": "ctrl+enter",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "chezScheme.sendLastSexp",
+                "key": "ctrl+shift+enter",
+                "mac": "ctrl+shift+enter",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "chezScheme.expandLastSexp",
+                "key": "alt+enter",
+                "mac": "alt+enter",
+                "when": "editorTextFocus"
+            }
+        ],
+        "menus": {
+            "editor/title/context": [
+                {
+                    "when": "resourceLangId == scheme",
+                    "command": "chezScheme.sendFileToREPL"
+                }
+            ],
+            "editor/title": [
+                {
+                    "when": "resourceLangId == scheme",
+                    "command": "chezScheme.startREPL",
+                    "group": "navigation"
+                }
+            ],
+            "editor/context": [
+                {
+                    "when": "resourceLangId == scheme",
+                    "command": "chezScheme.evalSelection",
+                    "group": "9_cutcopypaste"
+                },
+                {
+                    "when": "resourceLangId == scheme",
+                    "command": "chezScheme.sendSelectionToREPL",
+                    "group": "9_cutcopypaste"
+                },
+                {
+                    "when": "resourceLangId == scheme",
+                    "command": "chezScheme.expandSelection",
+                    "group": "9_cutcopypaste"
+                },
+                {
+                    "when": "resourceLangId == scheme",
+                    "command": "chezScheme.startREPL",
+                    "group": "z_commands"
+                },
+                {
+                    "when": "resourceLangId == scheme",
+                    "command": "chezScheme.sendFileToREPL",
+                    "group": "z_commands"
+                },
+                {
+                    "when": "resourceLangId == scheme",
+                    "command": "chezScheme.evalLastSexp",
+                    "group": "z_commands"
+                },
+                {
+                    "when": "resourceLangId == scheme",
+                    "command": "chezScheme.sendLastSexp",
+                    "group": "z_commands"
+                },
+                {
+                    "when": "resourceLangId == scheme",
+                    "command": "chezScheme.expandLastSexp",
+                    "group": "z_commands"
+                }
+            ]
+        },
         "snippets": [
             {
                 "language": "scheme",

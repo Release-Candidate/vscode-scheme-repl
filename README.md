@@ -16,7 +16,7 @@
   - [Dependencies](#dependencies)
     - [Suggested Additional VS Code Extensions](#suggested-additional-vs-code-extensions)
   - [Installation](#installation)
-  - [Q \& A](#q--a)
+  - [Keybindings](#keybindings)
   - [Commands](#commands)
   - [Supported Source File Extensions](#supported-source-file-extensions)
 - [Configuration](#configuration)
@@ -29,16 +29,21 @@
 ## Features and drawbacks
 
 - Syntax highlighting.
-- Hover with documentation of all Chez Scheme identifiers.
-- Autocompletion with documentation of all Chez Scheme and local identifiers.
+- Hover with documentation of all Chez Scheme identifiers (works in comments too).
+- Autocompletion with documentation of all Chez Scheme and local identifiers (works in comments too).
 - Interactive REPL pane to the side of the editor, with commands to send code to the REPL (see [Commands](#commands)).
 - Inline evaluation of expressions (see [Commands](#commands)).
+- Macro expansion (see [Commands](#commands)).
 - Checking for syntax errors on save (or by calling the command, see [Commands](#commands))
+- All commands available in (right-click) context menus.
+- Add [Keybindings](#keybindings)
 
 ### Drawbacks
 
+- The `#;` only comments out until the first closing bracket. I'd rather have wrong comment syntax highlighting than no indication at all.
 - Syntax highlighting of complex numbers is done in a simple way and does not recognize complex numbers with `NAN`s or `INF`s.
 - The REPL pane is left empty on restart of VS Code and has to be manually closed. I do not know of a way to automatically close that on exit.
+- Inline evaluation can only show a single line because VA Code cannot display more than one line of a "text decoration".
 
 ## Getting started
 
@@ -61,7 +66,17 @@ Either
 - or download the extension from the [latest release at GitHub](https://github.com/Release-Candidate/vscode-scheme-repl/releases/latest)
 - or build the extension yourself by cloning the [GitHub Repository](https://github.com/Release-Candidate/vscode-scheme-repl) and running `yarn install` and `yarn package` in the root directory of the cloned repo.
 
-### Q & A
+### Keybindings
+
+- Inline evaluate the s-expression to the left of the cursor (command: `chezScheme.evalLastSexp`):
+  - Windows/Linux: `<Ctrl>+<Enter>`
+  - Mac: `<Control>+<Enter>` (remark: `control` not `command`!)
+- Evaluate the s-expression to the left of the cursor in the interactive REPL, start it, if it isn't running (command: `chezScheme.sendLastSexp`)
+  - Windows/Linux: `<Ctrl>+<Shift>+<Enter>`
+  - Mac: `<Control>+<Shift>+<Enter>` (remark: `control` not `command`!)
+- Macro-expand the s-expression to the left of the cursor in the interactive REPL, start it, if is isn't running (command: `chezScheme.expandLastSexp`):
+  - Windows/Linux: `<Alt>+<Enter>`
+  - Mac: `<Option>+<Enter>`
 
 ### Commands
 
