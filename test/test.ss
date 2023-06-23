@@ -186,7 +186,6 @@
      (set! x (+ x 1)))))
 
 (define y 5)
-
 (incr! y)
 
 y
@@ -205,7 +204,7 @@ y
   (let ([y (+ x x)])
    y))
 
-(hugo 6)
+(hugo 9)
 
 '(1 . (2 . 3))
 

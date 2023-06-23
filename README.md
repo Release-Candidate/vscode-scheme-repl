@@ -28,6 +28,13 @@
 
 ## Features and drawbacks
 
+![Video of Documentation on Hover](./images/hover_documentation.gif)
+![Video of Autocompletion](./images/autocompletion.gif)
+![Video of syntax check](./images/error_check.gif)
+![Video of Inline Evaluation](images/eval_left.gif)
+![Video of Sending a S-Exp to the Interactive REPL](images/left_repl.gif)
+![Video of Macro Expansion](images/macro-expand.gif)
+
 - Syntax highlighting.
 - Hover with documentation of all Chez Scheme identifiers (works in comments too).
 - Autocompletion with documentation of all Chez Scheme and local identifiers (works in comments too).
@@ -40,7 +47,7 @@
 
 ### Drawbacks
 
-- The `#;` only comments out until the first closing bracket. I'd rather have wrong comment syntax highlighting than no indication at all.
+- The datum comment `#;` only comments out until the first closing bracket. I'd rather have wrong comment syntax highlighting than no indication at all.
 - Syntax highlighting of complex numbers is done in a simple way and does not recognize complex numbers with `NAN`s or `INF`s.
 - The REPL pane is left empty on restart of VS Code and has to be manually closed. I do not know of a way to automatically close that on exit.
 - Inline evaluation can only show a single line because VA Code cannot display more than one line of a "text decoration".
