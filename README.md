@@ -28,20 +28,19 @@
 
 ## Features and drawbacks
 
-![Video of Documentation on Hover](./images/hover_documentation.gif)
-![Video of Autocompletion](./images/autocompletion.gif)
-![Video of syntax check](./images/error_check.gif)
-![Video of Inline Evaluation](images/eval_left.gif)
-![Video of Sending a S-Exp to the Interactive REPL](images/left_repl.gif)
-![Video of Macro Expansion](images/macro-expand.gif)
-
 - Syntax highlighting.
 - Hover with documentation of all Chez Scheme identifiers (works in comments too).
+![Video of Documentation on Hover](./images/hover_documentation.gif)
 - Autocompletion with documentation of all Chez Scheme and local identifiers (works in comments too).
+![Video of Autocompletion](./images/autocompletion.gif)
 - Interactive REPL pane to the side of the editor, with commands to send code to the REPL (see [Commands](#commands)).
+![Video of Sending a S-Exp to the Interactive REPL](images/left_repl.gif)
 - Inline evaluation of expressions (see [Commands](#commands)).
+![Video of Inline Evaluation](images/eval_left.gif)
 - Macro expansion (see [Commands](#commands)).
+![Video of Macro Expansion](images/macro-expand.gif)
 - Checking for syntax errors on save (or by calling the command, see [Commands](#commands))
+![Video of syntax check](./images/error_check.gif)
 - All commands available in (right-click) context menus.
 - Add [Keybindings](#keybindings)
 
