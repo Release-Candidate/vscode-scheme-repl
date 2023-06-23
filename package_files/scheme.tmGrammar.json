@@ -141,7 +141,39 @@
                 { "include": "#control" },
                 { "include": "#debug" },
                 { "include": "#syntax_other" },
-                { "include": "#other_function" }
+                { "include": "#bytevec_func" },
+                { "include": "#utf_function" },
+                { "include": "#time_function" },
+                { "include": "#toplevel_function" },
+                { "include": "#textual_port_function" },
+                { "include": "#vector_function" },
+                { "include": "#symbol_function" },
+                { "include": "#string_function" },
+                { "include": "#sstats_function" },
+                { "include": "#source_function" },
+                { "include": "#record_function" },
+                { "include": "#set_function" },
+                { "include": "#make_function" },
+                { "include": "#port_function" },
+                { "include": "#with_function" },
+                { "include": "#put_function" },
+                { "include": "#open_function" },
+                { "include": "#io_function" },
+                { "include": "#hash_function" },
+                { "include": "#get_function" },
+                { "include": "#car_function" },
+                { "include": "#binary_port_function" },
+                { "include": "#char_function" },
+                { "include": "#fx_function" },
+                { "include": "#profile_function" },
+                { "include": "#list_function" },
+                { "include": "#log_function" },
+                { "include": "#enum_function" },
+                { "include": "#other_function1" },
+                { "include": "#other_function2" },
+                { "include": "#other_function3" },
+                { "include": "#other_function4" },
+                { "include": "#other_function5" }
             ]
         },
         "library_module_related": {
@@ -186,7 +218,7 @@
                 },
                 {
                     "name": "entity.name.type.list.scheme",
-                    "match": "(?<=[(\\[]\\s*)list(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)list\\*?(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.exact.scheme",
@@ -235,6 +267,10 @@
                 {
                     "name": "entity.name.type.define-top-level-value.scheme",
                     "match": "(?<=[(\\[]\\s*)define-top-level-value(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "entity.name.type.define-top-level-syntax.scheme",
+                    "match": "(?<=[(\\[]\\s*)define-top-level-syntax(?=[\\s#(\\[{)\\]},\"'`;])"
                 }
             ]
         },
@@ -330,7 +366,7 @@
                 },
                 {
                     "name": "keyword.operator.arithmetic.scheme",
-                    "match": "(?<=[\\[(]\\s*)(sin|cos|tan|asin|acos|atan)(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[\\[(]\\s*)(sin|cos|tan|asin|acos|atan)h?(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "keyword.operator.arithmetic.scheme",
@@ -621,17 +657,145 @@
         },
         "syntax_other": {
             "name": "keyword.other.syntax.scheme",
-            "match": "(?<=[\\[(]\\s*)(annotation-option-set|assert|buffer-mode|buffer-mode?|constant|constructor|critical-section|drop-prefix|endianness|eol-style|error-handling-mode|eval-when|exclusive-cond|fasl-strip-options|fields|file-options|fluid-let|foreign-callable|foreign-procedure|ftype-&ref|ftype-guardian|ftype-init-lock!|ftype-lock!|ftype-locked-decr!|ftype-locked-incr!|ftype-pointer-null?|ftype-pointer=?|ftype-pointer?|ftype-ref|ftype-set!|ftype-sizeof|ftype-spin-lock!|ftype-unlock!|guard|immutable|implicit-exports|indirect-export|library-requirements-options|make-ftype-pointer|mutable|nongenerative|opaque|parameterize|parent|parent-rtd|pariah|predicate|prefix|profile|protocol|rec|record-case|record-constructor-descriptor|record-type-descriptor|sealed|time|top-level-program|trace|trace-case-lambda|trace-define|trace-define-syntax|trace-do|trace-lambda|trace-let|type-descriptor|untrace|variable|with|with-interrupts-disabled|with-mutex)(?=[\\s#(\\[{)\\]},\"'`;])"
+            "match": "(?<=[\\[(]\\s*)(annotation-option-set|assert|buffer-mode|buffer-mode\\?|constant|constructor|critical-section|drop-prefix|endianness|eol-style|error-handling-mode|eval-when|exclusive-cond|fasl-strip-options|fields|file-options|fluid-let|foreign-callable|foreign-procedure|ftype-&ref|ftype-guardian|ftype-init-lock!|ftype-lock!|ftype-locked-decr!|ftype-locked-incr!|ftype-pointer-null\\?|ftype-pointer=\\?|ftype-pointer\\?|ftype-ref|ftype-set!|ftype-sizeof|ftype-spin-lock!|ftype-unlock!|guard|immutable|implicit-exports|indirect-export|library-requirements-options|make-ftype-pointer|mutable|nongenerative|opaque|parameterize|parent|parent-rtd|pariah|predicate|prefix|profile|protocol|rec|record-case|record-constructor-descriptor|record-type-descriptor|sealed|time|top-level-program|trace|trace-case-lambda|trace-define|trace-define-syntax|trace-do|trace-lambda|trace-let|type-descriptor|untrace|variable|with|with-interrupts-disabled|with-mutex)(?=[\\s#(\\[{)\\]},\"'`;])"
         },
-        "other_function": {
+        "bytevec_func": {
+            "name": "entity.name.function.bytevec.scheme",
+            "match": "(?<=[\\[(]\\s*)(bytevector->immutable-bytevector|bytevector->s8-list|bytevector->sint-list|bytevector->string|bytevector->u8-list|bytevector->uint-list|bytevector-compress|bytevector-copy|bytevector-copy!|bytevector-fill!|bytevector-ieee-double-native-ref|bytevector-ieee-double-native-set!|bytevector-ieee-double-ref|bytevector-ieee-double-set!|bytevector-ieee-single-native-ref|bytevector-ieee-single-native-set!|bytevector-ieee-single-ref|bytevector-ieee-single-set!|bytevector-length|bytevector-s16-native-ref|bytevector-s16-native-set!|bytevector-s16-ref|bytevector-s16-set!|bytevector-s24-ref|bytevector-s24-set!|bytevector-s32-native-ref|bytevector-s32-native-set!|bytevector-s32-ref|bytevector-s32-set!|bytevector-s40-ref|bytevector-s40-set!|bytevector-s48-ref|bytevector-s48-set!|bytevector-s56-ref|bytevector-s56-set!|bytevector-s64-native-ref|bytevector-s64-native-set!|bytevector-s64-ref|bytevector-s64-set!|bytevector-s8-ref|bytevector-s8-set!|bytevector-sint-ref|bytevector-sint-set!|bytevector-truncate!|bytevector-u16-native-ref|bytevector-u16-native-set!|bytevector-u16-ref|bytevector-u16-set!|bytevector-u24-ref|bytevector-u24-set!|bytevector-u32-native-ref|bytevector-u32-native-set!|bytevector-u32-ref|bytevector-u32-set!|bytevector-u40-ref|bytevector-u40-set!|bytevector-u48-ref|bytevector-u48-set!|bytevector-u56-ref|bytevector-u56-set!|bytevector-u64-native-ref|bytevector-u64-native-set!|bytevector-u64-ref|bytevector-u64-set!|bytevector-u8-ref|bytevector-u8-set!|bytevector-uint-ref|bytevector-uint-set!|bytevector-uncompress|bytevector=\\?|bytevector\\?)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "vector_function": {
             "name": "entity.name.function.scheme",
-            "match": "(?<!let(?:\\*?(?:rec|-values)?\\s*?)\\s+[\\[(]+\\s*)(?<=[\\[(]+\\s*)[^\\s#(\\[{)\\]},\"'`;]+(?=[\\s#(\\[{)\\]},\"'`;])"
+            "match": "(?<=[\\[(]\\s*)(?:vector->immutable-vector|vector->list|vector-cas!|vector-copy|vector-fill!|vector-length|vector-ref|vector-set!|vector-set-fixnum!|vector-sort|vector-sort!|vector\\?)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "with_function": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:with-cost-center|with-exception-handler|with-input-from-file|with-input-from-string|with-output-to-file|with-output-to-string|with-profile-tracker|with-source-path)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "utf_function": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:utf-16-codec|utf-16be-codec|utf-16le-codec|utf-8-codec|utf16->string|utf32->string|utf8->string)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "toplevel_function": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:top-level-bound\\?|top-level-mutable\\?|top-level-syntax|top-level-syntax\\?|top-level-value)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "time_function": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:time-difference|time-difference!|time-nanosecond|time-second|time-type|time-utc->date|time<=\\?|time<\\?|time=\\?|time>=\\?|time>\\?|time\\?)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "textual_port_function": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:textual-port-input-buffer|textual-port-input-count|textual-port-input-index|textual-port-input-size|textual-port-output-buffer|textual-port-output-count|textual-port-output-index|textual-port-output-size|textual-port\\?)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "symbol_function": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:symbol->string|symbol-hash|symbol-hashtable-cell|symbol-hashtable-contains\\?|symbol-hashtable-delete!|symbol-hashtable-ref|symbol-hashtable-set!|symbol-hashtable-update!|symbol-hashtable\\?|symbol=\\?|symbol\\?)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "string_function": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:string->bytevector|string->immutable-string|string->list|string->multibyte|string->number|string->symbol|string->utf16|string->utf32|string->utf8|string-append|string-ci-hash|string-copy|string-copy!|string-downcase|string-fill!|string-foldcase|string-hash|string-length|string-normalize-nfc|string-normalize-nfd|string-normalize-nfkc|string-normalize-nfkd|string-ref|string-set!|string-titlecase|string-truncate!|string-upcase|string\\?)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "sstats_function": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:sstats-bytes|sstats-cpu|sstats-difference|sstats-gc-bytes|sstats-gc-count|sstats-gc-cpu|sstats-gc-real|sstats-print|sstats-real|sstats\\?)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "source_function": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:source-condition-form|source-condition\\?|source-file-descriptor|source-file-descriptor-checksum|source-file-descriptor-path|source-file-descriptor\\?|source-object-bfp|source-object-column|source-object-efp|source-object-line|source-object-sfd|source-object\\?|source-table-cell|source-table-contains\\?|source-table-delete!|source-table-dump|source-table-ref|source-table-set!|source-table-size|source-table\\?)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "set_function": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:set-binary-port-input-buffer!|set-binary-port-input-index!|set-binary-port-input-size!|set-binary-port-output-buffer!|set-binary-port-output-index!|set-binary-port-output-size!|set-box!|set-car!|set-cdr!|set-port-bol!|set-port-eof!|set-port-input-buffer!|set-port-input-index!|set-port-input-size!|set-port-length!|set-port-name!|set-port-nonblocking!|set-port-output-buffer!|set-port-output-index!|set-port-output-size!|set-port-position!|set-sstats-bytes!|set-sstats-cpu!|set-sstats-gc-bytes!|set-sstats-gc-count!|set-sstats-gc-cpu!|set-sstats-gc-real!|set-sstats-real!|set-textual-port-input-buffer!|set-textual-port-input-index!|set-textual-port-input-size!|set-textual-port-output-buffer!|set-textual-port-output-index!|set-textual-port-output-size!|set-time-nanosecond!|set-time-second!|set-time-type!|set-timer|set-top-level-value!|set-virtual-register!)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "record_function": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:record-accessor|record-constructor|record-constructor-descriptor\\?|record-equal-procedure|record-field-accessible\\?|record-field-accessor|record-field-mutable\\?|record-field-mutator|record-hash-procedure|record-mutator|record-predicate|record-reader|record-rtd|record-type-descriptor\\?|record-type-equal-procedure|record-type-field-decls|record-type-field-names|record-type-generative\\?|record-type-hash-procedure|record-type-name|record-type-opaque\\?|record-type-parent|record-type-sealed\\?|record-type-symbol|record-type-uid|record-writer|record\\?)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "make_function": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:make-annotation|make-assertion-violation|make-boot-file|make-boot-header|make-bytevector|make-condition|make-continuation-condition|make-cost-center|make-custom-binary-input-port|make-custom-binary-input/output-port|make-custom-binary-output-port|make-custom-textual-input-port|make-custom-textual-input/output-port|make-custom-textual-output-port|make-date|make-engine|make-enumeration|make-ephemeron-eq-hashtable|make-ephemeron-eqv-hashtable|make-eq-hashtable|make-eqv-hashtable|make-error|make-format-condition|make-fxvector|make-guardian|make-hash-table|make-hashtable|make-i/o-decoding-error|make-i/o-encoding-error|make-i/o-error|make-i/o-file-already-exists-error|make-i/o-file-does-not-exist-error|make-i/o-file-is-read-only-error|make-i/o-file-protection-error|make-i/o-filename-error|make-i/o-invalid-position-error|make-i/o-port-error|make-i/o-read-error|make-i/o-write-error|make-implementation-restriction-violation|make-input-port|make-input/output-port|make-irritants-condition|make-lexical-violation|make-list|make-message-condition|make-mutex|make-no-infinities-violation|make-no-nans-violation|make-non-continuable-violation|make-object-finder|make-output-port|make-parameter|make-record-constructor-descriptor|make-record-type|make-record-type-descriptor|make-serious-condition|make-source-condition|make-source-file-descriptor|make-source-object|make-source-table|make-sstats|make-string|make-syntax-violation|make-thread-parameter|make-time|make-transcoder|make-undefined-violation|make-vector|make-violation|make-warning|make-weak-eq-hashtable|make-weak-eqv-hashtable|make-who-condition)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "port_function": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:port-bol\\?|port-closed\\?|port-eof\\?|port-file-compressed!|port-file-descriptor|port-handler|port-has-port-length\\?|port-has-port-nonblocking\\?\\?|port-has-port-position\\?|port-has-set-port-length!\\?|port-has-set-port-nonblocking!\\?|port-has-set-port-position!\\?|port-input-buffer|port-input-count|port-input-empty\\?|port-input-index|port-input-size|port-length|port-name|port-nonblocking\\?|port-output-buffer|port-output-count|port-output-full\\?|port-output-index|port-output-size|port-position|port-transcoder|port\\?)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "put_function": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:put-bytevector|put-bytevector-some|put-char|put-datum|put-hash-table!|put-registry!|put-source-table|put-string|put-string-some|put-u8|putenv|putprop)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "open_function": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:open-bytevector-input-port|open-bytevector-output-port|open-fd-input-port|open-fd-input/output-port|open-fd-output-port|open-file-input-port|open-file-input/output-port|open-file-output-port|open-input-file|open-input-output-file|open-input-string|open-output-file|open-output-string|open-process-ports|open-source-file|open-string-input-port|open-string-output-port)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "io_function": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:i/o-decoding-error\\?|i/o-encoding-error-char|i/o-encoding-error\\?|i/o-error-filename|i/o-error-port|i/o-error-position|i/o-error\\?|i/o-file-already-exists-error\\?|i/o-file-does-not-exist-error\\?|i/o-file-is-read-only-error\\?|i/o-file-protection-error\\?|i/o-filename-error\\?|i/o-invalid-position-error\\?|i/o-port-error\\?|i/o-read-error\\?|i/o-write-error\\?)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "hash_function": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:hash-table-for-each|hash-table-map|hash-table\\?|hashtable-cell|hashtable-cells|hashtable-clear!|hashtable-contains\\?|hashtable-copy|hashtable-delete!|hashtable-entries|hashtable-ephemeron\\?|hashtable-equivalence-function|hashtable-hash-function|hashtable-keys|hashtable-mutable\\?|hashtable-ref|hashtable-set!|hashtable-size|hashtable-update!|hashtable-values|hashtable-weak\\?|hashtable\\?)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "get_function": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:get-bytevector-all|get-bytevector-n|get-bytevector-n!|get-bytevector-some|get-bytevector-some!|get-char|get-datum|get-datum/annotations|get-hash-table|get-line|get-mode|get-output-string|get-process-id|get-registry|get-source-table!|get-string-all|get-string-n|get-string-n!|get-string-some|get-string-some!|get-thread-id|get-u8|getenv|getprop)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "car_function": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:caaaar|caaadr|caaar|caadar|caaddr|caadr|caar|cadaar|cadadr|cadar|caddar|cadddr|caddr|cadr|car|cdaaar|cdaadr|cdaar|cdadar|cdaddr|cdadr|cdar|cddaar|cddadr|cddar|cdddar|cddddr|cdddr|cddr|cdr)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "binary_port_function": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:binary-port-input-buffer|binary-port-input-count|binary-port-input-index|binary-port-input-size|binary-port-output-buffer|binary-port-output-count|binary-port-output-index|binary-port-output-size|binary-port\\?)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "char_function": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:char-|char->integer|char-alphabetic\\?|char-downcase|char-foldcase|char-general-category|char-lower-case\\?|char-name|char-numeric\\?|char-ready\\?|char-title-case\\?|char-titlecase|char-upcase|char-upper-case\\?|char-whitespace\\?)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "fx_function": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:fxlogand|fxlogbit0|fxlogbit1|fxlogbit\\?|fxlogior|fxlognot|fxlogor|fxlogtest|fxlogxor|fxsll|fxsra|fxsrl)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "profile_function": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:profile-clear|profile-clear-database|profile-dump|profile-dump-data|profile-dump-html|profile-dump-list|profile-load-data|profile-query-weight|profile-release-counters)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "list_function": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:list->fxvector|list->string|list->vector|list-copy|list-head|list-ref|list-sort|list-tail|list\\?)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "log_function": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:logand|logbit0|logbit1|logbit\\?|logior|lognot|logor|logtest|logxor)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "enum_function": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:enum-set->list|enum-set-complement|enum-set-constructor|enum-set-difference|enum-set-indexer|enum-set-intersection|enum-set-member\\?|enum-set-projection|enum-set-subset\\?|enum-set-union|enum-set-universe|enum-set=\\?|enum-set\\?)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "other_function1": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:abort|add-duration|add-duration!|andmap|annotation-expression|annotation-options|annotation-source|annotation-stripped|annotation\\?|append|append!|apropos|apropos-list|assertion-violation|assertion-violation\\?|assertion-violationf|assoc|assp|assq|assv|atom\\?|bignum\\?|bitwise-bit-set\\?|block-read|block-write|boolean=\\?|boolean\\?|bound-identifier=\\?|box-cas!|box-immutable|box\\?|bwp-object\\?|bytes-allocated|bytes-deallocated|call-with-bytevector-output-port|call-with-input-file|call-with-output-file|call-with-port|call-with-string-output-port|cfl*|cfl+|cfl-|cfl-conjugate|cfl-imag-part|cfl-magnitude-squared|cfl-real-part|cfl/|cfl=|cflonum\\?|chmod|clear-input-port|clear-output-port|close-input-port|close-output-port|close-port|collect|collect-rendezvous|collections|command-line|compile|compile-file|compile-library|compile-port|compile-program|compile-script|compile-to-file|compile-to-port|compile-whole-library|compile-whole-program|complex\\?|compute-composition|compute-size|concatenate-object-files|condition-accessor|condition-broadcast|condition-continuation|condition-irritants|condition-message|condition-name|condition-predicate|condition-signal|condition-wait|condition-who|condition\\?|conjugate|cons|cons*|continuation-condition\\?|copy-environment|copy-time|cost-center-allocation-count|cost-center-instruction-count|cost-center-time|cost-center\\?|cpu-time|create-exception-state)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "other_function2": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:current-date|current-memory-bytes|current-time|date->time-utc|date-and-time|date-day|date-dst\\?|date-hour|date-minute|date-month|date-nanosecond|date-second|date-week-day|date-year|date-year-day|date-zone-name|date-zone-offset|date\\?|decode-float|default-exception-handler|default-library-search-handler|default-prompt-and-read|delete-directory|delete-file|directory-list|directory-separator|directory-separator\\?|disable-interrupts|display|display-condition|display-statistics|display-string|ee-bind-key|ee-compose|ee-string-macro|enable-interrupts|engine-block|engine-return|enumerate|environment-mutable\\?|environment-symbols|environment\\?|eof-object|eof-object\\?|ephemeron-cons|ephemeron-pair\\?|eq-hashtable-cell|eq-hashtable-contains\\?|eq-hashtable-delete!|eq-hashtable-ephemeron\\?|eq-hashtable-ref|eq-hashtable-set!|eq-hashtable-update!|eq-hashtable-weak\\?|eq-hashtable\\?|equal-hash|error|error\\?|errorf|exact->inexact|exact-integer-sqrt|exact\\?|exit|expand/optimize|expt-mod|fasl-file|fasl-read|fasl-write|file-access-time|file-change-time|file-directory\\?|file-exists\\?|file-length|file-modification-time|file-port\\?|file-position|file-regular\\?|file-symbolic-link\\?|find|fixnum->flonum|fixnum-width|fixnum\\?|fl-make-rectangular|fllp|flonum->fixnum|flonum\\?|flush-output-port|foreign-address-name|foreign-alloc|foreign-callable-code-object|foreign-callable-entry-point|foreign-entry|foreign-entry\\?|foreign-free|foreign-ref|foreign-set!|foreign-sizeof|fork-thread)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "other_function3": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:format-condition\\?|fprintf|free-identifier=\\?|fresh-line|ftype-pointer->sexpr|ftype-pointer-address|ftype-pointer-ftype|fxvector->immutable-fxvector|fxvector->list|fxvector-copy|fxvector-fill!|fxvector-length|fxvector-ref|fxvector-set!|fxvector\\?|gensym|gensym->unique-string|gensym\\?|greatest-fixnum|guardian\\?|iconv-codec|identifier\\?|ieee-environment|immutable-box\\?|immutable-bytevector\\?|immutable-fxvector\\?|immutable-string\\?|immutable-vector\\?|implementation-restriction-violation\\?|inexact->exact|initial-bytes-allocated|input-port-ready\\?|input-port\\?|inspect|inspect/object|integer->char|integer-length|integer-valued\\?|integer\\?|interactive\\?|interpret|invoke-library|iota|irritants-condition\\?|isqrt|last-pair|latin-1-codec|least-fixnum|length|lexical-violation\\?|library-exports|library-list|library-object-filename|library-requirements|library-version|literal-identifier=\\?|load|load-compiled-from-port|load-library|load-program|load-shared-object|locate-source|locate-source-object-source|lock-object|locked-object\\?|lookahead-char|lookahead-u8|machine-type|magnitude|magnitude-squared|mark-port-closed!|maximum-memory-bytes|maybe-compile-file|maybe-compile-library|maybe-compile-program|member|memp|memq|memv|merge|merge!|message-condition\\?|mkdir|most-negative-fixnum|most-positive-fixnum|multibyte->string|mutable-box\\?|mutable-bytevector\\?|mutable-fxvector\\?|mutable-string\\?|mutable-vector\\?|mutex-acquire|mutex-name|mutex-release|mutex\\?|native-endianness|native-eol-style|native-transcoder|new-cafe)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "other_function4": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:newline|no-infinities-violation\\?|no-nans-violation\\?|non-continuable-violation\\?|nonnegative\\?|nonpositive\\?|null\\?|number->string|number\\?|object-counts|oblist|odd\\?|ormap|output-port-buffer-mode|output-port\\?|pair\\?|partition|path-absolute\\?|path-extension|path-first|path-last|path-parent|path-rest|path-root|peek-char|petite\\?|pretty-file|pretty-format|pretty-print|printf|procedure-arity-mask|procedure\\?|process|property-list|raise|raise-continuable|random|rational-valued\\?|rational\\?|ratnum\\?|read|read-char|read-token|real->flonum|real-time|real-valued\\?|real\\?|register-signal-handler|remove|remove!|remove-foreign-entry|remove-hash-table!|remove-registry!|remp|remprop|remq|remq!|remv|remv!|rename-file|reset|reset-cost-center!|reset-maximum-memory-bytes!|reverse|reverse!|revisit|revisit-compiled-from-port|s8-list->bytevector|sc-expand|scheme-environment|scheme-version|scheme-version-number|serious-condition\\?|simple-conditions|sint-list->bytevector|sleep|sort|sort!|standard-error-port|standard-input-port|standard-output-port|statistics|strip-fasl-file|subst|subst!|substq|substq!|substring|substring-fill!|substv|substv!|subtract-duration|subtract-duration!|syntax->annotation|syntax-violation|syntax-violation-form|syntax-violation-subform|syntax-violation\\?|system)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "other_function5": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:thread-condition\\?|thread\\?|threaded\\?|transcoded-port|transcoder-codec|transcoder-eol-style|transcoder-error-handling-mode|transcoder\\?|transcript-cafe|transcript-off|transcript-on|truncate-file|truncate-port|u8-list->bytevector|uint-list->bytevector|unbox|undefined-violation\\?|unget-char|unget-u8|unlock-object|unread-char|unregister-guardian|verify-loadability|violation\\?|virtual-register|virtual-register-count|visit|visit-compiled-from-port|void|warning|warning\\?|warningf|weak-cons|weak-pair\\?|who-condition\\?|write|write-char|zero\\?)(?=[\\s#(\\[{)\\]},\"'`;])"
         },
         "macro_syntax": {
             "patterns": [
                 {
                     "name": "entity.name.type.define-macro.scheme",
-                    "match": "(?<=[(\\[]\\s*)define-syntax(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)define-syntax(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.syntax-rules.scheme",
@@ -639,51 +803,51 @@
                 },
                 {
                     "name": "entity.name.type.let-syntax.scheme",
-                    "match": "(?<=[(\\[]\\s*)let(?:rec)?-syntax(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)let(?:rec)?-syntax(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.identifier-syntax.scheme",
-                    "match": "(?<=[(\\[]\\s*)identifier-syntax(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)identifier-syntax(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.syntax-case.scheme",
-                    "match": "(?<=[(\\[]\\s*)syntax-case(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)syntax-case(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.syntax.scheme",
-                    "match": "(?<=[(\\[]\\s*)syntax(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)syntax(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.with-syntax.scheme",
-                    "match": "(?<=[(\\[]\\s*)with-syntax(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)with-syntax(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.quasisyntax.scheme",
-                    "match": "(?<=[(\\[]\\s*)quasisyntax(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)quasisyntax(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.unsyntax.scheme",
-                    "match": "(?<=[(\\[]\\s*)unsyntax(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)unsyntax(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.unsyntax-splicing.scheme",
-                    "match": "(?<=[(\\[]\\s*)unsyntax-splicing(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)unsyntax-splicing(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.meta.scheme",
-                    "match": "(?<=[(\\[]\\s*)meta(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)meta(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.meta-cond.scheme",
-                    "match": "(?<=[(\\[]\\s*)meta-cond(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)meta-cond(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.make-variable-transformer.scheme",
-                    "match": "(?<=[(\\[]\\s*)make-variable-transformer(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)make-variable-transformer(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.syntax->datum.scheme",
-                    "match": "(?<=[(\\[]\\s*)syntax->datum(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)syntax->datum(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.syntax->list.scheme",
@@ -691,15 +855,15 @@
                 },
                 {
                     "name": "entity.name.type.syntax->vector.scheme",
-                    "match": "(?<=[(\\[]\\s*)syntax->vector(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)syntax->vector(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.datum.scheme",
-                    "match": "(?<=[(\\[]\\s*)datum(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)datum(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.syntax-error.scheme",
-                    "match": "(?<=[(\\[]\\s*)syntax-error(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)syntax-error(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.make-compile-time-value.scheme",
@@ -707,27 +871,27 @@
                 },
                 {
                     "name": "entity.name.type.compile-time-value?.scheme",
-                    "match": "(?<=[(\\[]\\s*)compile-time-value\\?(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)compile-time-value\\?(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.compile-time-value-value.scheme",
-                    "match": "(?<=[(\\[]\\s*)compile-time-value-value(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)compile-time-value-value(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.include.scheme",
-                    "match": "(?<=[(\\[]\\s*)include(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)include(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.with-implicit.scheme",
-                    "match": "(?<=[(\\[]\\s*)with-implicit(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)with-implicit(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.datum->syntax.scheme",
-                    "match": "(?<=[(\\[]\\s*)datum->syntax(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)datum->syntax(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.syntax-object->datum.scheme",
-                    "match": "(?<=[(\\[]\\s*)syntax-object->datum(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)syntax-object->datum(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.datum->syntax-object.scheme",
@@ -735,15 +899,15 @@
                 },
                 {
                     "name": "entity.name.type.generate-temporaries.scheme",
-                    "match": "(?<=[(\\[]\\s*)generate-temporaries(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)generate-temporaries(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.extend-syntax.scheme",
-                    "match": "(?<=[(\\[]\\s*)extend-syntax(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)extend-syntax(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.fluid-let-syntax.scheme",
-                    "match": "(?<=[(\\[]\\s*)fluid-let-syntax(?:-type)?(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)fluid-let-syntax(?=[\\s#(\\[{)\\]},\"'`;])"
                 },
                 {
                     "name": "entity.name.type.syntax.scheme",
@@ -1006,8 +1170,13 @@
             ]
         },
         "box": {
-            "name": "storage.modifier.box.scheme",
-            "match": "#&"
+            "patterns": [
+                { "name": "storage.modifier.box.scheme", "match": "#&" },
+                {
+                    "name": "entity.name.type.box.scheme",
+                    "match": "(?<=[(\\[]\\s*)box(?=[\\s#(\\[{)\\]},\"'`;])"
+                }
+            ]
         },
         "primitive": {
             "patterns": [
