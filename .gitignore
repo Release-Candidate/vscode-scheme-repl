@@ -11,3 +11,4 @@ package-lock.json
 summary_of_forms.html
 cisco.github.io*.html
 scheme.com*.html
+.yarnrc.yml
