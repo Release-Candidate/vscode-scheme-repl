@@ -4,7 +4,7 @@
     "version": "0.3.0",
     "preview": false,
     "publisher": "release-candidate",
-    "description": "Support for Chez Scheme.",
+    "description": "Support for Chez Scheme: Highlighting, autocompletion, documentation on hover and syntax checks.",
     "keywords": [
         "Chez Scheme",
         "Language",
