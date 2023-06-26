@@ -64,6 +64,7 @@ export async function activate(context: vscode.ExtensionContext) {
  * Setup the extension.
  * @param env The extension's environment.
  */
+// eslint-disable-next-line max-statements
 async function setupExtension(env: h.Env) {
     const editorChangedSubscription = vscode.window.onDidChangeActiveTextEditor(
         (editor) => {
@@ -73,6 +74,11 @@ async function setupExtension(env: h.Env) {
     env.context.subscriptions.push(editorChangedSubscription);
 
     subscribeOnSave(env);
+
+    const configSubscription = vscode.workspace.onDidChangeConfiguration((e) =>
+        configChanged(env, e)
+    );
+    env.context.subscriptions.push(configSubscription);
 
     const symbolSubscription = vscode.languages.registerDocumentSymbolProvider(
         c.languageName,
@@ -285,4 +291,24 @@ function registerTextEditorCommand(
         (editor) => f(env, editor)
     );
     env.context.subscriptions.push(subscription);
+}
+
+/**
+ * Called, if the configuration has changed.
+ * @param env The extension's environment.
+ * @param e The change event.
+ */
+function configChanged(env: h.Env, e: vscode.ConfigurationChangeEvent) {
+    if (e.affectsConfiguration(c.cfgSection)) {
+        env.outChannel.appendLine(`Config changed!`);
+        vscode.window
+            .showInformationMessage(
+                "The configuration has changed!\nReload the window for the changes to take effect.",
+                "Reload Now"
+            )
+            // eslint-disable-next-line no-unused-vars
+            .then((_) =>
+                vscode.commands.executeCommand("workbench.action.reloadWindow")
+            );
+    }
 }

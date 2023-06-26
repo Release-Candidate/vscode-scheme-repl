@@ -211,7 +211,7 @@ export async function createREPL(
         location: { viewColumn: vscode.ViewColumn.Beside, preserveFocus: true },
     });
     terminal.sendText(`${c.getCfgREPLPath(config)}`);
-    await help.sleep(c.replSleepTime);
+    await help.sleep(c.getCfgREPLDelay(config));
     terminal.sendText(`${c.getCfgREPLPromptFunction(config)}`);
     return terminal;
 }

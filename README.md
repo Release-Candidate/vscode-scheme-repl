@@ -109,6 +109,7 @@ The following list of extensions is recognized as a Chez Scheme source file:
 ## Configuration
 
 - `chezScheme.schemePath` - Path to the Chez Scheme executable `scheme`. Can be either an absolute path or relative to the workspace root. Default: `scheme`, which works if `scheme` is in your `PATH`.
+- `chezScheme.replDelay` - The delay in milliseconds `ms` to wait after starting a terminal for the interactive REPL until sending sources to it. Default: 1000ms, 1s.
 - `chezScheme.waiterPrompt` - The string to display as an interactive REPL prompt. Default: `λ>`.
 
 ## VS Code Scheme specific configuration
