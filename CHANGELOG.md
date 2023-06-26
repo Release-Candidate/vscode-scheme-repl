@@ -1,5 +1,10 @@
 # Chez Scheme REPL for Visual Studio Code Changelog
 
+## Version 0.4.0 (2023-06-26)
+
+- Make the delay between starting the terminal for the interactive REPL and sending data to this terminal configurable. Configuration value `chezScheme.replDelay`. See [#5](https://github.com/Release-Candidate/vscode-scheme-repl/issues/5).
+- If the extension's configuration has changed, pop up a window asking the user to reload the extension to activate the changes.
+
 ## Version 0.3.0 (2023-06-26)
 
 ### Bugfixes

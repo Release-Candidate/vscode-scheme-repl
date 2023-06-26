@@ -206,10 +206,32 @@ export const cfgREPLPath = "schemePath";
 export const cfgREPLDefaultPath = replCommand;
 
 /**
+ * The configuration key for the REPL start delay.
+ */
+export const cfgREPLDelay = "replDelay";
+
+/**
+ * The default value of `cfgREPLDelay`.
+ */
+export const cfgREPLDefaultDelay = replSleepTime;
+
+/**
+ * Return the configuration value for `replDelay`.
+ * @param config The configuration object to use.
+ * @returns The configuration value for `replDelay`.
+ */
+export function getCfgREPLDelay(config: vscode.WorkspaceConfiguration): number {
+    return config.get<number>(cfgREPLDelay) || cfgREPLDefaultDelay;
+}
+
+/**
  * The string to use as the Chez REPL prompt.
  */
 export const cfgREPLPrompt = "waiterPrompt";
 
+/**
+ * The default value of `cfgREPLPrompt`.
+ */
 export const cfgREPLDefaultPrompt = replPrompt;
 
 /**
@@ -217,7 +239,7 @@ export const cfgREPLDefaultPrompt = replPrompt;
  * @param config The configuration object to use.
  * @returns The configuration value for `schemePath`.
  */
-export function getCfgREPLPath(config: vscode.WorkspaceConfiguration) {
+export function getCfgREPLPath(config: vscode.WorkspaceConfiguration): string {
     return config.get<string>(cfgREPLPath) || cfgREPLDefaultPath;
 }
 
@@ -230,7 +252,7 @@ export function getCfgREPLPath(config: vscode.WorkspaceConfiguration) {
  */
 export function getCfgREPLPromptFunction(
     config: vscode.WorkspaceConfiguration
-) {
+): string {
     const promptString =
         config.get<string>(cfgREPLPrompt) || cfgREPLDefaultPrompt;
     return setREPLPrompt(promptString);
