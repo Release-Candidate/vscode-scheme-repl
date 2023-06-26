@@ -65,6 +65,8 @@ export function setREPLPrompt(prompt: string): string {
 /**
  * Return the command to send to a running Chez REPL to load the file
  * `fileName` and evaluate `sexp`.
+ * Escapes backslashes in the file path (Windows paths) to be able to load files
+ * on windows.
  * The lambda to `load` helps in getting a bit of context about an error, if an
  * error occurs when loading `fileName`.
  * Set the REPL prompt to `replPrompt`.
@@ -74,7 +76,8 @@ export function setREPLPrompt(prompt: string): string {
  * `fileName` and evaluate `sexp`.
  */
 export function replLoadFileAndSexp(fileName: string, sexp: string): string {
-    return `(load "${fileName}" (lambda (x) (pretty-print (if (annotation? x) (annotation-stripped x) x)) (newline) (eval x)))\n${setREPLPrompt(
+    const sanitized = fileName.replace(/\\/gu, "\\\\");
+    return `(load "${sanitized}" (lambda (x) (pretty-print (if (annotation? x) (annotation-stripped x) x)) (newline) (eval x)))\n${setREPLPrompt(
         replPrompt
     )}\n ${sexp}`;
 }
