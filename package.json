@@ -1,7 +1,7 @@
 {
     "name": "vscode-scheme-repl",
     "displayName": "Chez Scheme REPL",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "preview": false,
     "publisher": "release-candidate",
     "description": "Support for Chez Scheme.",

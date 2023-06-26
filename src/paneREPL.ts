@@ -124,7 +124,7 @@ export async function expandLastInRepl(
 }
 
 /**
- * Send the result of applying `f` to the current selection to the pane REPL.
+ * Send the result of applying `data.f` to the current selection to the pane REPL.
  * @param data The needed data.
  */
 async function doSelectionInRepl(data: {
@@ -155,7 +155,7 @@ async function doSelectionInRepl(data: {
 }
 
 /**
- * Send the result of applying `f` to the sexp to the left of the cursor to the
+ * Send the result of applying `data.f` to the sexp to the left of the cursor to the
  * pane REPL.
  * @param data The needed data.
  */
