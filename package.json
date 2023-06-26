@@ -298,5 +298,6 @@
         "package": "vsce package",
         "publish-vsix": "vsce publish --yarn",
         "publish-ovsx": "ovsx publish vscode-scheme-repl-*.vsix --pat"
-    }
+    },
+    "packageManager": "yarn@1.22.19"
 }
