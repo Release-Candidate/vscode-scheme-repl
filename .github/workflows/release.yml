@@ -44,12 +44,6 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
 
-            - name: Setup Yarn
-              run: |
-                  corepack enable
-                  corepack prepare yarn@stable --activate
-                  yarn set version 1.22.19
-
             - name: Generate Changelog
               run: |
                   yarn --ignore-engines install --dev
