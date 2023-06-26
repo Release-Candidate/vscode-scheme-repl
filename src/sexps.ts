@@ -156,6 +156,7 @@ function startOfSexp(data: {
  * right end of the string, if present and the following string until the left
  * end of the current sexp.
  */
+// eslint-disable-next-line max-lines-per-function
 function listSeparators(data: {
     s: string;
     delim: Delimiter | undefined;
@@ -169,6 +170,7 @@ function listSeparators(data: {
             delimStack: data.delimStack,
             level: data.level,
             delimString: ",",
+            numChars: 1,
         });
     } else if (data.s.endsWith(" ")) {
         return addDelimAndContinue({
@@ -177,6 +179,16 @@ function listSeparators(data: {
             delimStack: data.delimStack,
             level: data.level,
             delimString: " ",
+            numChars: 1,
+        });
+    } else if (data.s.endsWith("\r\n")) {
+        return addDelimAndContinue({
+            s: data.s,
+            delim: data.delim,
+            delimStack: data.delimStack,
+            level: data.level,
+            delimString: "\r\n",
+            numChars: 2,
         });
     } else if (data.s.endsWith("\n")) {
         return addDelimAndContinue({
@@ -185,6 +197,7 @@ function listSeparators(data: {
             delimStack: data.delimStack,
             level: data.level,
             delimString: "\n",
+            numChars: 1,
         });
     } else if (data.s.endsWith("\t")) {
         return addDelimAndContinue({
@@ -193,6 +206,7 @@ function listSeparators(data: {
             delimStack: data.delimStack,
             level: data.level,
             delimString: "\t",
+            numChars: 1,
         });
     }
     return undefined;
@@ -413,10 +427,14 @@ function addDelimAndContinue(data: {
     delimStack: Delimiter[];
     level: number;
     delimString: string;
+    numChars: number;
 }): string {
     return (
-        parseSexpToLeft(data.delimStack, data.s.slice(0, -1), data.level) +
-        data.delimString
+        parseSexpToLeft(
+            data.delimStack,
+            data.s.slice(0, -data.numChars),
+            data.level
+        ) + data.delimString
     );
 }
 

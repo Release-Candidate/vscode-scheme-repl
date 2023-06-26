@@ -46,7 +46,8 @@ const notAnEnvRegex =
  * function of the REPL.
  * The last expression is saved in the match group `last`.
  */
-const lastExprRegex = /\n(?<last>[^\n]+)\s+(\S?\S?\S?[>%@#$~^&])\s\2?\s?\n*$/su;
+const lastExprRegex =
+    /\r?\n(?<last>[^\n]+)\s+(\S?\S?\S?[>%@#$~^&])\s\2?\s?\r?\n*$/su;
 
 /**
  * Returns a list of identifiers beginning with the string `prefix` or
@@ -346,7 +347,7 @@ async function evalSexp(
  */
 function matchREPLResponse(group: string): RegExp {
     return new RegExp(
-        `(?:${c.replPrompt}\\s+)+${group}\\n${c.replPrompt}\\s+$`,
+        `(?:${c.replPrompt}\\s+)+${group}\\r?\\n${c.replPrompt}\\s+$`,
         "su"
     );
 }
