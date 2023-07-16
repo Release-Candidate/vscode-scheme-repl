@@ -12,7 +12,6 @@
 		"moduleResolution": "node",
 		"noImplicitReturns": true,
 		"noFallthroughCasesInSwitch": true,
-		"esModuleInterop": true,
 		"noUnusedParameters": true
 	},
 	"include": [

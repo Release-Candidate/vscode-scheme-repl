@@ -9,14 +9,14 @@
  * ==============================================================================
  * The mocha test runner.
  */
-import glob = require("glob");
-import Mocha = require("mocha");
+import * as Mocha from "mocha";
+import * as glob from "glob";
 import * as path from "path";
 
 /**
  * The actual Mocha test runner.
  */
-export async function run(): Promise<void> {
+export function run(): Promise<void> {
     const mocha = new Mocha({
         ui: "tdd",
     });
@@ -25,23 +25,25 @@ export async function run(): Promise<void> {
 
     return new Promise((c, e) => {
         // eslint-disable-next-line consistent-return
-        glob.glob("**/**-test.js", { cwd: testsRoot })
-            .then((files) => {
-                files.forEach((f) => mocha.addFile(path.resolve(testsRoot, f)));
+        glob("**/**-test.js", { cwd: testsRoot }, (err, files) => {
+            if (err) {
+                return e(err);
+            }
 
-                try {
-                    mocha.run((failures) => {
-                        if (failures > 0) {
-                            e(new Error(`${failures} tests failed.`));
-                        } else {
-                            c();
-                        }
-                    });
-                } catch (error) {
-                    console.error(error);
-                    e(error);
-                }
-            })
-            .catch((err) => e(err));
+            files.forEach((f) => mocha.addFile(path.resolve(testsRoot, f)));
+
+            try {
+                mocha.run((failures) => {
+                    if (failures > 0) {
+                        e(new Error(`${failures} tests failed.`));
+                    } else {
+                        c();
+                    }
+                });
+            } catch (error) {
+                console.error(error);
+                e(error);
+            }
+        });
     });
 }
