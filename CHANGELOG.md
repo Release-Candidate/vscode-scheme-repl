@@ -1,5 +1,15 @@
 # Chez Scheme REPL for Visual Studio Code Changelog
 
+## Version 0.4.1 (2023-07-17)
+
+### Bugfixes
+
+- Make the package smaller by not including GIFs.
+
+### Internal Changes
+
+- Update dependencies to new versions and make Yarn compatible to version 3
+
 ## Version 0.4.0 (2023-06-26)
 
 - Make the delay between starting the terminal for the interactive REPL and sending data to this terminal configurable. Configuration value `chezScheme.replDelay`. See [#5](https://github.com/Release-Candidate/vscode-scheme-repl/issues/5).
