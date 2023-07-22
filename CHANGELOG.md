@@ -1,5 +1,10 @@
 # Chez Scheme REPL for Visual Studio Code Changelog
 
+## Version 0.4.2 (2023-07-22)
+
+Version bump for the Open VSX registry only, a bug in the registry broke the publishing of updates.
+See [https://github.com/EclipseFdn/open-vsx.org/issues/2000](https://github.com/EclipseFdn/open-vsx.org/issues/2000)
+
 ## Version 0.4.1 (2023-07-17)
 
 ### Bugfixes
