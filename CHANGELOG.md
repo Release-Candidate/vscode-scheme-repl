@@ -1,5 +1,9 @@
 # Chez Scheme REPL for Visual Studio Code Changelog
 
+## Version 0.5.0 (2023-09-13)
+
+Add support for syntax highlighting in Markdown code fences using the `scheme` language id.
+
 ## Version 0.4.2 (2023-07-22)
 
 Version bump for the Open VSX registry only, a bug in the registry broke the publishing of updates.
