@@ -28,7 +28,7 @@
 
 ## Features and drawbacks
 
-- Syntax highlighting.
+- Syntax highlighting in source files and Markdown code blocks (using language identifier `scheme`).
 - Hover with documentation of all Chez Scheme identifiers (works in comments too).
 ![Video of Documentation on Hover](./images/hover_documentation.gif)
 - Autocompletion with documentation of all Chez Scheme and local identifiers (works in comments too).

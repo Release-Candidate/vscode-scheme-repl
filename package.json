@@ -1,7 +1,7 @@
 {
     "name": "vscode-scheme-repl",
     "displayName": "Chez Scheme REPL",
-    "version": "0.4.2",
+    "version": "0.5.0",
     "preview": false,
     "publisher": "release-candidate",
     "description": "Support for Chez Scheme: Highlighting, autocompletion, documentation on hover and syntax checks.",
@@ -77,7 +77,7 @@
                 }
             },
             {
-                "scopeName": "markdown.scheme.codeblock",
+                "scopeName": "source.markdown.codeblock.scheme",
                 "path": "./package_files/scheme.markdown.tmGrammar.json",
                 "injectTo": [
                     "text.html.markdown"
@@ -258,31 +258,31 @@
         ]
     },
     "devDependencies": {
-        "@types/chai": "^4.3.5",
+        "@types/chai": "^4.3.6",
         "@types/glob": "^8.1.0",
-        "@types/jsdom": "^21.1.1",
+        "@types/jsdom": "^21.1.2",
         "@types/mocha": "^10.0.1",
-        "@types/node": "^20.4.2",
+        "@types/node": "^20.6.0",
         "@types/vscode": "1.65.0",
-        "@typescript-eslint/eslint-plugin": "^6.0.0",
-        "@typescript-eslint/parser": "^6.0.0",
-        "@vscode/test-electron": "^2.3.3",
-        "@vscode/vsce": "^2.19.0",
-        "chai": "^4.3.7",
-        "del-cli": "^5.0.0",
-        "esbuild": "^0.18.13",
-        "eslint": "^8.45.0",
+        "@typescript-eslint/eslint-plugin": "^6.7.0",
+        "@typescript-eslint/parser": "^6.7.0",
+        "@vscode/test-electron": "^2.3.4",
+        "@vscode/vsce": "^2.21.0",
+        "chai": "^4.3.8",
+        "del-cli": "^5.1.0",
+        "esbuild": "^0.19.2",
+        "eslint": "^8.49.0",
         "eslint-plugin-chai-friendly": "^0.7.2",
-        "eslint-plugin-jsdoc": "^46.4.4",
+        "eslint-plugin-jsdoc": "^46.6.0",
         "eslint-plugin-mocha": "^10.1.0",
         "glob": "^8.1.0",
         "jsdom": "^22.1.0",
         "mocha": "^10.2.0",
-        "ovsx": "^0.8.2",
+        "ovsx": "^0.8.3",
         "source-map-support": "^0.5.21",
         "ts-node": "^10.9.1",
         "tsconfig-paths": "^4.2.0",
-        "typescript": "^5.1.6"
+        "typescript": "^5.2.2"
     },
     "vsce": {
         "dependencies": true,
