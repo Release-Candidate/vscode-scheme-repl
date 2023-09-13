@@ -4,6 +4,10 @@
 
 Add support for syntax highlighting in Markdown code fences using the `scheme` language id.
 
+### Internal Changes
+
+- Update dependencies to new versions
+
 ## Version 0.4.2 (2023-07-22)
 
 Version bump for the Open VSX registry only, a bug in the registry broke the publishing of updates.
