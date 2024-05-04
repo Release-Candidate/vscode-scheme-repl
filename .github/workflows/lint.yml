@@ -36,7 +36,7 @@ jobs:
       - name: Eslint
         run: |
           npm install --save-dev
-          npm lint-github
+          npm run lint-github
 
       - name: Annotate Code Linting Results
         uses: ataylorme/eslint-annotate-action@v2
