@@ -215,3 +215,6 @@ y
 (get-identifiers "get-i")
 
 (define url-list-of-forms "https://cisco.github.io/ChezScheme/csug9.5/summary.html")
+
+;; new in Chez Scheme 10
+(string-grapheme-span "👩‍🔬" 0)

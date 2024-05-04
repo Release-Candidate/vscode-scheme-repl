@@ -7,6 +7,7 @@ Add support for Chez Scheme 10.
 ### Internal Changes
 
 - Change package manager from `yarn` to `npm`.
+- Update dependencies to new versions.
 
 ## Version 0.5.0 (2023-09-13)
 
