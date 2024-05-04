@@ -10,37 +10,37 @@
 name: Lint
 
 on:
-    push:
-        branches: ["main"]
-    pull_request:
-        branches: ["main"]
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
 
 jobs:
-    eslint:
-        strategy:
-            matrix:
-                os: [ubuntu-latest]
-                node-version: [16.x, 18.x]
+  eslint:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node-version: [16.x, 18.x]
 
-        runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
 
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-            - name: Setup Node
-              uses: actions/setup-node@v3
-              with:
-                  node-version: ${{ matrix.node-version }}
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
 
-            - name: Eslint
-              run: |
-                  yarn --ignore-engines install --dev
-                  yarn --ignore-engines lint-github
+      - name: Eslint
+        run: |
+          npm install --save-dev
+          npm lint-github
 
-            - name: Annotate Code Linting Results
-              uses: ataylorme/eslint-annotate-action@v2
-              if: ${{ always() }}
-              with:
-                  repo-token: "${{ secrets.GITHUB_TOKEN }}"
-                  report-json: "eslint_report.json"
+      - name: Annotate Code Linting Results
+        uses: ataylorme/eslint-annotate-action@v2
+        if: ${{ always() }}
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          report-json: "eslint_report.json"

@@ -8,12 +8,12 @@
  *
  * ==============================================================================
  * Parse the HTML documentation from the Chez Scheme page
- * https://cisco.github.io/ChezScheme/csug9.5/summary.html
+ * https://cisco.github.io/ChezScheme/csug10.0/summary.html
  * and generate a list of objects holding the parsed data in `outFilename`.
  * Run with `yarn --ignore-engines ts-node generate_function_documentation.ts`.
  *
  * The Chez Scheme user's guide is licensed under the Apache License Version 2:
- * https://cisco.github.io/ChezScheme/csug9.5/canned/copyright.html.
+ * https://cisco.github.io/ChezScheme/csug10.0/canned/copyright.html.
  */
 
 /* eslint-disable operator-linebreak */
@@ -21,11 +21,11 @@
 
 import * as https from "https";
 import {
-    createWriteStream,
-    existsSync,
-    readFile,
-    unlinkSync,
-    writeFile,
+  createWriteStream,
+  existsSync,
+  readFile,
+  unlinkSync,
+  writeFile,
 } from "fs";
 import { JSDOM } from "jsdom";
 import { basename } from "path";
@@ -36,12 +36,12 @@ import { basename } from "path";
  * with module imports.
  */
 type IdentifierType =
-    | "syntax"
-    | "module"
-    | "procedure"
-    | "thread parameter"
-    | "global parameter"
-    | "Error: unknown";
+  | "syntax"
+  | "module"
+  | "procedure"
+  | "thread parameter"
+  | "global parameter"
+  | "Error: unknown";
 
 /**
  * Return the string `s` converted to an `IdentifierType`.
@@ -51,20 +51,20 @@ type IdentifierType =
  * Return `"Error: unknown"` if the string isn't recognized.
  */
 function stringToIdentifierType(s: string): IdentifierType {
-    switch (s) {
-        case "syntax":
-            return "syntax";
-        case "procedure":
-            return "procedure";
-        case "module":
-            return "module";
-        case "thread param":
-            return "thread parameter";
-        case "global param":
-            return "global parameter";
-    }
+  switch (s) {
+    case "syntax":
+      return "syntax";
+    case "procedure":
+      return "procedure";
+    case "module":
+      return "module";
+    case "thread param":
+      return "thread parameter";
+    case "global param":
+      return "global parameter";
+  }
 
-    return "Error: unknown";
+  return "Error: unknown";
 }
 
 /**
@@ -73,14 +73,14 @@ function stringToIdentifierType(s: string): IdentifierType {
  * with module imports.
  */
 type FunctionDoc = {
-    name: string;
-    startParen: boolean;
-    endParen: boolean;
-    params: string[];
-    type: IdentifierType;
-    moduleNames: string[];
-    url: URL;
-    description: string;
+  name: string;
+  startParen: boolean;
+  endParen: boolean;
+  params: string[];
+  type: IdentifierType;
+  moduleNames: string[];
+  url: URL;
+  description: string;
 };
 
 /**
@@ -101,12 +101,12 @@ const lineFormatRegex = /^\\`(.*)\\`\s*<br>\s*$/gmu;
  * The first group contains the libraries names.
  */
 const librariesRegex =
-    /^\s*\*\*libraries:\*\*\s*(\\`\(.*?\)\\`(?:,\s*\\`\(.*?\)\\`)*)\s*<br>\s*$/mu;
+  /^\s*\*\*libraries:\*\*\s*(\\`\(.*?\)\\`(?:,\s*\\`\(.*?\)\\`)*)\s*<br>\s*$/mu;
 
 /**
  * The base part of the Chez Scheme documentation URL.
  */
-const baseURL = "https://cisco.github.io/ChezScheme/csug9.5/";
+const baseURL = "https://cisco.github.io/ChezScheme/csug10.0/";
 
 /**
  * The URL of the Chez Scheme documentation website.
@@ -127,18 +127,18 @@ const filesToDelete: string[] = [];
  * Main entry point.
  */
 async function main(): Promise<void> {
-    try {
-        const htmlText = await downloadAndRead(docURL);
-        const tsText = await processHTML(htmlText);
-        await writeFunctionDocumentation(tsText);
-        const deleteSet = new Set(filesToDelete);
-        deleteSet.forEach((file) => unlinkSync(file));
-    } catch (error) {
-        console.error(
-            `Caught "${error}" trying to process the HTML and saving it.`
-        );
-        process.exit(1);
-    }
+  try {
+    const htmlText = await downloadAndRead(docURL);
+    const tsText = await processHTML(htmlText);
+    await writeFunctionDocumentation(tsText);
+    const deleteSet = new Set(filesToDelete);
+    deleteSet.forEach((file) => unlinkSync(file));
+  } catch (error) {
+    console.error(
+      `Caught "${error}" trying to process the HTML and saving it.`
+    );
+    process.exit(1);
+  }
 }
 
 /**
@@ -149,27 +149,25 @@ async function main(): Promise<void> {
  * text file.
  */
 async function processHTML(text: string): Promise<string> {
-    const htmlDoc = new JSDOM(text).window.document;
-    const trs = Array.from(htmlDoc.querySelectorAll("tr")).filter(
-        // eslint-disable-next-line no-magic-numbers
-        (e) => e.childElementCount === 3 && e.children[0].nodeName !== "TH"
-    );
-    const ids: FunctionDoc[] = trs.map((tr) => parseTR(tr));
-    const allUrl = Array.from(
-        new Set(
-            ids.map((id) => id.url.protocol + id.url.hostname + id.url.pathname)
-        )
-    );
-    await Promise.all(
-        allUrl.map((url) =>
-            download(new URL(url), fileNameFromURL(new URL(url)))
-        )
-    );
-    await Promise.all(ids.map((id) => addDescription(id)));
+  const htmlDoc = new JSDOM(text).window.document;
+  const trs = Array.from(htmlDoc.querySelectorAll("tr")).filter(
+    // eslint-disable-next-line no-magic-numbers
+    (e) => e.childElementCount === 3 && e.children[0].nodeName !== "TH"
+  );
+  const ids: FunctionDoc[] = trs.map((tr) => parseTR(tr));
+  const allUrl = Array.from(
+    new Set(
+      ids.map((id) => id.url.protocol + id.url.hostname + id.url.pathname)
+    )
+  );
+  await Promise.all(
+    allUrl.map((url) => download(new URL(url), fileNameFromURL(new URL(url))))
+  );
+  await Promise.all(ids.map((id) => addDescription(id)));
 
-    ids.forEach((id) => addLibraries(id));
+  ids.forEach((id) => addLibraries(id));
 
-    return idsDocToTSFile(ids);
+  return idsDocToTSFile(ids);
 }
 
 /**
@@ -178,12 +176,12 @@ async function processHTML(text: string): Promise<string> {
  * @returns A TS file content with the list of `FunctionDoc`s.
  */
 function idsDocToTSFile(ids: FunctionDoc[]): string {
-    const today = new Date();
-    const date = today.getDate();
-    const month = today.getMonth() + 1;
-    const year = today.getFullYear();
+  const today = new Date();
+  const date = today.getDate();
+  const month = today.getMonth() + 1;
+  const year = today.getFullYear();
 
-    return `/*
+  return `/*
  * SPDX-FileCopyrightText:  Copyright 2023 Roland Csaszar
  * SPDX-License-Identifier: MIT
  *
@@ -193,7 +191,7 @@ function idsDocToTSFile(ids: FunctionDoc[]): string {
  *
  * ==============================================================================
  * The Chez Scheme user's guide is licensed under the Apache License Version 2:
- * https://cisco.github.io/ChezScheme/csug9.5/canned/copyright.html.
+ * https://cisco.github.io/ChezScheme/csug10.0/canned/copyright.html.
  * Autogenerated by the script \`../generate_function_documentation.ts\`, from
  * ${docURL}
  * DO NOT EDIT!
@@ -205,9 +203,9 @@ import { FunctionDoc } from "./identifierDocumentation";
 
 export const functionDocs: FunctionDoc[] = [
 ${ids
-    .map(
-        (id) =>
-            `    {
+  .map(
+    (id) =>
+      `    {
         name: "${id.name}",
         startParen: ${id.startParen},
         endParen: ${id.endParen},
@@ -217,8 +215,8 @@ ${ids
         url: new URL("${id.url}"),
         description: \`${id.description}\`
     },`
-    )
-    .join("\n")}
+  )
+  .join("\n")}
 ]
 `;
 }
@@ -230,57 +228,57 @@ ${ids
  */
 // eslint-disable-next-line max-statements, max-lines-per-function
 function parseTR(tr: HTMLTableRowElement): FunctionDoc {
-    const tds = Array.from(tr.childNodes) as HTMLTableCellElement[];
-    const idType = stringToIdentifierType(tds[1].innerHTML);
-    let name = "";
-    let params: string[] = [];
-    let startParen = false;
-    let endParen = false;
-    const nameElems = tds[0].childNodes[0].childNodes;
-    if (idType === "global parameter" || idType === "thread parameter") {
-        const tmpName = stringOrEmpty(nameElems[0].textContent);
-        startParen = tmpName.startsWith("(");
-        name = startParen ? tmpName.slice(1) : tmpName;
-    } else if (nameElems.length > 1) {
-        ({ startParen, name, endParen } = parseParamsAndName({
-            nameElems,
-            startParen,
-            name,
-            params,
-            endParen,
-        }));
-    } else {
-        const tmpName = stringOrEmpty(nameElems[0].textContent).trim();
-        startParen = tmpName.startsWith("(");
-        endParen = tmpName.endsWith(")");
-        // eslint-disable-next-line no-nested-ternary
-        name = startParen
-            ? endParen
-                ? tmpName.slice(1).slice(0, -1)
-                : tmpName.slice(1)
-            : endParen
-            ? tmpName.slice(0, -1)
-            : tmpName;
-    }
-    const url = new URL(
-        // eslint-disable-next-line no-magic-numbers, dot-notation
-        (tds[2].childNodes[0] as HTMLAnchorElement).href.startsWith("./")
-            ? // eslint-disable-next-line no-magic-numbers
-              baseURL + (tds[2].childNodes[0] as HTMLAnchorElement).href
-            : // eslint-disable-next-line no-magic-numbers
-              (tds[2].childNodes[0] as HTMLAnchorElement).href
-    );
-    url.protocol = "https";
-    return {
-        name,
-        startParen,
-        endParen,
-        type: idType,
-        moduleNames: [],
-        params,
-        url,
-        description: "",
-    };
+  const tds = Array.from(tr.childNodes) as HTMLTableCellElement[];
+  const idType = stringToIdentifierType(tds[1].innerHTML);
+  let name = "";
+  let params: string[] = [];
+  let startParen = false;
+  let endParen = false;
+  const nameElems = tds[0].childNodes[0].childNodes;
+  if (idType === "global parameter" || idType === "thread parameter") {
+    const tmpName = stringOrEmpty(nameElems[0].textContent);
+    startParen = tmpName.startsWith("(");
+    name = startParen ? tmpName.slice(1) : tmpName;
+  } else if (nameElems.length > 1) {
+    ({ startParen, name, endParen } = parseParamsAndName({
+      nameElems,
+      startParen,
+      name,
+      params,
+      endParen,
+    }));
+  } else {
+    const tmpName = stringOrEmpty(nameElems[0].textContent).trim();
+    startParen = tmpName.startsWith("(");
+    endParen = tmpName.endsWith(")");
+    // eslint-disable-next-line no-nested-ternary
+    name = startParen
+      ? endParen
+        ? tmpName.slice(1).slice(0, -1)
+        : tmpName.slice(1)
+      : endParen
+      ? tmpName.slice(0, -1)
+      : tmpName;
+  }
+  const url = new URL(
+    // eslint-disable-next-line no-magic-numbers, dot-notation
+    (tds[2].childNodes[0] as HTMLAnchorElement).href.startsWith("./")
+      ? // eslint-disable-next-line no-magic-numbers
+        baseURL + (tds[2].childNodes[0] as HTMLAnchorElement).href
+      : // eslint-disable-next-line no-magic-numbers
+        (tds[2].childNodes[0] as HTMLAnchorElement).href
+  );
+  url.protocol = "https";
+  return {
+    name,
+    startParen,
+    endParen,
+    type: idType,
+    moduleNames: [],
+    params,
+    url,
+    description: "",
+  };
 }
 
 /**
@@ -292,38 +290,36 @@ function parseTR(tr: HTMLTableRowElement): FunctionDoc {
  */
 // eslint-disable-next-line max-statements
 function parseParamsAndName(data: {
-    nameElems: NodeListOf<ChildNode>;
-    startParen: boolean;
-    name: string;
-    params: string[];
-    endParen: boolean;
+  nameElems: NodeListOf<ChildNode>;
+  startParen: boolean;
+  name: string;
+  params: string[];
+  endParen: boolean;
 }): { startParen: boolean; name: string; endParen: boolean } {
-    const tmpName = stringOrEmpty(data.nameElems[0].textContent).trimStart();
-    data.startParen = tmpName.startsWith("(");
-    data.name = data.startParen ? tmpName.slice(1) : tmpName;
+  const tmpName = stringOrEmpty(data.nameElems[0].textContent).trimStart();
+  data.startParen = tmpName.startsWith("(");
+  data.name = data.startParen ? tmpName.slice(1) : tmpName;
 
-    // eslint-disable-next-line no-plusplus
-    for (let nameIdx = 1; nameIdx < data.nameElems.length - 1; nameIdx++) {
-        if (data.nameElems[nameIdx].nodeName === "I") {
-            data.params.push(
-                stringOrEmpty(data.nameElems[nameIdx].textContent)
-            );
-        }
+  // eslint-disable-next-line no-plusplus
+  for (let nameIdx = 1; nameIdx < data.nameElems.length - 1; nameIdx++) {
+    if (data.nameElems[nameIdx].nodeName === "I") {
+      data.params.push(stringOrEmpty(data.nameElems[nameIdx].textContent));
     }
-    const end = stringOrEmpty(
-        data.nameElems[data.nameElems.length - 1].textContent
-    ).trim();
-    if (end.endsWith(")")) {
-        if (end !== ")") {
-            data.params.push(end.slice(0, -1).trim());
-        }
-        data.endParen = true;
+  }
+  const end = stringOrEmpty(
+    data.nameElems[data.nameElems.length - 1].textContent
+  ).trim();
+  if (end.endsWith(")")) {
+    if (end !== ")") {
+      data.params.push(end.slice(0, -1).trim());
     }
-    return {
-        startParen: data.startParen,
-        name: data.name,
-        endParen: data.endParen,
-    };
+    data.endParen = true;
+  }
+  return {
+    startParen: data.startParen,
+    name: data.name,
+    endParen: data.endParen,
+  };
 }
 
 /**
@@ -333,23 +329,23 @@ function parseParamsAndName(data: {
  */
 // eslint-disable-next-line max-statements
 async function addDescription(id: FunctionDoc) {
-    const htmlString = await downloadAndRead(id.url.toString());
-    const htmlDoc = new JSDOM(htmlString).window.document;
-    const anchor = id.url.hash.slice(1);
-    let currP = htmlDoc.querySelector(`a[name="${anchor}"]`)?.closest("p");
-    const first = currP;
-    const text = [""];
-    while (
-        currP &&
-        (currP === first ||
-            // eslint-disable-next-line no-eq-null, eqeqeq
-            currP.querySelector(`a[name]:not(a[name="${anchor}"])`) == null)
-    ) {
-        currP.childNodes.forEach((c) => parseChildNode(c, text));
-        text.push("<br>\n");
-        currP = currP.nextElementSibling as HTMLParagraphElement;
-    }
-    id.description = sanitizeDescription(text.join(""));
+  const htmlString = await downloadAndRead(id.url.toString());
+  const htmlDoc = new JSDOM(htmlString).window.document;
+  const anchor = id.url.hash.slice(1);
+  let currP = htmlDoc.querySelector(`a[name="${anchor}"]`)?.closest("p");
+  const first = currP;
+  const text = [""];
+  while (
+    currP &&
+    (currP === first ||
+      // eslint-disable-next-line no-eq-null, eqeqeq
+      currP.querySelector(`a[name]:not(a[name="${anchor}"])`) == null)
+  ) {
+    currP.childNodes.forEach((c) => parseChildNode(c, text));
+    text.push("<br>\n");
+    currP = currP.nextElementSibling as HTMLParagraphElement;
+  }
+  id.description = sanitizeDescription(text.join(""));
 }
 
 /**
@@ -358,15 +354,15 @@ async function addDescription(id: FunctionDoc) {
  * @param id The `FunctionDoc` object to process.
  */
 function addLibraries(id: FunctionDoc) {
-    const match = id.description.match(librariesRegex);
-    if (match) {
-        // eslint-disable-next-line prefer-destructuring
-        const librariesRaw = match[1];
-        const libraries = librariesRaw.replace(/\\`/gu, "").split(/,\s*/gu);
-        id.moduleNames = libraries;
-    } else {
-        id.moduleNames = [];
-    }
+  const match = id.description.match(librariesRegex);
+  if (match) {
+    // eslint-disable-next-line prefer-destructuring
+    const librariesRaw = match[1];
+    const libraries = librariesRaw.replace(/\\`/gu, "").split(/,\s*/gu);
+    id.moduleNames = libraries;
+  } else {
+    id.moduleNames = [];
+  }
 }
 
 /**
@@ -376,59 +372,49 @@ function addLibraries(id: FunctionDoc) {
  */
 // eslint-disable-next-line max-lines-per-function
 function parseChildNode(c: ChildNode, text: string[]) {
-    switch (c.nodeName) {
-        case "BR":
+  switch (c.nodeName) {
+    case "BR":
+      text.push(`<br>\n`);
+      break;
+    case "B":
+      text.push(`**${c.textContent?.replace(/\n/gu, " ").trim()}** `);
+      break;
+    case "TT":
+      c.childNodes.forEach((cN) => {
+        switch (cN.nodeName) {
+          case "BR":
             text.push(`<br>\n`);
             break;
-        case "B":
-            text.push(`**${c.textContent?.replace(/\n/gu, " ").trim()}** `);
+          case "B":
+            text.push(`**${cN.textContent?.replace(/\n/gu, " ").trim()}** `);
             break;
-        case "TT":
-            c.childNodes.forEach((cN) => {
-                switch (cN.nodeName) {
-                    case "BR":
-                        text.push(`<br>\n`);
-                        break;
-                    case "B":
-                        text.push(
-                            `**${cN.textContent
-                                ?.replace(/\n/gu, " ")
-                                .trim()}** `
-                        );
-                        break;
-                    case "I":
-                        text.push(
-                            "*`" +
-                                `${cN.textContent
-                                    ?.replace(/\n/gu, " ")
-                                    .trim()}` +
-                                "`*"
-                        );
-                        break;
-                    case "IMG":
-                        if ((cN as HTMLImageElement).src.endsWith("0.gif")) {
-                            text.push("=>");
-                        }
-                        break;
-                    case "#text":
-                        text.push(
-                            // eslint-disable-next-line no-useless-concat
-                            "`" +
-                                `${cN.textContent?.replace(/\n/gu, " ")}` +
-                                "`"
-                        );
+          case "I":
+            text.push(
+              "*`" + `${cN.textContent?.replace(/\n/gu, " ").trim()}` + "`*"
+            );
+            break;
+          case "IMG":
+            if ((cN as HTMLImageElement).src.endsWith("0.gif")) {
+              text.push("=>");
+            }
+            break;
+          case "#text":
+            text.push(
+              // eslint-disable-next-line no-useless-concat
+              "`" + `${cN.textContent?.replace(/\n/gu, " ")}` + "`"
+            );
 
-                        break;
-                }
-            });
             break;
-        case "#text":
-            text.push(`${c.textContent?.replace(/\n/gu, " ")}`);
-            break;
-        case "SPAN":
-            c.childNodes.forEach((cN) => parseChildNode(cN, text));
-            break;
-    }
+        }
+      });
+      break;
+    case "#text":
+      text.push(`${c.textContent?.replace(/\n/gu, " ")}`);
+      break;
+    case "SPAN":
+      c.childNodes.forEach((cN) => parseChildNode(cN, text));
+      break;
+  }
 }
 
 /**
@@ -440,32 +426,32 @@ function parseChildNode(c: ChildNode, text: string[]) {
  * @returns The sanitized description.
  */
 function sanitizeDescription(text: string): string {
-    let sanitized = text
-        .replace(/[ ]+/gu, " ")
-        .replace(/^ /gmu, "")
-        .replace(/[ ]+\n/gu, "\n")
-        .replace(/\n[\n]+$/u, "\n")
-        .replace(/\n\n[\n]+/gu, "\n\n")
-        // Non-breaking-space.
-        .replace(/\u00A0/gu, " ")
-        .replace(/\\/gu, "\\\\")
-        .replace(/`/gu, "\\`");
-    const match = sanitized.match(exampleRegex);
-    if (match) {
-        // eslint-disable-next-line prefer-destructuring
-        const example = match[1];
-        const exampleNoBackticks = example
-            .replace(lineFormatRegex, "$1")
-            .replace(/\\`/gu, "")
-            .replace(/^ /gmu, "");
-        sanitized = sanitized.replace(
-            example,
-            "**Examples:**\n\n\\`\\`\\`scheme\n" +
-                exampleNoBackticks +
-                "\n\\`\\`\\`\n"
-        );
-    }
-    return sanitized;
+  let sanitized = text
+    .replace(/[ ]+/gu, " ")
+    .replace(/^ /gmu, "")
+    .replace(/[ ]+\n/gu, "\n")
+    .replace(/\n[\n]+$/u, "\n")
+    .replace(/\n\n[\n]+/gu, "\n\n")
+    // Non-breaking-space.
+    .replace(/\u00A0/gu, " ")
+    .replace(/\\/gu, "\\\\")
+    .replace(/`/gu, "\\`");
+  const match = sanitized.match(exampleRegex);
+  if (match) {
+    // eslint-disable-next-line prefer-destructuring
+    const example = match[1];
+    const exampleNoBackticks = example
+      .replace(lineFormatRegex, "$1")
+      .replace(/\\`/gu, "")
+      .replace(/^ /gmu, "");
+    sanitized = sanitized.replace(
+      example,
+      "**Examples:**\n\n\\`\\`\\`scheme\n" +
+        exampleNoBackticks +
+        "\n\\`\\`\\`\n"
+    );
+  }
+  return sanitized;
 }
 
 /**
@@ -476,7 +462,7 @@ function sanitizeDescription(text: string): string {
  * `""` else.
  */
 function stringOrEmpty(s: string | undefined | null): string {
-    return s ? s.replace(/\u00A0/gu, " ") : "";
+  return s ? s.replace(/\u00A0/gu, " ") : "";
 }
 
 /**
@@ -485,7 +471,7 @@ function stringOrEmpty(s: string | undefined | null): string {
  * @returns The filename to use for the downloaded file from the given URL.
  */
 function fileNameFromURL(url: URL) {
-    return url.hostname + basename(url.pathname);
+  return url.hostname + basename(url.pathname);
 }
 
 /**
@@ -496,25 +482,25 @@ function fileNameFromURL(url: URL) {
  * @returns The content of the downloaded file.
  */
 async function downloadAndRead(url: string) {
-    const urlUrl = new URL(url);
-    const downloadTo = fileNameFromURL(urlUrl);
-    if (!existsSync(downloadTo)) {
-        try {
-            await download(urlUrl, downloadTo);
-        } catch (exp) {
-            console.error(`Caught "${exp}" trying to download from ${url}`);
-            process.exit(1);
-        }
+  const urlUrl = new URL(url);
+  const downloadTo = fileNameFromURL(urlUrl);
+  if (!existsSync(downloadTo)) {
+    try {
+      await download(urlUrl, downloadTo);
+    } catch (exp) {
+      console.error(`Caught "${exp}" trying to download from ${url}`);
+      process.exit(1);
     }
-    filesToDelete.push(downloadTo);
-    return new Promise<string>((resolve, reject) => {
-        readFile(downloadTo, { encoding: "utf8" }, (r, d) => {
-            if (r) {
-                reject(r);
-            }
-            resolve(d);
-        });
+  }
+  filesToDelete.push(downloadTo);
+  return new Promise<string>((resolve, reject) => {
+    readFile(downloadTo, { encoding: "utf8" }, (r, d) => {
+      if (r) {
+        reject(r);
+      }
+      resolve(d);
     });
+  });
 }
 
 /**
@@ -524,21 +510,21 @@ async function downloadAndRead(url: string) {
  * @returns Nothing.
  */
 async function download(url: URL, fileName: string): Promise<void> {
-    const fileStream = createWriteStream(fileName);
-    return new Promise<void>((resolve, reject) => {
-        https.get(url, (res) => {
-            res.pipe(fileStream);
-            res.on("error", (e) => reject(e));
-            fileStream.on("finish", () =>
-                fileStream.close((err) => {
-                    if (err) {
-                        reject(err);
-                    }
-                    resolve();
-                })
-            );
-        });
+  const fileStream = createWriteStream(fileName);
+  return new Promise<void>((resolve, reject) => {
+    https.get(url, (res) => {
+      res.pipe(fileStream);
+      res.on("error", (e) => reject(e));
+      fileStream.on("finish", () =>
+        fileStream.close((err) => {
+          if (err) {
+            reject(err);
+          }
+          resolve();
+        })
+      );
     });
+  });
 }
 
 /**
@@ -546,14 +532,14 @@ async function download(url: URL, fileName: string): Promise<void> {
  * @param text The text to save.
  */
 async function writeFunctionDocumentation(text: string): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-        writeFile(outFilename, text, { encoding: "utf8" }, (r) => {
-            if (r) {
-                reject(r);
-            }
-            resolve();
-        });
+  return new Promise<void>((resolve, reject) => {
+    writeFile(outFilename, text, { encoding: "utf8" }, (r) => {
+      if (r) {
+        reject(r);
+      }
+      resolve();
     });
+  });
 }
 
 main();

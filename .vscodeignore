@@ -1,4 +1,0 @@
-# Ignore Yarn cache
-.yarn/cache
-.yarn/install-state.gz
-images/*.gif

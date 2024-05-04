@@ -1,308 +1,307 @@
 {
-    "name": "vscode-scheme-repl",
-    "displayName": "Chez Scheme REPL",
-    "version": "0.5.0",
-    "preview": false,
-    "publisher": "release-candidate",
-    "description": "Support for Chez Scheme: Highlighting, autocompletion, documentation on hover and syntax checks.",
-    "keywords": [
-        "Chez Scheme",
-        "Language",
-        "Lisp",
-        "REPL",
-        "multi-root ready"
-    ],
-    "markdown": "github",
-    "qna": "marketplace",
-    "categories": [
-        "Programming Languages"
-    ],
-    "icon": "images/logo.png",
-    "capabilities": {
-        "untrustedWorkspaces": {
-            "supported": true
+  "name": "vscode-scheme-repl",
+  "displayName": "Chez Scheme REPL",
+  "version": "0.6.0",
+  "preview": false,
+  "publisher": "release-candidate",
+  "description": "Support for Chez Scheme: Highlighting, autocompletion, documentation on hover and syntax checks.",
+  "keywords": [
+    "Chez Scheme",
+    "Language",
+    "Lisp",
+    "REPL",
+    "multi-root ready"
+  ],
+  "markdown": "github",
+  "qna": "marketplace",
+  "categories": [
+    "Programming Languages"
+  ],
+  "icon": "images/logo.png",
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    }
+  },
+  "activationEvents": [
+    "onLanguage:scheme",
+    "workspaceContains:**/*.ss",
+    "workspaceContains:**/*.sps",
+    "workspaceContains:**/*.scm",
+    "workspaceContains:**/*.sch",
+    "workspaceContains:**/*.sls"
+  ],
+  "main": "./out/extension",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/Release-Candidate/vscode-scheme-repl/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Release-Candidate/vscode-scheme-repl.git"
+  },
+  "homepage": "https://github.com/Release-Candidate/vscode-scheme-repl/blob/main/README.md",
+  "pricing": "Free",
+  "engines": {
+    "vscode": "^1.65.0"
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "scheme",
+        "aliases": [
+          "Scheme",
+          "scheme"
+        ],
+        "extensions": [
+          ".ss",
+          ".sps",
+          ".scm",
+          ".sch",
+          ".sls"
+        ],
+        "configuration": "./package_files/language-configuration.json",
+        "icon": {
+          "dark": "./images/file_dark.svg",
+          "light": "./images/file_light.svg"
         }
-    },
-    "activationEvents": [
-        "onLanguage:scheme",
-        "workspaceContains:**/*.ss",
-        "workspaceContains:**/*.sps",
-        "workspaceContains:**/*.scm",
-        "workspaceContains:**/*.sch",
-        "workspaceContains:**/*.sls"
+      }
     ],
-    "main": "./out/extension",
-    "license": "SEE LICENSE IN LICENSE",
-    "bugs": {
-        "url": "https://github.com/Release-Candidate/vscode-scheme-repl/issues"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Release-Candidate/vscode-scheme-repl.git"
-    },
-    "homepage": "https://github.com/Release-Candidate/vscode-scheme-repl/blob/main/README.md",
-    "pricing": "Free",
-    "engines": {
-        "vscode": "^1.65.0"
-    },
-    "contributes": {
-        "languages": [
-            {
-                "id": "scheme",
-                "aliases": [
-                    "Scheme",
-                    "scheme"
-                ],
-                "extensions": [
-                    ".ss",
-                    ".sps",
-                    ".scm",
-                    ".sch",
-                    ".sls"
-                ],
-                "configuration": "./package_files/language-configuration.json",
-                "icon": {
-                    "dark": "./images/file_dark.svg",
-                    "light": "./images/file_light.svg"
-                }
-            }
-        ],
-        "grammars": [
-            {
-                "language": "scheme",
-                "scopeName": "source.scheme",
-                "path": "./package_files/scheme.tmGrammar.json",
-                "embeddedLanguages": {
-                    "meta.embedded.block.scheme": "scheme"
-                }
-            },
-            {
-                "scopeName": "source.markdown.codeblock.scheme",
-                "path": "./package_files/scheme.markdown.tmGrammar.json",
-                "injectTo": [
-                    "text.html.markdown"
-                ]
-            }
-        ],
-        "configurationDefaults": {
-            "[scheme]": {
-                "editor.insertSpaces": true,
-                "editor.tabSize": 2,
-                "editor.indentSize": 2,
-                "editor.wordSeparators": "`()[];'\","
-            }
-        },
-        "commands": [
-            {
-                "command": "chezScheme.startREPL",
-                "title": "Chez Scheme REPL: Start REPL",
-                "shortTitle": "Start Chez REPL"
-            },
-            {
-                "command": "chezScheme.sendFileToREPL",
-                "title": "Chez Scheme REPL: Send the whole current file to the REPL"
-            },
-            {
-                "command": "chezScheme.sendSelectionToREPL",
-                "title": "Chez Scheme REPL: Send selected s-expression to the REPL."
-            },
-            {
-                "command": "chezScheme.evalSelection",
-                "title": "Chez Scheme REPL: Eval the selected s-expression."
-            },
-            {
-                "command": "chezScheme.expandSelection",
-                "title": "Chez Scheme REPL: Expand all macros in the selected s-expression."
-            },
-            {
-                "command": "chezScheme.sendLastSexp",
-                "title": "Chez Scheme REPL: Send s-expression left of the cursor to the REPL."
-            },
-            {
-                "command": "chezScheme.evalLastSexp",
-                "title": "Chez Scheme REPL: Eval s-expression left of the cursor."
-            },
-            {
-                "command": "chezScheme.expandLastSexp",
-                "title": "Chez Scheme REPL: Expand all macros in the s-expression left of the cursor."
-            },
-            {
-                "command": "chezScheme.checkFile",
-                "title": "Chez Scheme REPL: Check the current file for errors."
-            }
-        ],
-        "keybindings": [
-            {
-                "command": "chezScheme.evalLastSexp",
-                "key": "ctrl+enter",
-                "mac": "ctrl+enter",
-                "when": "editorTextFocus"
-            },
-            {
-                "command": "chezScheme.sendLastSexp",
-                "key": "ctrl+shift+enter",
-                "mac": "ctrl+shift+enter",
-                "when": "editorTextFocus"
-            },
-            {
-                "command": "chezScheme.expandLastSexp",
-                "key": "alt+enter",
-                "mac": "alt+enter",
-                "when": "editorTextFocus"
-            }
-        ],
-        "menus": {
-            "editor/title/context": [
-                {
-                    "when": "resourceLangId == scheme",
-                    "command": "chezScheme.sendFileToREPL"
-                }
-            ],
-            "editor/title": [
-                {
-                    "when": "resourceLangId == scheme",
-                    "command": "chezScheme.startREPL",
-                    "group": "navigation"
-                }
-            ],
-            "editor/context": [
-                {
-                    "when": "resourceLangId == scheme",
-                    "command": "chezScheme.evalSelection",
-                    "group": "9_cutcopypaste"
-                },
-                {
-                    "when": "resourceLangId == scheme",
-                    "command": "chezScheme.sendSelectionToREPL",
-                    "group": "9_cutcopypaste"
-                },
-                {
-                    "when": "resourceLangId == scheme",
-                    "command": "chezScheme.expandSelection",
-                    "group": "9_cutcopypaste"
-                },
-                {
-                    "when": "resourceLangId == scheme",
-                    "command": "chezScheme.startREPL",
-                    "group": "z_commands"
-                },
-                {
-                    "when": "resourceLangId == scheme",
-                    "command": "chezScheme.sendFileToREPL",
-                    "group": "z_commands"
-                },
-                {
-                    "when": "resourceLangId == scheme",
-                    "command": "chezScheme.evalLastSexp",
-                    "group": "z_commands"
-                },
-                {
-                    "when": "resourceLangId == scheme",
-                    "command": "chezScheme.sendLastSexp",
-                    "group": "z_commands"
-                },
-                {
-                    "when": "resourceLangId == scheme",
-                    "command": "chezScheme.expandLastSexp",
-                    "group": "z_commands"
-                }
-            ]
-        },
-        "snippets": [
-            {
-                "language": "scheme",
-                "path": "./package_files/snippets.json"
-            }
-        ],
-        "configuration": {
-            "title": "Chez Scheme REPL",
-            "properties": {
-                "chezScheme.schemePath": {
-                    "type": "string",
-                    "default": "scheme",
-                    "markdownDescription": "Path to the Chez Scheme executable `scheme`. Can be either an absolute path or relative to the workspace root. Default: `scheme`, which works if `scheme` is in your `PATH`."
-                },
-                "chezScheme.replDelay": {
-                    "type": "integer",
-                    "default": 1000,
-                    "markdownDescription": "The delay in milliseconds `ms` to wait after starting a terminal for the interactive REPL until sending sources to it. Default: 1000ms, 1s."
-                },
-                "chezScheme.waiterPrompt": {
-                    "type": "string",
-                    "default": "λ>",
-                    "markdownDescription": "Set the prompt string for the interactive REPL beside the editor. Default: `λ>`."
-                }
-            }
-        },
-        "colors": [
-            {
-                "id": "chezScheme.evalBackgroundColor",
-                "description": "The background (light/dark) or border (high contrast) color of an evaluation result.",
-                "defaults": {
-                    "dark": "#00BCFB44",
-                    "light": "#D0E7EDAA",
-                    "highContrast": "#7ED6F7",
-                    "highContrastLight": "#0000ffDD"
-                }
-            },
-            {
-                "id": "chezScheme.evalErrorBackgroundColor",
-                "description": "The background (light/dark) or border (high contrast) color of an evaluation result with an error.",
-                "defaults": {
-                    "light": "#FFAFAF",
-                    "dark": "#FF7F7F99",
-                    "highContrast": "#ec5a5a",
-                    "highContrastLight": "#c40808"
-                }
-            }
+    "grammars": [
+      {
+        "language": "scheme",
+        "scopeName": "source.scheme",
+        "path": "./package_files/scheme.tmGrammar.json",
+        "embeddedLanguages": {
+          "meta.embedded.block.scheme": "scheme"
+        }
+      },
+      {
+        "scopeName": "source.markdown.codeblock.scheme",
+        "path": "./package_files/scheme.markdown.tmGrammar.json",
+        "injectTo": [
+          "text.html.markdown"
         ]
+      }
+    ],
+    "configurationDefaults": {
+      "[scheme]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2,
+        "editor.indentSize": 2,
+        "editor.wordSeparators": "`()[];'\","
+      }
     },
-    "devDependencies": {
-        "@types/chai": "^4.3.6",
-        "@types/glob": "^8.1.0",
-        "@types/jsdom": "^21.1.2",
-        "@types/mocha": "^10.0.1",
-        "@types/node": "^20.6.0",
-        "@types/vscode": "1.65.0",
-        "@typescript-eslint/eslint-plugin": "^6.7.0",
-        "@typescript-eslint/parser": "^6.7.0",
-        "@vscode/test-electron": "^2.3.4",
-        "@vscode/vsce": "^2.21.0",
-        "chai": "^4.3.8",
-        "del-cli": "^5.1.0",
-        "esbuild": "^0.19.2",
-        "eslint": "^8.49.0",
-        "eslint-plugin-chai-friendly": "^0.7.2",
-        "eslint-plugin-jsdoc": "^46.6.0",
-        "eslint-plugin-mocha": "^10.1.0",
-        "glob": "^8.1.0",
-        "jsdom": "^22.1.0",
-        "mocha": "^10.2.0",
-        "ovsx": "^0.8.3",
-        "source-map-support": "^0.5.21",
-        "ts-node": "^10.9.1",
-        "tsconfig-paths": "^4.2.0",
-        "typescript": "^5.2.2"
+    "commands": [
+      {
+        "command": "chezScheme.startREPL",
+        "title": "Chez Scheme REPL: Start REPL",
+        "shortTitle": "Start Chez REPL"
+      },
+      {
+        "command": "chezScheme.sendFileToREPL",
+        "title": "Chez Scheme REPL: Send the whole current file to the REPL"
+      },
+      {
+        "command": "chezScheme.sendSelectionToREPL",
+        "title": "Chez Scheme REPL: Send selected s-expression to the REPL."
+      },
+      {
+        "command": "chezScheme.evalSelection",
+        "title": "Chez Scheme REPL: Eval the selected s-expression."
+      },
+      {
+        "command": "chezScheme.expandSelection",
+        "title": "Chez Scheme REPL: Expand all macros in the selected s-expression."
+      },
+      {
+        "command": "chezScheme.sendLastSexp",
+        "title": "Chez Scheme REPL: Send s-expression left of the cursor to the REPL."
+      },
+      {
+        "command": "chezScheme.evalLastSexp",
+        "title": "Chez Scheme REPL: Eval s-expression left of the cursor."
+      },
+      {
+        "command": "chezScheme.expandLastSexp",
+        "title": "Chez Scheme REPL: Expand all macros in the s-expression left of the cursor."
+      },
+      {
+        "command": "chezScheme.checkFile",
+        "title": "Chez Scheme REPL: Check the current file for errors."
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "chezScheme.evalLastSexp",
+        "key": "ctrl+enter",
+        "mac": "ctrl+enter",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "chezScheme.sendLastSexp",
+        "key": "ctrl+shift+enter",
+        "mac": "ctrl+shift+enter",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "chezScheme.expandLastSexp",
+        "key": "alt+enter",
+        "mac": "alt+enter",
+        "when": "editorTextFocus"
+      }
+    ],
+    "menus": {
+      "editor/title/context": [
+        {
+          "when": "resourceLangId == scheme",
+          "command": "chezScheme.sendFileToREPL"
+        }
+      ],
+      "editor/title": [
+        {
+          "when": "resourceLangId == scheme",
+          "command": "chezScheme.startREPL",
+          "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "when": "resourceLangId == scheme",
+          "command": "chezScheme.evalSelection",
+          "group": "9_cutcopypaste"
+        },
+        {
+          "when": "resourceLangId == scheme",
+          "command": "chezScheme.sendSelectionToREPL",
+          "group": "9_cutcopypaste"
+        },
+        {
+          "when": "resourceLangId == scheme",
+          "command": "chezScheme.expandSelection",
+          "group": "9_cutcopypaste"
+        },
+        {
+          "when": "resourceLangId == scheme",
+          "command": "chezScheme.startREPL",
+          "group": "z_commands"
+        },
+        {
+          "when": "resourceLangId == scheme",
+          "command": "chezScheme.sendFileToREPL",
+          "group": "z_commands"
+        },
+        {
+          "when": "resourceLangId == scheme",
+          "command": "chezScheme.evalLastSexp",
+          "group": "z_commands"
+        },
+        {
+          "when": "resourceLangId == scheme",
+          "command": "chezScheme.sendLastSexp",
+          "group": "z_commands"
+        },
+        {
+          "when": "resourceLangId == scheme",
+          "command": "chezScheme.expandLastSexp",
+          "group": "z_commands"
+        }
+      ]
     },
-    "vsce": {
-        "dependencies": true,
-        "yarn": true
+    "snippets": [
+      {
+        "language": "scheme",
+        "path": "./package_files/snippets.json"
+      }
+    ],
+    "configuration": {
+      "title": "Chez Scheme REPL",
+      "properties": {
+        "chezScheme.schemePath": {
+          "type": "string",
+          "default": "scheme",
+          "markdownDescription": "Path to the Chez Scheme executable `scheme`. Can be either an absolute path or relative to the workspace root. Default: `scheme`, which works if `scheme` is in your `PATH`."
+        },
+        "chezScheme.replDelay": {
+          "type": "integer",
+          "default": 1000,
+          "markdownDescription": "The delay in milliseconds `ms` to wait after starting a terminal for the interactive REPL until sending sources to it. Default: 1000ms, 1s."
+        },
+        "chezScheme.waiterPrompt": {
+          "type": "string",
+          "default": "λ>",
+          "markdownDescription": "Set the prompt string for the interactive REPL beside the editor. Default: `λ>`."
+        }
+      }
     },
-    "scripts": {
-        "clean": "del-cli -- out",
-        "lint": "eslint src/**/*.ts test/**/*.ts",
-        "lint-github": "eslint src/**/*.ts test/**/*.ts -o ./eslint_report.json -f json",
-        "compile": "tsc -p ./",
-        "test": "yarn --ignore-engines run compile && node out/test/runner.js",
-        "generate-function-doc": "yarn --ignore-engines ts-node generate_function_documentation.ts",
-        "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
-        "esbuild": "yarn --ignore-engines run esbuild-base --sourcemap",
-        "esbuild-watch": "yarn --ignore-engines run esbuild-base --sourcemap --watch",
-        "bundle": "yarn --ignore-engines run esbuild-base --minify",
-        "vscode:prepublish": "yarn --ignore-engines run bundle",
-        "package": "vsce package",
-        "publish-vsix": "vsce publish --yarn",
-        "publish-ovsx": "ovsx publish vscode-scheme-repl-*.vsix --pat"
-    },
-    "packageManager": "yarn@1.22.19"
+    "colors": [
+      {
+        "id": "chezScheme.evalBackgroundColor",
+        "description": "The background (light/dark) or border (high contrast) color of an evaluation result.",
+        "defaults": {
+          "dark": "#00BCFB44",
+          "light": "#D0E7EDAA",
+          "highContrast": "#7ED6F7",
+          "highContrastLight": "#0000ffDD"
+        }
+      },
+      {
+        "id": "chezScheme.evalErrorBackgroundColor",
+        "description": "The background (light/dark) or border (high contrast) color of an evaluation result with an error.",
+        "defaults": {
+          "light": "#FFAFAF",
+          "dark": "#FF7F7F99",
+          "highContrast": "#ec5a5a",
+          "highContrastLight": "#c40808"
+        }
+      }
+    ]
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.6",
+    "@types/glob": "^8.1.0",
+    "@types/jsdom": "^21.1.2",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^20.6.0",
+    "@types/vscode": "1.65.0",
+    "@typescript-eslint/eslint-plugin": "^6.7.0",
+    "@typescript-eslint/parser": "^6.7.0",
+    "@vscode/test-electron": "^2.3.4",
+    "@vscode/vsce": "^2.21.0",
+    "chai": "^4.3.8",
+    "del-cli": "^5.1.0",
+    "esbuild": "^0.19.2",
+    "eslint": "^8.49.0",
+    "eslint-plugin-chai-friendly": "^0.7.2",
+    "eslint-plugin-jsdoc": "^46.6.0",
+    "eslint-plugin-mocha": "^10.1.0",
+    "glob": "^8.1.0",
+    "jsdom": "^22.1.0",
+    "mocha": "^10.2.0",
+    "ovsx": "^0.8.3",
+    "source-map-support": "^0.5.21",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.2.2"
+  },
+  "vsce": {
+    "dependencies": true,
+    "yarn": false
+  },
+  "scripts": {
+    "clean": "del-cli -- out",
+    "lint": "eslint src/**/*.ts test/**/*.ts",
+    "lint-github": "eslint src/**/*.ts test/**/*.ts -o ./eslint_report.json -f json",
+    "compile": "tsc -p ./",
+    "test": "npm run compile && node out/test/runner.js",
+    "generate-function-doc": "ts-node generate_function_documentation.ts",
+    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
+    "esbuild": "npm run esbuild-base -- --sourcemap",
+    "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
+    "bundle": "npm run esbuild-base -- --minify",
+    "vscode:prepublish": "npm run bundle",
+    "package": "vsce package",
+    "publish-vsix": "vsce publish",
+    "publish-ovsx": "ovsx publish vscode-scheme-repl-*.vsix --pat"
+  }
 }

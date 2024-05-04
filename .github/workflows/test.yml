@@ -10,30 +10,30 @@
 name: Test
 
 on:
-    push:
-        branches: ["main"]
-    pull_request:
-        branches: ["main"]
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
 
 jobs:
-    tests:
-        strategy:
-            matrix:
-                os: [ubuntu-latest]
-                node-version: [16.x, 18.x]
+  tests:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node-version: [16.x, 18.x]
 
-        runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
 
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-            - name: Setup Node
-              uses: actions/setup-node@v3
-              with:
-                  node-version: ${{ matrix.node-version }}
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
 
-            - name: Run Tests
-              run: |
-                  yarn --ignore-engines install --dev
-                  xvfb-run -a yarn --ignore-engines test
+      - name: Run Tests
+        run: |
+          npm install --save-dev
+          xvfb-run -a npm test
