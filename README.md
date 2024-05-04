@@ -29,9 +29,9 @@
 ## Features and drawbacks
 
 - Syntax highlighting in source files and Markdown code blocks (using language identifier `scheme`).
-- Hover with documentation of all Chez Scheme identifiers (works in comments too).
+- Hover with documentation of all Chez Scheme 10 identifiers (works in comments too).
 ![Video of Documentation on Hover](./images/hover_documentation.gif)
-- Autocompletion with documentation of all Chez Scheme and local identifiers (works in comments too).
+- Autocompletion with documentation of all Chez Scheme 10 and local identifiers (works in comments too).
 ![Video of Autocompletion](./images/autocompletion.gif)
 - Interactive REPL pane to the side of the editor, with commands to send code to the REPL (see [Commands](#commands)).
 ![Video of Sending a S-Exp to the Interactive REPL](images/left_repl.gif)
