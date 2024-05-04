@@ -29,9 +29,9 @@
 ## Features and drawbacks
 
 - Syntax highlighting in source files and Markdown code blocks (using language identifier `scheme`).
-- Hover with documentation of all Chez Scheme identifiers (works in comments too).
+- Hover with documentation of all Chez Scheme 10 identifiers (works in comments too).
 ![Video of Documentation on Hover](./images/hover_documentation.gif)
-- Autocompletion with documentation of all Chez Scheme and local identifiers (works in comments too).
+- Autocompletion with documentation of all Chez Scheme 10 and local identifiers (works in comments too).
 ![Video of Autocompletion](./images/autocompletion.gif)
 - Interactive REPL pane to the side of the editor, with commands to send code to the REPL (see [Commands](#commands)).
 ![Video of Sending a S-Exp to the Interactive REPL](images/left_repl.gif)
@@ -56,7 +56,9 @@
 ### Dependencies
 
 - Visual Studio Code version 1.65 (February 2022) or higher
-- [Chez Scheme](https://github.com/cisco/chezscheme). For Mac OS use the [Racket version of Chez Scheme](https://github.com/racket/ChezScheme)
+- [Chez Scheme](https://github.com/cisco/chezscheme).
+  - Windows AMD64 [GitHub Latest Release](https://github.com/cisco/ChezScheme/releases/latest)
+  - MacOS [Homebrew - chezscheme](https://formulae.brew.sh/formula/chezscheme)
 
 #### Suggested Additional VS Code Extensions
 
@@ -167,4 +169,4 @@ See file [CONTRIBUTING.md](CONTRIBUTING.md)
 
 Chez Scheme REPL for Visual Studio Code is licensed under MIT license. See file [LICENSE](LICENSE).
 
-The documentation of the Chez Scheme identifiers is automatically generated from *Chez Scheme Version 9 User's Guide*. *Chez Scheme Version 9 User's Guide* is licensed under the Apache License Version 2, see [https://cisco.github.io/ChezScheme/csug9.5/canned/copyright.html](https://cisco.github.io/ChezScheme/csug9.5/canned/copyright.html)
+The documentation of the Chez Scheme identifiers is automatically generated from *Chez Scheme Version 10 User's Guide*. *Chez Scheme Version 10 User's Guide* is licensed under the Apache License Version 2, see [https://cisco.github.io/ChezScheme/csug10.0/canned/copyright.html](https://cisco.github.io/ChezScheme/csug10.0/canned/copyright.html)

@@ -1,5 +1,14 @@
 # Chez Scheme REPL for Visual Studio Code Changelog
 
+## Version 0.6.0 (2024-05-04)
+
+Add support for Chez Scheme 10.
+
+### Internal Changes
+
+- Change package manager from `yarn` to `npm`.
+- Update dependencies to new versions.
+
 ## Version 0.5.0 (2023-09-13)
 
 Add support for syntax highlighting in Markdown code fences using the `scheme` language id.
