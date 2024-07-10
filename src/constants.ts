@@ -159,6 +159,11 @@ export const sendLastToREPL = "sendLastSexp";
 export const evalLast = "evalLastSexp";
 
 /**
+ * Remove all evaluation values from the current view.
+ */
+export const removeEvalVals = "removeEvalVals";
+
+/**
  * Expand all macros in the sexp left of the cursor.
  */
 export const expandLast = "expandLastSexp";

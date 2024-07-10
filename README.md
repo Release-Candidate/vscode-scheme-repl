@@ -35,7 +35,7 @@
 ![Video of Autocompletion](./images/autocompletion.gif)
 - Interactive REPL pane to the side of the editor, with commands to send code to the REPL (see [Commands](#commands)).
 ![Video of Sending a S-Exp to the Interactive REPL](images/left_repl.gif)
-- Inline evaluation of expressions (see [Commands](#commands)).
+- Inline evaluation of expressions and the possibility to delete them(see [Commands](#commands)).
 ![Video of Inline Evaluation](images/eval_left.gif)
 - Macro expansion (see [Commands](#commands)).
 ![Video of Macro Expansion](images/macro-expand.gif)
@@ -94,6 +94,7 @@ Either
 - `Chez Scheme REPL: Send the whole current file to the REPL` (`chezScheme.sendFileToREPL`) - send the contents of the currently active source file to the REPL. Opens a new REPL window if no REPL is running.
 - `Chez Scheme REPL: Eval the selected s-expression.` (`chezScheme.evalSelection`) - evaluate the selected s-expression and print the value inline after the selected s-expression.
 - `Chez Scheme REPL: Eval s-expression left of the cursor.` (`chezScheme.evalLastSexp`) - evaluate the s-expression to the left of the cursor and print the value inline after this s-expression.
+- `Chez Scheme REPL: Remove all evaluated values from the view.` (`chezScheme.removeEvalVals`) - remove all evaluated values from the current view.
 - `Chez Scheme REPL: Expand all macros in the selected s-expression.` (`chezScheme.expandSelection`) - expand all macros in the selected s-expression in the REPL. Opens a new REPL window if no REPL is running.
 - `Chez Scheme REPL: Expand all macros in the s-expression left of the cursor.` (`chezScheme.expandLastSexp`) - expand all macros in the s-expression to the left of the cursor in the REPL. Opens a new REPL window if no REPL is running.
 - `Chez Scheme REPL: Check the current file for errors.` (`chezScheme.checkFile`) - check the current file by loading it into the REPL. Errors are shown in the `Problems` tab. Called on save of a Chez Scheme file.

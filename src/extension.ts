@@ -279,6 +279,8 @@ function registerCommands(env: h.Env): void {
 
     registerTextEditorCommand(env, c.checkFile, eR.loadFile);
 
+    registerTextEditorCommand(env, c.removeEvalVals, eR.removeEvalVals);
+
     env.outChannel.appendLine(`Registered all commands`);
 }
 

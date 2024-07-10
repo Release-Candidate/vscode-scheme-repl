@@ -346,6 +346,35 @@ async function evalSexp(
     }
 }
 
+export async function removeEvalVals(
+    env: h.Env,
+    editor: vscode.TextEditor
+): Promise<void> {
+    const allRange = new vscode.Range(
+        editor.document.positionAt(0),
+        editor.document.positionAt(editor.document.getText().length)
+    );
+    decor.removeRange({
+        decorations: env.evalDecorations,
+        decoration: env.evalDecoration,
+        editor,
+        range: allRange,
+    });
+    decor.removeRange({
+        decorations: env.evalErrorDecorations,
+        decoration: env.evalErrorDecoration,
+        editor,
+        range: allRange,
+    });
+    env.outChannel.appendLine(
+        `Remove eval decorations from ${editor.document.fileName}`
+    );
+    env.evalDecorations.delete(editor.document);
+    env.evalErrorDecorations.delete(editor.document);
+    editor.setDecorations(env.evalDecoration, []);
+    editor.setDecorations(env.evalErrorDecoration, []);
+}
+
 /**
  * Return a `RegExp` to parse the output of a REPL evaluation or completion.
  * @param group The regexp string to match the actual result.
