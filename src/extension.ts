@@ -100,6 +100,18 @@ async function setupExtension(env: h.Env) {
     env.context.subscriptions.push(completionSubscription);
 
     registerCommands(env);
+
+    // eslint-disable-next-line @typescript-eslint/no-extra-parens
+    if (!(await eR.isSchemeWorking(env))) {
+        const root = await h.askForWorkspace("Scheme");
+        vscode.window.showErrorMessage(
+            `Error: Scheme command '${c.getCfgREPLPath(
+                env.config
+            )}' is not working in ${
+                root?.name
+            }.\nChange chezScheme.schemePath in the 'Chez Scheme' configuration.\nSee the 'Output' window view of 'Chez Scheme REPL' for details.`
+        );
+    }
 }
 
 /**

@@ -50,6 +50,11 @@ const lastExprRegex =
     /\r?\n(?<last>[^\n]+)\s+(\S?\S?\S?[>%@#$~^&])\s\2?\s?\r?\n*$/su;
 
 /**
+ * Regex to match the output of the `version` command of the Chez executable.
+ */
+const versionOutRegex = /^(?:\d+\.)+\d+.*$/mu;
+
+/**
  * Returns a list of identifiers beginning with the string `prefix` or
  * the empty list `[]` if no such identifier exists.
  * Runs the function `evalIdentifiers(prefix)` in a REPL with `document` loaded
@@ -304,14 +309,15 @@ async function evalSexp(
     env.outChannel.appendLine(
         `Sent ${data.exp.sexp} to REPL using command ${c.cfgSection}.${data.vscodeCommand}`
     );
-    if (out.stderr) {
-        const errMsg = out.stderr.trim();
+    if (out.error || out.stderr) {
+        const errMsg =
+            h.fromMaybe(out.error, "") + " " + h.fromMaybe(out.stderr, "");
         decor.addEditorDecoration({
             editor: data.editor,
             evalDecoration: env.evalErrorDecoration,
             evalDecorations: env.evalErrorDecorations,
             range: data.range,
-            text: errMsg,
+            text: errMsg.trim(),
         });
         decor.removeRange({
             decorations: env.evalDecorations,
@@ -367,10 +373,68 @@ async function runREPLCommand(
     exp: string
 ): Promise<h.Output> {
     const root = await h.askForWorkspace("Scheme");
+    if (document.isUntitled) {
+        await document.save();
+    }
     return h.runCommand({
         root: root ? root.uri.fsPath : "./",
         args: [c.replQuietArg],
         cmd: c.getCfgREPLPath(config),
         input: c.replLoadFileAndSexp(document.fileName, exp),
     });
+}
+
+/**
+ * Return `true` if the configured Chez executable is working.
+ * If an error occurred, the output is printed in the "OUTPUT" tab.
+ * @param env The needed environment.
+ * @returns `true` if the configured Chez executable is working, `false` else.
+ */
+export async function isSchemeWorking(env: h.Env): Promise<boolean> {
+    const out = await runREPLVersion(env.config);
+    if (out.stderr) {
+        if (checkVersionOutput(out.stderr)) {
+            env.outChannel.appendLine(
+                `Command ${c.getCfgREPLPath(
+                    env.config
+                )} in version ${out.stderr.trim()} is working.`
+            );
+            return true;
+        }
+    }
+    const errMsg =
+        h.fromMaybe(out.error, "") + " " + h.fromMaybe(out.stderr, "");
+    env.outChannel.appendLine(
+        `Error running command ${c.getCfgREPLPath(env.config)}: ${errMsg}`
+    );
+    return false;
+}
+
+/**
+ * Return the output of the Chez Scheme version command `scheme --version`.
+ * @param config The extension's configuration.
+ * @returns The output of the Chez Scheme version command `scheme --version`.
+ */
+async function runREPLVersion(
+    config: vscode.WorkspaceConfiguration
+): Promise<h.Output> {
+    const root = await h.askForWorkspace("Scheme");
+    return h.runCommand({
+        root: root ? root.uri.fsPath : "./",
+        args: [c.replVersionArg],
+        cmd: c.getCfgREPLPath(config),
+        input: "",
+    });
+}
+
+/**
+ * Return `true` if the output of the Chez Scheme version command if valid,
+ * `false` else.
+ * @param output The output of the Chez Scheme version command
+ * `scheme --version` to check..
+ * @returns `true` if the output of the Chez Scheme version command is valid,
+ * `false` else.
+ */
+function checkVersionOutput(output: string): boolean {
+    return versionOutRegex.test(output);
 }
