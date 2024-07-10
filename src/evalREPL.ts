@@ -346,6 +346,11 @@ async function evalSexp(
     }
 }
 
+/**
+ * Remove all evaluated values from the current view.
+ * @param env The extension environment.
+ * @param editor The current active editor.
+ */
 export async function removeEvalVals(
     env: h.Env,
     editor: vscode.TextEditor
