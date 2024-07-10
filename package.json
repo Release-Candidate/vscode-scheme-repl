@@ -123,6 +123,10 @@
                 "title": "Chez Scheme REPL: Eval s-expression left of the cursor."
             },
             {
+                "command": "chezScheme.removeEvalVals",
+                "title": "Chez Scheme REPL: Remove all evaluated values from the view."
+            },
+            {
                 "command": "chezScheme.expandLastSexp",
                 "title": "Chez Scheme REPL: Expand all macros in the s-expression left of the cursor."
             },
@@ -194,6 +198,11 @@
                 {
                     "when": "resourceLangId == scheme",
                     "command": "chezScheme.evalLastSexp",
+                    "group": "z_commands"
+                },
+                {
+                    "when": "resourceLangId == scheme",
+                    "command": "chezScheme.removeEvalVals",
                     "group": "z_commands"
                 },
                 {

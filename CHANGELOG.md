@@ -2,6 +2,8 @@
 
 ## Version 0.7.0 (2024-07-10)
 
+New command `Chez Scheme REPL: Remove all evaluated values from the view.`, `chezScheme.removeEvalVals` to remove all evaluated values from the current view.
+
 ### Bugfixes
 
 Special thanks to [migraine-user](https://github.com/migraine-user) for helping to fix these, it would not have been possible to fix them by myself.
