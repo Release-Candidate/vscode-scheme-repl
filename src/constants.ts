@@ -49,6 +49,11 @@ export const replCommand = "scheme";
 export const replQuietArg = "-q";
 
 /**
+ * Argument to pass to the Chez REPL to print the version and exit.
+ */
+export const replVersionArg = "--version";
+
+/**
  * The default interactive REPl prompt and the prompt of the "eval" REPL.
  */
 export const replPrompt = "λ>";

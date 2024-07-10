@@ -1,5 +1,18 @@
 # Chez Scheme REPL for Visual Studio Code Changelog
 
+## Version 0.7.0 (2024-07-10)
+
+### Bugfixes
+
+Special thanks to [migraine-user](https://github.com/migraine-user) for helping to fix these, it would not have been possible to fix them by myself.
+
+- Check if the configured Scheme executable is working: [#20](https://github.com/Release-Candidate/vscode-scheme-repl/issues/20). If not, display an error popup.
+- Save the current Scheme file before evaluating if it doesn't exist yet: [#20](https://github.com/Release-Candidate/vscode-scheme-repl/issues/20).
+
+### Internal Changes
+
+- Update dependencies to new versions
+
 ## Version 0.6.0 (2024-05-04)
 
 Add support for Chez Scheme 10.
