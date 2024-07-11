@@ -173,7 +173,9 @@
                 { "include": "#other_function2" },
                 { "include": "#other_function3" },
                 { "include": "#other_function4" },
-                { "include": "#other_function5" }
+                { "include": "#other_function5" },
+                { "include": "#other_function6" },
+                { "include": "#other_function7" }
             ]
         },
         "library_module_related": {
@@ -314,7 +316,7 @@
                 },
                 {
                     "name": "variable.parameter.thread.scheme",
-                    "match": "(?<=[(\\[]\\s*)(?:abort-handler|base-exception-handler|break-handler|case-sensitive|commonization-level|compile-file-message|compile-imported-libraries|compile-interpret-simple|compile-library-handler|compile-profile|compile-program-handler|compress-format|compress-level|console-error-port|cp0-effort-limit|cp0-outer-unroll-limit|cp0-score-limit|current-error-port|current-eval|current-exception-state|current-expand|current-input-port|current-locate-source-object-source|current-make-source-object|current-output-port|current-transcoder|custom-port-buffer-size|debug-condition|debug-level|default-record-equal-procedure|default-record-hash-procedure|enable-cross-library-optimization|eval-syntax-expanders-when|exit-handler|expand-output|expand/optimize-output|fasl-compressed|file-buffer-size|generate-allocation-counts|generate-covin-files|generate-inspector-information|generate-instruction-counts|generate-interrupt-trap|generate-procedure-source-information|generate-profile-forms|generate-wpo-files|gensym-count|gensym-prefix|import-notify|interaction-environment|internal-defines-as-letrec*|keyboard-interrupt-handler|library-directories|library-extensions|library-search-handler|optimize-level|pretty-initial-indent|pretty-line-length|pretty-maximum-lines|pretty-one-line-limit|pretty-standard-indent|print-brackets|print-char-name|print-extended-identifiers|print-gensym|print-graph|print-length|print-level|print-precision|print-radix|print-record|print-unicode|print-vector-length|profile-line-number-color|profile-palette|random-seed|require-nongenerative-clause|reset-handler|run-cp0|self-evaluating-vectors|subset-mode|timer-interrupt-handler|trace-output-port|trace-print|undefined-variable-warnings|waiter-prompt-and-read|waiter-prompt-string|waiter-write)(?=[\\s#(\\[{)\\]},\"'`;])"
+                    "match": "(?<=[(\\[]\\s*)(?:abort-handler|base-exception-handler|break-handler|case-sensitive|commonization-level|compile-file-message|compile-imported-libraries|compile-interpret-simple|compile-library-handler|compile-profile|compile-program-handler|compress-format|compress-level|console-error-port|cp0-effort-limit|cp0-outer-unroll-limit|cp0-score-limit|current-error-port|current-eval|current-exception-state|current-expand|current-input-port|current-locate-source-object-source|current-make-source-object|current-output-port|current-transcoder|custom-port-buffer-size|debug-condition|debug-level|default-record-equal-procedure|default-record-hash-procedure|enable-cross-library-optimization|eval-syntax-expanders-when|exit-handler|expand-output|expand/optimize-output|fasl-compressed|file-buffer-size|generate-allocation-counts|generate-covin-files|generate-inspector-information|generate-instruction-counts|generate-interrupt-trap|generate-procedure-source-information|generate-profile-forms|generate-wpo-files|gensym-count|gensym-prefix|import-notify|interaction-environment|internal-defines-as-letrec*|keyboard-interrupt-handler|library-directories|library-extensions|library-search-handler|optimize-level|pretty-initial-indent|pretty-line-length|pretty-maximum-lines|pretty-one-line-limit|pretty-standard-indent|print-brackets|print-char-name|print-extended-identifiers|print-gensym|print-graph|print-length|print-level|print-precision|print-radix|print-record|print-unicode|print-vector-length|profile-line-number-color|profile-palette|random-seed|require-nongenerative-clause|reset-handler|run-cp0|self-evaluating-vectors|subset-mode|timer-interrupt-handler|trace-output-port|trace-print|undefined-variable-warnings|waiter-prompt-and-read|waiter-prompt-string|waiter-write|print-subnormal-precision|print-positive-exponent-sign|print-select-flonum-exponential-format|enable-object-backreferences|enable-unsafe-application|enable-unsafe-variable-reference|enable-arithmetic-left-associative|library-timestamp-mode|expand-omit-library-invocations|compile-omit-concatenate-support|current-generate-id|enable-error-source-expression|transcoded-port-buffer-size|make-codec-buffer|self-evaluating-vectors|generate-covin-files|compress-level|library-search-handler)(?=[\\s#(\\[{)\\]},\"'`;])"
                 }
             ]
         },
@@ -391,6 +393,10 @@
                 {
                     "name": "keyword.operator.arithmetic.scheme",
                     "match": "(?<=[\\[(]\\s*)(fl(?:abs|exp|log|sin|cos|tan|asin|acos|atan|sqrt|expt))(?=[\\s#(\\[{)\\]},\"'`;])"
+                },
+                {
+                    "name": "keyword.operator.threads.scheme",
+                    "match": "(?<=[\\[(]\\s*)(thread-join)(?=[\\s#(\\[{)\\]},\"'`;])"
                 }
             ]
         },
@@ -790,6 +796,14 @@
         "other_function5": {
             "name": "entity.name.function.scheme",
             "match": "(?<=[\\[(]\\s*)(?:thread-condition\\?|thread\\?|threaded\\?|transcoded-port|transcoder-codec|transcoder-eol-style|transcoder-error-handling-mode|transcoder\\?|transcript-cafe|transcript-off|transcript-on|truncate-file|truncate-port|u8-list->bytevector|uint-list->bytevector|unbox|undefined-violation\\?|unget-char|unget-u8|unlock-object|unread-char|unregister-guardian|verify-loadability|violation\\?|virtual-register|virtual-register-count|visit|visit-compiled-from-port|void|warning|warning\\?|warningf|weak-cons|weak-pair\\?|who-condition\\?|write|write-char|zero\\?)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "other_function6": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:current-continuation-marks|continuation-next-marks|continuation-marks-first|continuation-marks->list|continuation-marks->iterator|call-with-immediate-continuation-mark|callcontinuation-marks\\?|fx\\+/wraparound|fx-\\/wraparound|fx\\*/wraparound|fxsll/wraparound|fxpopcount|fxpopcount32|fxpopcount16|flvector\\?|make-flvector|flvector-length|flvector-ref|flvector-set!|flvector-fill!|flvector->list|list->flvector|flvector-copy|string-grapheme-span|string-grapheme-count|char-grapheme-step|char-grapheme-break-property|char-extended-pictographic\\?|string-append-immutable|path-build|make-weak-hashtable|make-ephemeron-hashtable|hashtable-cells|hashtable-ref-cell|eq-hashtable-ref-cell|symbol-hashtable-ref-cell|eq-hashtable-try-atomic-cell|stencil-vector|stencil-vector\\?|stencil-vector-mask|stencil-vector-length|stencil-vector-ref|stencil-vector-set!|stencil-vector-update|stencil-vector-truncate!|stencil-vector-mask-width|vector-copy|vector-append|vector-set/copy|immutable-vector|immutable-vector-copy|immutable-vector-append|immutable-vector-set/copy|string->uninterned-symbol|uninterned-symbol\\?|make-record-type-descriptor\\*|record-type-named-fields\\?|record-type-field-indices|record-instance\\?|list-assuming-immutable\\?|make-pseudo-random-generator|pseudo-random-generator\\?|pseudo-random-generator-next!|pseudo-random-generator-seed!|pseudo-random-generator->vector|vector->pseudo-random-generator|make-wrapper-procedure|make-arity-wrapper-procedure|wrapper-procedure\\?|wrapper-procedure-procedure|wrapper-procedure-data|set-wrapper-procedure-data!|set-wrapper-procedure!)(?=[\\s#(\\[{)\\]},\"'`;])"
+        },
+        "other_function7": {
+            "name": "entity.name.function.scheme",
+            "match": "(?<=[\\[(]\\s*)(?:bytes-finalized|object-backreferences|make-phantom-bytevector|phantom-bytevector\\?|phantom-bytevector-length|set-phantom-bytevector-length!|compute-size-increments|make-guardian|box-immobile|make-immobile-vector|make-immobile-bytevector|make-reference-bytevector|make-immobile-reference-bytevector|reference-bytevector\\?|bytevector-reference-set!|bytevector-reference-ref|bytevector-reference\\*-ref|object->reference-address|reference-address->object|reference\\*-address->object|keep-live|foreign-alignof|Srecord_type|Srecord_type_parent|Srecord_type_size|Srecord_type_uniformp|Srecord_uniform_ref|Sregister_boot_file_fd_segment|get-initial-thread|thread-preserve-ownership!|memory-order-acquire|memory-order-release|vfasl-convert-file|procedure-known-single-valued\\?|Stry_integer_value|Stry_integer32_value|Stry_integer64_value|Stry_unsigned_value|Stry_unsigned32_value|Stry_unsigned64_value|invoke-library|verify-loadability|with-profile-tracker|compile-time-value-value|compile-time-value\\?|hashtable-cells|box-cas!|vector-cas!|collect-rendezvous|date-dst\\?|date-zone-name|procedure-arity-mask|bytevector-compress|bytevector-decompress)(?=[\\s#(\\[{)\\]},\"'`;])"
         },
         "macro_syntax": {
             "patterns": [

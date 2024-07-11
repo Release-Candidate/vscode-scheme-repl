@@ -4,6 +4,8 @@
 
 New command `Chez Scheme REPL: Remove all evaluated values from the view.`, `chezScheme.removeEvalVals` to remove all evaluated values from the current view.
 
+Add syntax highlighting for the new functions and parameters  of Chez 10.0 to the grammar.
+
 ### Bugfixes
 
 Special thanks to [migraine-user](https://github.com/migraine-user) for helping to fix these, it would not have been possible to fix them by myself.
