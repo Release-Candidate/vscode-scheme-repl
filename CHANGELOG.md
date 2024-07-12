@@ -10,6 +10,8 @@ Add syntax highlighting for the new functions and parameters  of Chez 10.0 to th
 
 Special thanks to [migraine-user](https://github.com/migraine-user) for helping to fix these, it would not have been possible to fix them by myself.
 
+- Do not show more than one evaluated value for the same line: [#23](https://github.com/Release-Candidate/vscode-scheme-repl/issues/23)
+- Remove all evaluation results from the view if the text has been changed:[#23](https://github.com/Release-Candidate/vscode-scheme-repl/issues/23)
 - Check if the configured Scheme executable is working: [#20](https://github.com/Release-Candidate/vscode-scheme-repl/issues/20). If not, display an error popup.
 - Save the current Scheme file before evaluating if it doesn't exist yet: [#20](https://github.com/Release-Candidate/vscode-scheme-repl/issues/20).
 

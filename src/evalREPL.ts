@@ -307,7 +307,7 @@ async function evalSexp(
         data.exp.sexp
     );
     env.outChannel.appendLine(
-        `Sent ${data.exp.sexp} to REPL using command ${c.cfgSection}.${data.vscodeCommand}`
+        `Sent ${data.exp.sexp} to REPL using command ${c.cfgSection}.${data.vscodeCommand} Range ${data.range.start.line} - ${data.range.end.line}`
     );
     if (out.error || out.stderr) {
         const errMsg =
