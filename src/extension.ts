@@ -64,7 +64,7 @@ export async function activate(context: vscode.ExtensionContext) {
  * Setup the extension.
  * @param env The extension's environment.
  */
-// eslint-disable-next-line max-statements
+// eslint-disable-next-line max-statements, max-lines-per-function
 async function setupExtension(env: h.Env) {
     const editorChangedSubscription = vscode.window.onDidChangeActiveTextEditor(
         (editor) => {
@@ -72,6 +72,11 @@ async function setupExtension(env: h.Env) {
         }
     );
     env.context.subscriptions.push(editorChangedSubscription);
+
+    const textChangedSubscription = vscode.workspace.onDidChangeTextDocument(
+        (e) => textChanged(env, e)
+    );
+    env.context.subscriptions.push(textChangedSubscription);
 
     subscribeOnSave(env);
 
@@ -111,6 +116,19 @@ async function setupExtension(env: h.Env) {
                 root?.name
             }.\nChange chezScheme.schemePath in the 'Chez Scheme' configuration.\nSee the 'Output' window view of 'Chez Scheme REPL' for details.`
         );
+    }
+}
+
+/**
+ * Called, if any text document has changed.
+ * If the current active editor has been changed, remove the eval decorations.
+ * @param env The extension's environment.
+ * @param ev The change event.
+ */
+function textChanged(env: h.Env, ev: vscode.TextDocumentChangeEvent): void {
+    const maybeEditor = vscode.window.activeTextEditor;
+    if (maybeEditor && maybeEditor.document === ev.document) {
+        eR.removeEvalVals(env, maybeEditor);
     }
 }
 

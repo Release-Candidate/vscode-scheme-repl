@@ -266,9 +266,7 @@ function addOrReplaceDecoration(
     options: vscode.DecorationOptions
 ) {
     const sameRange = decoration.findIndex(
-        (d) =>
-            d.range.start.line === options.range.start.line &&
-            d.range.end.line === options.range.end.line
+        (d) => d.range.start.line === options.range.start.line
     );
     if (sameRange > -1) {
         decoration[sameRange] = options;
@@ -291,9 +289,7 @@ export function removeRange(data: {
     const maybeRemove = data.decorations.get(data.editor.document);
     if (maybeRemove) {
         const removeIDX = maybeRemove.findIndex(
-            (d) =>
-                d.range.start.line === data.range.start.line &&
-                d.range.end.line === data.range.end.line
+            (d) => d.range.start.line === data.range.start.line
         );
         if (removeIDX > -1) {
             maybeRemove.splice(removeIDX, 1);
