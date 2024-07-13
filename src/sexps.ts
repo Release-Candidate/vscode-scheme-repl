@@ -377,7 +377,6 @@ function endOfSexp(data: {
             delimString: "{",
         });
     } else if (data.s.endsWith('"') && data.delim === "Quote") {
-        // cHECK IF ESCAPED
         let toCheck = data.s.slice(0, -1);
         let numBackSlash = 0;
         let backSlashes = "";
