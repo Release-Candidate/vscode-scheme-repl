@@ -377,6 +377,26 @@ function endOfSexp(data: {
             delimString: "{",
         });
     } else if (data.s.endsWith('"') && data.delim === "Quote") {
+        let toCheck = data.s.slice(0, -1);
+        let numBackSlash = 0;
+        let backSlashes = "";
+        while (toCheck.endsWith("\\")) {
+            toCheck = toCheck.slice(0, -1);
+            numBackSlash += 1;
+            backSlashes += "\\";
+        }
+        // eslint-disable-next-line no-magic-numbers
+        if (numBackSlash % 2 === 1) {
+            return (
+                parseSexpToLeft(
+                    data.delimStack,
+                    data.s.slice(0, -1 - numBackSlash),
+                    data.level
+                ) +
+                backSlashes +
+                '"'
+            );
+        }
         data.delimStack.pop();
         const newLevel = data.level - 1;
         if (newLevel === 0) {
@@ -385,9 +405,11 @@ function endOfSexp(data: {
             return (
                 parseSexpToLeft(
                     data.delimStack,
-                    data.s.slice(0, -1),
+                    data.s.slice(0, -1 - numBackSlash),
                     newLevel
-                ) + '"'
+                ) +
+                backSlashes +
+                '"'
             );
         }
     }

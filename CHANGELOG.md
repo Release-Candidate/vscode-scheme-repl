@@ -1,5 +1,15 @@
 # Chez Scheme REPL for Visual Studio Code Changelog
 
+## Version 0.7.1 (2024-07-13)
+
+Special thanks to [migraine-user](https://github.com/migraine-user) for helping with these:
+
+Add a popup warning if the file has unsaved changes before inline evaluating some expression.
+
+### Bugfixes
+
+- Fix the S-expression parser's handling of escaped quotes in strings
+
 ## Version 0.7.0 (2024-07-12)
 
 New command `Chez Scheme REPL: Remove all evaluated values from the view.`, `chezScheme.removeEvalVals` to remove all evaluated values from the current view.

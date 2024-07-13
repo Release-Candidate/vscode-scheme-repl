@@ -238,6 +238,22 @@ mocha.describe("Sexp parsing functions", () => {
                 "Vector 'sdfgdgf #125vfx(255 0 255)' -> '#125vfx(255 0 255)' "
             );
         });
+        mocha.it(
+            'Escaped Quotes `not this \'[1 ("asd" ) "as\\"d"  asdasd () ]`',
+            () => {
+                chai.assert.deepEqual(
+                    s.getSexpToLeft(
+                        'not this \'[1 ("asd" ) "as\\"d"  asdasd () ]'
+                    ),
+                    {
+                        sexp: '\'[1 ("asd" ) "as\\"d"  asdasd () ]',
+                        startCol: 9,
+                        startLine: 0,
+                    },
+                    'Vector `not this \'[1 ("asd" ) "as\\"d"  asdasd () ]` ->  `\'[1 ("asd" ) "as\\"d"  asdasd () ]`'
+                );
+            }
+        );
         mocha.it("Gensym 'sdfgdgf #{g0 gdfgez754123245}'", () => {
             chai.assert.deepEqual(
                 s.getSexpToLeft("sdfgdgf #{g0 gdfgez754123245}"),

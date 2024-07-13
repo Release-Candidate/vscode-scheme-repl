@@ -410,6 +410,16 @@ async function runREPLCommand(
     if (document.isUntitled) {
         await document.save();
     }
+    if (document.isDirty) {
+        const response = await vscode.window.showWarningMessage(
+            "The file has unsaved changes, these will not be send to the REPL.",
+            "Save changes and eval",
+            "Eval without saving"
+        );
+        if (response === "Save changes and eval") {
+            await document.save();
+        }
+    }
     return h.runCommand({
         root: root ? root.uri.fsPath : "./",
         args: [c.replQuietArg],
