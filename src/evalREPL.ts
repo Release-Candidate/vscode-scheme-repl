@@ -74,7 +74,8 @@ export async function evalGetIds(
     const out = await runREPLCommand(
         env.config,
         document,
-        c.evalIdentifiers(prefix)
+        c.evalIdentifiers(prefix),
+        false
     );
     if (out.error || out.stderr) {
         env.outChannel.appendLine(
@@ -103,7 +104,7 @@ export async function loadFile(
     env: h.Env,
     editor: vscode.TextEditor
 ): Promise<void> {
-    const out = await runREPLCommand(env.config, editor.document, "");
+    const out = await runREPLCommand(env.config, editor.document, "", false);
     if (out.error) {
         env.outChannel.appendLine(
             `Error checking file ${editor.document.fileName}:\n${out.error}\nStderr: ${out.stderr}\nStdout: ${out.stdout}`
@@ -304,7 +305,8 @@ async function evalSexp(
     const out = await runREPLCommand(
         env.config,
         data.editor.document,
-        data.exp.sexp
+        data.exp.sexp,
+        true
     );
     env.outChannel.appendLine(
         `Sent ${data.exp.sexp} to REPL using command ${c.cfgSection}.${data.vscodeCommand} Range ${data.range.start.line} - ${data.range.end.line}`
@@ -398,19 +400,23 @@ function matchREPLResponse(group: string): RegExp {
  * @param config The extension's configuration.
  * @param document The source code containing the sexp to evaluate.
  * @param exp The sexp to evaluate.
+ * @param checkForSave If `true`, check if the file has unsaved changes, and if
+ * so, ask the user to save them.
  * @returns The output of the Chez REPL after loading the file of `editor` and
  * evaluating `exp`.
  */
+// eslint-disable-next-line max-params
 async function runREPLCommand(
     config: vscode.WorkspaceConfiguration,
     document: vscode.TextDocument,
-    exp: string
+    exp: string,
+    checkForSave: boolean
 ): Promise<h.Output> {
     const root = await h.askForWorkspace("Scheme");
     if (document.isUntitled) {
         await document.save();
     }
-    if (document.isDirty) {
+    if (checkForSave && document.isDirty) {
         const response = await vscode.window.showWarningMessage(
             "The file has unsaved changes, these will not be send to the REPL.",
             "Save changes and eval",
