@@ -1,5 +1,13 @@
 # Chez Scheme REPL for Visual Studio Code Changelog
 
+## Version 0.7.2 (2024-07-15)
+
+Special thanks to [migraine-user](https://github.com/migraine-user) for helping with these:
+
+### Bugfixes
+
+- Do not check for unsaved changes for auto-completions, only when explicitly evaluating expressions.
+
 ## Version 0.7.1 (2024-07-13)
 
 Special thanks to [migraine-user](https://github.com/migraine-user) for helping with these:
