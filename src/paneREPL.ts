@@ -210,7 +210,7 @@ export async function createREPL(
         cwd: root ? root.uri.fsPath : "./",
         location: { viewColumn: vscode.ViewColumn.Beside, preserveFocus: true },
     });
-    terminal.sendText(`${c.getCfgREPLPath(config)}`);
+    terminal.sendText(`"${c.getCfgREPLPath(config)}"`);
     await help.sleep(c.getCfgREPLDelay(config));
     terminal.sendText(`${c.getCfgREPLPromptFunction(config)}`);
     return terminal;
