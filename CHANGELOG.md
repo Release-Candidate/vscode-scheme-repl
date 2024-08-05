@@ -1,5 +1,13 @@
 # Chez Scheme REPL for Visual Studio Code Changelog
 
+## Version 0.7.3 (2024-08-05)
+
+Special thanks to [tracker1398](https://github.com/tracker1398):
+
+### Bugfixes
+
+- handle spaces in the Scheme executable path.
+
 ## Version 0.7.2 (2024-07-15)
 
 Special thanks to [migraine-user](https://github.com/migraine-user) for helping with these:
