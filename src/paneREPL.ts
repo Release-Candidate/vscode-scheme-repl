@@ -191,6 +191,7 @@ async function doLastInRepl(data: {
  * @param config The configuration holding the command to call the REPL with.
  * @returns The `Terminal` object of the running REPL.
  */
+// eslint-disable-next-line max-statements
 export async function createREPL(
     config: vscode.WorkspaceConfiguration
 ): Promise<vscode.Terminal> {
@@ -218,7 +219,7 @@ export async function createREPL(
     }
     const terminal = vscode.window.createTerminal(terminalOpts);
     const replPath = c.getCfgREPLPath(config);
-    const whitespaceReg = /\s/g;
+    const whitespaceReg = /\s/gu;
     if (replPath.search(whitespaceReg) < 0) {
         terminal.sendText(`${replPath}`);
     } else {

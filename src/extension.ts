@@ -106,7 +106,7 @@ async function setupExtension(env: h.Env) {
 
     registerCommands(env);
 
-    // eslint-disable-next-line @typescript-eslint/no-extra-parens
+    // eslint-disable-next-line @/no-extra-parens
     if (!(await eR.isSchemeWorking(env))) {
         const root = await h.askForWorkspace("Scheme");
         vscode.window.showErrorMessage(

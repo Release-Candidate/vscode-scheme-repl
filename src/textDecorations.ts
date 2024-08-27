@@ -197,9 +197,7 @@ export function textEvalDecoration(
         hoverMessage: `\`\`\`scheme\n${text}\n\`\`\``,
         renderOptions: {
             after: {
-                contentText:
-                    // eslint-disable-next-line no-useless-concat
-                    " => " + text,
+                contentText: " => " + text,
             },
         },
     };
@@ -222,9 +220,7 @@ export function textEvalErrorDecoration(
         hoverMessage: text,
         renderOptions: {
             after: {
-                contentText:
-                    // eslint-disable-next-line no-useless-concat
-                    " => " + text,
+                contentText: " => " + text,
             },
         },
     };

@@ -139,7 +139,7 @@ export async function loadFile(
  * @returns The `Range` of the expression in the source file's content `text` that
  * caused the error written to `out.stderr`.
  */
-// eslint-disable-next-line max-lines-per-function, max-statements
+// eslint-disable-next-line max-statements
 export function parseError(out: h.Output, text: string): vscode.Range {
     const unboundMatch = out.stderr?.match(notBoundRegex);
     const notEnvMatch = out.stderr?.match(notAnEnvRegex);
@@ -210,7 +210,6 @@ function searchInText(
     inTextRegex: RegExp
 ): vscode.Range | undefined {
     const inText = text.match(inTextRegex);
-    // eslint-disable-next-line max-depth
     if (inText?.indices) {
         const lineColS = h.getLineColFromCharIndex(inText.indices[1][0], text);
         const lineColE = h.getLineColFromCharIndex(inText.indices[1][1], text);
@@ -288,7 +287,7 @@ export async function evalSelectedSexp(
  * @param env The needed environment.
  * @param data The needed data.
  */
-// eslint-disable-next-line max-lines-per-function, max-statements
+// eslint-disable-next-line max-lines-per-function
 async function evalSexp(
     env: h.Env,
     data: {
