@@ -2,3 +2,6 @@
 .yarn/cache
 .yarn/install-state.gz
 images/*.gif
+test hugo/*
+.vscode/*
+.github/*
