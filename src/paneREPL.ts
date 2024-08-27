@@ -191,6 +191,7 @@ async function doLastInRepl(data: {
  * @param config The configuration holding the command to call the REPL with.
  * @returns The `Terminal` object of the running REPL.
  */
+// eslint-disable-next-line max-statements
 export async function createREPL(
     config: vscode.WorkspaceConfiguration
 ): Promise<vscode.Terminal> {
@@ -204,13 +205,26 @@ export async function createREPL(
     const root = await help.askForWorkspace(
         "Select the Workspace to run the REPL in:"
     );
-    const terminal = vscode.window.createTerminal({
+    let terminalOpts: vscode.TerminalOptions = {
         name: c.replTerminalName,
         isTransient: true,
         cwd: root ? root.uri.fsPath : "./",
-        location: { viewColumn: vscode.ViewColumn.Beside, preserveFocus: true },
-    });
-    terminal.sendText(`"${c.getCfgREPLPath(config)}"`);
+        location: {
+            viewColumn: vscode.ViewColumn.Beside,
+            preserveFocus: true,
+        },
+    };
+    if (process.platform === "win32") {
+        terminalOpts.shellPath = "cmd.exe";
+    }
+    const terminal = vscode.window.createTerminal(terminalOpts);
+    const replPath = c.getCfgREPLPath(config);
+    const whitespaceReg = /\s/gu;
+    if (replPath.search(whitespaceReg) < 0) {
+        terminal.sendText(`${replPath}`);
+    } else {
+        terminal.sendText(`"${replPath}"`);
+    }
     await help.sleep(c.getCfgREPLDelay(config));
     terminal.sendText(`${c.getCfgREPLPromptFunction(config)}`);
     return terminal;

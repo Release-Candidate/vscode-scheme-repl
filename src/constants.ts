@@ -246,11 +246,18 @@ export const cfgREPLDefaultPrompt = replPrompt;
 
 /**
  * Return the configuration value for `schemePath`.
+ * Removes double or single quotes from the start and end of the string.
  * @param config The configuration object to use.
  * @returns The configuration value for `schemePath`.
  */
 export function getCfgREPLPath(config: vscode.WorkspaceConfiguration): string {
-    return config.get<string>(cfgREPLPath) || cfgREPLDefaultPath;
+    const cfgPath = config.get<string>(cfgREPLPath) || cfgREPLDefaultPath;
+    if (cfgPath.startsWith('"') && cfgPath.endsWith('"')) {
+        return cfgPath.substring(1, cfgPath.length - 1);
+    } else if (cfgPath.startsWith("'") && cfgPath.endsWith("'")) {
+        return cfgPath.substring(1, cfgPath.length - 1);
+    }
+    return cfgPath;
 }
 
 /**

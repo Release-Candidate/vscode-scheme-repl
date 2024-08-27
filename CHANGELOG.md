@@ -1,5 +1,19 @@
 # Chez Scheme REPL for Visual Studio Code Changelog
 
+## Version 0.7.4 (2024-08-27)
+
+- Make the file icon SVG use a path instead of a font, so it renders correctly when the font is missing.
+
+Special thanks to [monospod](https://github.com/monospod):
+
+### Bugfixes
+
+- Fix scheme executable path in Powershell on Windows. Quote the scheme executable path only if it contains whitespace. Always use `cmd.exe` to start the pane REPL on Windows.
+
+### Internal Changes
+
+- Update dependencies to new versions.
+
 ## Version 0.7.3 (2024-08-05)
 
 Special thanks to [tracker1398](https://github.com/tracker1398):

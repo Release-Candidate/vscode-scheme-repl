@@ -174,10 +174,9 @@ export function getWordAtPosition(
  * user selected or `undefined` if there is no currently open workspace
  * (only a single file has been opened).
  */
-export async function askForWorkspace(askText: string): Promise<
-    vscode.WorkspaceFolder | undefined
-    // eslint-disable-next-line indent
-> {
+export async function askForWorkspace(
+    askText: string
+): Promise<vscode.WorkspaceFolder | undefined> {
     // eslint-disable-next-line no-eq-null, eqeqeq
     if (vscode.workspace.workspaceFolders == null) {
         return undefined;
