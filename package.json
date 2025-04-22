@@ -281,7 +281,7 @@
         "@vscode/vsce": "^3.0.0",
         "chai": "^4.4.1",
         "del-cli": "^5.1.0",
-        "esbuild": "^0.23.1",
+        "esbuild": "^0.25.0",
         "eslint": "^9.9.1",
         "eslint-plugin-chai-friendly": "^0.7.4",
         "eslint-plugin-jsdoc": "^50.2.2",
