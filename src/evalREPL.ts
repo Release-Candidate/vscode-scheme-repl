@@ -441,12 +441,12 @@ async function runREPLCommand(
  */
 export async function isSchemeWorking(env: h.Env): Promise<boolean> {
     const out = await runREPLVersion(env.config);
-    if (out.stderr) {
-        if (checkVersionOutput(out.stderr)) {
+    if (out.stdout) {
+        if (checkVersionOutput(out.stdout)) {
             env.outChannel.appendLine(
                 `Command ${c.getCfgREPLPath(
-                    env.config
-                )} in version ${out.stderr.trim()} is working.`
+                    env.config,
+                )} in version ${out.stdout.trim()} is working.`,
             );
             return true;
         }
@@ -454,7 +454,7 @@ export async function isSchemeWorking(env: h.Env): Promise<boolean> {
     const errMsg =
         h.fromMaybe(out.error, "") + " " + h.fromMaybe(out.stderr, "");
     env.outChannel.appendLine(
-        `Error running command ${c.getCfgREPLPath(env.config)}: ${errMsg}`
+        `Error running command ${c.getCfgREPLPath(env.config)}: ${errMsg}`,
     );
     return false;
 }
